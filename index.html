@@ -115,6 +115,115 @@
             display: flex; gap: 12px; align-items: flex-start;
         }
         .support-item input[type="checkbox"] { margin-top: 4px; width: 18px; height: 18px; cursor: pointer; accent-color: var(--accent); }
+
+        /* AI Settings Modal */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px);
+            display: none; justify-content: center; align-items: center; z-index: 1000;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-box {
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 16px; width: 500px; max-width: 90%; padding: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transform: scale(0.9); transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal-box { transform: scale(1); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-header h3 { font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+        .modal-close { background: none; border: none; color: var(--text-sub); font-size: 1.8rem; cursor: pointer; line-height: 1; }
+        .modal-close:hover { color: var(--text-main); }
+        .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+        .btn-secondary {
+            background: transparent; border: 1px solid var(--border-color); color: var(--text-sub);
+            padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;
+        }
+        .btn-secondary:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
+
+        /* AI Inline Action styling */
+        .form-label-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .btn-ai-inline {
+            background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.2);
+            color: var(--accent); padding: 3px 8px; border-radius: 6px; font-size: 0.72rem;
+            font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px;
+            transition: all 0.2s;
+        }
+        .btn-ai-inline:hover { background: rgba(56, 189, 248, 0.2); border-color: rgba(56, 189, 248, 0.4); }
+
+        /* Copilot Sidebar Styles */
+        .copilot-sidebar {
+            display: none; flex-direction: column; background: var(--card-bg);
+            border-left: 1px solid var(--border-color); width: 340px; height: calc(100vh - 73px);
+            position: fixed; right: -340px; top: 73px; z-index: 90;
+            transition: right 0.3s ease; box-shadow: -5px 0 25px rgba(0,0,0,0.3);
+        }
+        .copilot-sidebar.active { display: flex; right: 0; }
+        .copilot-header { padding: 16px 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+        .copilot-header h3 { font-size: 0.95rem; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+        .copilot-body { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+        .copilot-footer { padding: 12px 16px; border-top: 1px solid var(--border-color); background: rgba(15,23,42,0.4); }
+        .chat-msg { display: flex; flex-direction: column; gap: 4px; max-width: 85%; font-size: 0.82rem; line-height: 1.4; padding: 10px 12px; border-radius: 10px; }
+        .chat-msg.user { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .chat-msg.assistant { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border-color); align-self: flex-start; border-bottom-left-radius: 2px; }
+        .chat-msg-time { font-size: 0.65rem; color: var(--text-sub); align-self: flex-end; margin-top: 2px; }
+        .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+        .btn-quick {
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); color: var(--text-sub);
+            padding: 6px; border-radius: 6px; font-size: 0.72rem; font-weight: 500; cursor: pointer; text-align: center;
+        }
+        .btn-quick:hover { background: rgba(56, 189, 248, 0.08); color: var(--accent); border-color: rgba(56, 189, 248, 0.2); }
+        .chat-input-wrap { display: flex; gap: 8px; }
+        .chat-input {
+            flex: 1; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 8px;
+            padding: 8px 12px; color: var(--text-main); font-size: 0.85rem; resize: none; height: 38px;
+        }
+        .chat-input:focus { border-color: var(--accent); outline: none; }
+        .btn-chat-send {
+            width: 38px; height: 38px; background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white; border: none; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;
+        }
+        
+        /* Floating Toggle Copilot Button */
+        .copilot-float-btn {
+            position: fixed; bottom: 20px; right: 20px; z-index: 99;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white; border: none; width: 50px; height: 50px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+            cursor: pointer; box-shadow: 0 4px 15px var(--primary-glow);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .copilot-float-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(56, 189, 248, 0.5); }
+        .copilot-float-btn.active { transform: rotate(180deg); background: #334155; box-shadow: none; }
+
+        /* Toast Notifications */
+        .toast-container { position: fixed; bottom: 80px; left: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 8px; }
+        .toast-msg {
+            background: rgba(30, 41, 59, 0.95); border: 1px solid var(--border-color); border-left: 4px solid var(--primary);
+            color: var(--text-main); padding: 12px 20px; border-radius: 8px; font-size: 0.82rem; font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 10px;
+            animation: slideIn 0.3s ease forwards; min-width: 250px; backdrop-filter: blur(8px);
+        }
+        .toast-msg.success { border-left-color: var(--success); }
+        .toast-msg.error { border-left-color: #ef4444; }
+        .toast-msg.warning { border-left-color: var(--warning); }
+        @keyframes slideIn { from { transform: translateX(-50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* Loading Skeletons & Glow animations */
+        @keyframes skeleton-glow {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .ai-loading-glow {
+            background: linear-gradient(90deg, var(--bg-dark) 25%, var(--border-color) 37%, var(--bg-dark) 63%);
+            background-size: 400% 100%;
+            animation: skeleton-glow 1.4s ease infinite;
+            color: transparent !important;
+            pointer-events: none;
+        }
+        .spinner-icon { animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -127,11 +236,58 @@
                 <p style="font-size: 0.72rem; color: var(--text-sub);">Hệ thống Dự thảo Thuyết minh Chi tiết - Đầy đủ 100% Theo Mẫu SHTP-IC gốc</p>
             </div>
         </div>
-        <div class="badge-ai">
-            <div class="status-dot"></div>
-            Qwen 2.5 7B Local Active (Free 100%)
+        <div class="badge-ai" id="aiStatusBadge" onclick="openAISettings()" style="cursor: pointer; transition: all 0.2s;" title="Nhấp để cấu hình kết nối AI">
+            <div class="status-dot" id="statusDot"></div>
+            <span id="statusText">Qwen 2.5 (Checking...)</span>
+            <i class="fa-solid fa-gear" style="font-size: 0.85rem; margin-left: 2px;"></i>
         </div>
     </header>
+
+    <!-- AI SETTINGS MODAL -->
+    <div class="modal-overlay" id="aiSettingsModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-robot"></i> Cấu hình kết nối Qwen 2.5</h3>
+                <button class="modal-close" onclick="closeAISettings()">&times;</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+                <div class="form-group">
+                    <label>Địa chỉ API Endpoint:</label>
+                    <input type="text" class="form-control" id="ai_endpoint" value="http://localhost:11434">
+                    <span style="font-size: 0.72rem; color: var(--text-sub); margin-top: 4px; display: block;">
+                        * Dành cho Ollama local. Để tránh bị lỗi CORS, hãy khởi động Ollama bằng lệnh:<br>
+                        <code>OLLAMA_ORIGINS="*" ollama serve</code>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label>Tên mô hình (Model Name):</label>
+                    <input type="text" class="form-control" id="ai_model" value="qwen2.5:7b">
+                    <span style="font-size: 0.72rem; color: var(--text-sub); margin-top: 4px; display: block;">
+                        Các mẫu thường dùng: <code>qwen2.5:7b</code>, <code>qwen2.5</code>, <code>qwen2.5:3b</code>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label>API Key / Token (Nếu sử dụng qua Proxy/Cloud):</label>
+                    <input type="password" class="form-control" id="ai_key" placeholder="Nhập API Key nếu cần">
+                </div>
+                <div class="form-group">
+                    <label>System Prompt (Vai trò của AI):</label>
+                    <textarea class="form-control" id="ai_system_prompt" style="min-height: 80px;">Bạn là một chuyên gia tư vấn viết dự án khởi nghiệp công nghệ cao của Vườn ươm Doanh nghiệp Công nghệ cao SHTP-IC. Hãy viết chi tiết, khoa học, đầy đủ thông số kỹ thuật và đúng biểu mẫu thuyết minh.</textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="testAIConnection()" id="btnTestConn">
+                    <i class="fa-solid fa-plug"></i> Kiểm tra kết nối
+                </button>
+                <button class="btn-success" onclick="saveAISettings()" style="padding: 8px 16px;">
+                    <i class="fa-solid fa-save"></i> Lưu cấu hình
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
 
     <div class="app-container">
         <div class="sidebar">
@@ -404,12 +560,881 @@ Bước 4: Xuất công thức phân bón/thuốc bảo vệ thực vật tươn
         </div>
     </div>
 
+    <!-- AI COPILOT SIDEBAR -->
+    <div class="copilot-sidebar" id="copilotSidebar">
+        <div class="copilot-header">
+            <h3><i class="fa-solid fa-brain"></i> AI Copilot Assistant</h3>
+            <button class="modal-close" onclick="toggleCopilot()">&times;</button>
+        </div>
+        <div class="copilot-body" id="chatBody">
+            <div class="chat-msg assistant">
+                Chào bạn! Tôi là trợ lý AI Qwen 2.5. Tôi có thể giúp bạn tối ưu hóa, dịch thuật hoặc điền nháp toàn bộ thông tin dự án SHTP-IC này.
+                <div class="chat-msg-time">Vừa xong</div>
+            </div>
+        </div>
+        <div class="copilot-footer">
+            <div class="quick-actions">
+                <button class="btn-quick" onclick="quickAction('draft_all')"><i class="fa-solid fa-pen-fancy"></i> Điền nháp Form</button>
+                <button class="btn-quick" onclick="quickAction('academic')"><i class="fa-solid fa-graduation-cap"></i> Văn phong khoa học</button>
+                <button class="btn-quick" onclick="quickAction('translate')"><i class="fa-solid fa-language"></i> Dịch sang Anh</button>
+                <button class="btn-quick" onclick="quickAction('clear_chat')"><i class="fa-solid fa-trash"></i> Xoá Chat</button>
+            </div>
+            <div class="chat-input-wrap">
+                <textarea class="chat-input" id="chatInput" placeholder="Hỏi AI hoặc yêu cầu viết..." onkeydown="handleChatKeyDown(event)"></textarea>
+                <button class="btn-chat-send" onclick="sendChatMessage()" id="btnSendChat">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FLOATING TOGGLE COPILOT BUTTON -->
+    <button class="copilot-float-btn" id="copilotFloatBtn" onclick="toggleCopilot()" title="Mở trợ lý AI Copilot">
+        <i class="fa-solid fa-comment-dots"></i>
+    </button>
+
     <script>
+        // Default configuration
+        let aiConfig = {
+            endpoint: 'http://localhost:11434',
+            model: 'qwen2.5:7b',
+            apiKey: '',
+            systemPrompt: 'Bạn là một chuyên gia tư vấn viết dự án khởi nghiệp công nghệ cao của Vườn ươm Doanh nghiệp Công nghệ cao SHTP-IC. Hãy viết chi tiết, khoa học, đầy đủ thông số kỹ thuật và đúng biểu mẫu thuyết minh.'
+        };
+
+        // Default demo data to restore if needed
+        const defaultDemoData = {
+            proj_name: "Hệ thống Tự động hóa Giám sát và Cảnh báo Sớm trong Nông nghiệp Công nghệ cao ứng dụng IoT và AI",
+            proj_product: "Thiết bị cảm biến SmartAgri Gateway & Nền tảng SaaS Quản trị Nông trại",
+            proj_tech: "Công nghệ Mạng cảm biến không dây (WSN), Trí tuệ nhân tạo (AI/Computer Vision)",
+            proj_field: "☐ Công nghiệp điện tử, vi mạch bán dẫn   ☒ Công nghệ sinh học   ☐ Khác",
+            proj_problem_sol: "Hiện nay các trang trại nông nghiệp công nghệ cao gặp khó khăn trong việc phát hiện sớm sâu bệnh và tối ưu hóa lượng nước tưới/phân bón thủ công. Dự án cung cấp giải pháp tích hợp các đầu đo IoT thu thập dữ liệu thời gian thực (độ ẩm, pH, dinh dưỡng đất) kết hợp camera AI phân tích hình ảnh lá cây để đưa ra khuyến nghị chính xác, giảm 30% chi phí vận hành.",
+            proj_urgency: "Xu hướng chuyển đổi số nông nghiệp tại TP.HCM và cả nước đòi hỏi giải pháp Việt hóa với chi phí phù hợp. Các sản phẩm nhập khẩu hiện tại có giá thành cao và khó tùy biến theo điều kiện khí hậu địa phương.",
+            proj_goal_eco: "Tạo nguồn thu 5 tỷ/năm từ năm thứ 3, hỗ trợ 100+ hợp tác xã cắt giảm hóa chất BVTV, góp phần phát triển nông nghiệp xanh bền vững.",
+            proj_goal_tech: "Làm chủ công nghệ nhúng AI Edge trên thiết bị IoT, đăng ký 01 Sáng chế/GPHI và 01 Bản quyền phần mềm.",
+            prod_name: "Nền tảng SmartAgri SaaS & Gateway IoT",
+            prod_pl2_name: "Hệ thống, phần mềm quản lý và điều khiển tự động hóa nông nghiệp công nghệ cao",
+            prod_pl2_no: "II.18",
+            prod_desc: "+ Hiện tại: Gateway đạt chuẩn IP67, tích hợp 8 kênh cảm biến RS485 (pH, EC, NPK, độ ẩm). Tần số thu thập 5s/lần, độ chính xác 98.5%. Cloud SaaS chịu tải 10,000 thiết bị đồng thời.\n+ Tương lai (12 tháng ươm tạo): Nâng cấp chip xử lý AI Edge SoC, tích hợp chuẩn truyền tin vệ tinh băng hẹp (NB-IoT) và giảm tiêu thụ năng lượng 40% dùng pin năng lượng mặt trời.",
+            prod_process: "+ Các cấu phần: 1. Sensor Node ➔ 2. Gateway IoT Edge ➔ 3. Gateway Cloud MQTT Broker ➔ 4. AI Engine ➔ 5. Controller Relay ➔ 6. Web/App Interface.\n+ Mối quan hệ: Sensor đo đạc dữ liệu ➔ Gateway lọc nhiễu & đóng gói dữ liệu ➔ Cloud AI chẩn đoán dịch bệnh & tính toán lượng nước ➔ Phát lệnh Relay mở van tự động ➔ Đẩy cảnh báo lên App cho người quản lý trang trại.",
+            prod_superiority: "+ Tính năng vượt trội: Tích hợp AI chẩn đoán sâu bệnh Việt hóa trực tiếp tại vi mạch.\n+ Thay thế nhập khẩu: Giá thành thiết bị rẻ hơn 60% so với giải pháp nhập khẩu Israel/Hà Lan, miễn phí duy trì phần mềm năm đầu.",
+            prod_other: "Dịch vụ tư vấn dữ liệu nông nghiệp số; Thiết bị giám sát thời tiết chuyên dụng cho nhà kính.",
+            tech_name: "Công nghệ Trí tuệ nhân tạo (AI/Computer Vision)",
+            tech_pl1_name: "Công nghệ Trí tuệ nhân tạo (AI), Thị giác máy tính",
+            tech_pl1_no: "I.01",
+            tech_desc: "Công nghệ ứng dụng mạng cuộn CNN (YOLOv8 & MobileNetV3) xử lý hình ảnh thời gian thực, đã kiểm chứng trên 5,000 mẫu ảnh lá cây nông nghiệp tại Việt Nam.",
+            tech_process: "Quy trình 4 bước: \nBước 1: Thu thập ảnh từ camera HD góc rộng tại vườn.\nBước 2: Chuẩn hóa & lọc nhiễu ánh sáng môi trường.\nBước 3: Chạy mô hình suy luận AI Edge phát hiện vết bệnh (đạt độ chính xác 94%).\nBước 4: Xuất công thức phân bón/thuốc bảo vệ thực vật tương ứng.",
+            tech_feasibility: "Giải quyết triệt để nỗi đau phát hiện sâu bệnh muộn của nông dân, giảm thiểu rủi ro mất mùa và tiết kiệm 35% chi phí mua hóa chất.",
+            tech_security: "Bảo mật chuẩn mã hóa TLS 1.3/AES-256; Kiến trúc Docker Microservices hỗ trợ nâng cấp mở rộng lên 50,000 kết nối; Giao diện Web/App tối ưu đơn giản hóa cho nông dân.",
+            tech_efficiency: "Thúc đẩy mô hình Nông nghiệp Số 4.0 tại TP.HCM, nâng cao năng suất trồng trọt 25% và hiện đại hóa chuỗi cung ứng nông sản sạch.",
+            innov_newness: "Sáng tạo trong việc tích hợp AI nhúng trực tiếp lên phần cứng Gateway giá rẻ.",
+            innov_ip: "☒ Quyền tác giả về chương trình máy tính   ☒ Sáng chế/GPHI   ☐ Nhãn hiệu",
+            env_iso: "Áp dụng định hướng tiêu chuẩn ISO 9001:2015 và ISO 14001",
+            env_desc: "Thiết bị sử dụng năng lượng mặt trời dung lượng thấp, vật liệu vỏ bọc nhựa tái chế thân thiện môi trường.",
+            competitor_1: "Giá 20,000 USD | Mạnh: Thương hiệu lớn | Yếu: Giá đắt, không có AI nông nghiệp Việt",
+            competitor_2: "Giá 100 triệu VNĐ | Mạnh: Có kênh nội địa | Yếu: Chưa có AI chẩn đoán bệnh tại thiết bị",
+            res_budget: "1.200.000.000 VNĐ",
+            res_staff: "08 người (Thành viên chính: 5, Cộng tác viên: 3)",
+            sp1: true,
+            sp2: true,
+            sp3: false,
+            sp4: true,
+            sp5: true
+        };
+
+        // Toast Helper
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast-msg ${type}`;
+            
+            let icon = '<i class="fa-solid fa-info-circle"></i>';
+            if (type === 'success') icon = '<i class="fa-solid fa-circle-check"></i>';
+            if (type === 'error') icon = '<i class="fa-solid fa-circle-exclamation"></i>';
+            if (type === 'warning') icon = '<i class="fa-solid fa-triangle-exclamation"></i>';
+            
+            toast.innerHTML = `${icon} <span>${message}</span>`;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // AI Cấu hình
+        function openAISettings() {
+            document.getElementById('aiSettingsModal').classList.add('active');
+        }
+
+        function closeAISettings() {
+            document.getElementById('aiSettingsModal').classList.remove('active');
+        }
+
+        function loadAISettings() {
+            const saved = localStorage.getItem('shtp_ai_config');
+            if (saved) {
+                try {
+                    aiConfig = JSON.parse(saved);
+                } catch(e) {
+                    console.error("Lỗi parse config", e);
+                }
+            }
+            document.getElementById('ai_endpoint').value = aiConfig.endpoint;
+            document.getElementById('ai_model').value = aiConfig.model;
+            document.getElementById('ai_key').value = aiConfig.apiKey || '';
+            document.getElementById('ai_system_prompt').value = aiConfig.systemPrompt;
+            
+            // Auto test connection on load
+            silentTestConnection();
+        }
+
+        function saveAISettings() {
+            aiConfig.endpoint = document.getElementById('ai_endpoint').value.trim();
+            aiConfig.model = document.getElementById('ai_model').value.trim();
+            aiConfig.apiKey = document.getElementById('ai_key').value.trim();
+            aiConfig.systemPrompt = document.getElementById('ai_system_prompt').value.trim();
+            
+            localStorage.setItem('shtp_ai_config', JSON.stringify(aiConfig));
+            showToast("Đã lưu cấu hình AI!", "success");
+            closeAISettings();
+            silentTestConnection();
+        }
+
+        // Test AI connection
+        async function testAIConnection() {
+            const btn = document.getElementById('btnTestConn');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch spinner-icon"></i> Đang kết nối...';
+            btn.disabled = true;
+            
+            const endpoint = document.getElementById('ai_endpoint').value.trim();
+            const model = document.getElementById('ai_model').value.trim();
+            const apiKey = document.getElementById('ai_key').value.trim();
+            const sysPrompt = document.getElementById('ai_system_prompt').value.trim();
+            
+            try {
+                const response = await fetchAIResponse("Hãy trả lời từ 'OK' ngắn gọn.", endpoint, model, apiKey, sysPrompt);
+                if (response && (response.toLowerCase().includes('ok') || response.trim().length > 0)) {
+                    showToast("Kết nối AI thành công! Qwen 2.5 đã sẵn sàng.", "success");
+                    updateStatusBadge(true);
+                } else {
+                    throw new Error("Phản hồi rỗng hoặc sai định dạng");
+                }
+            } catch (err) {
+                console.error("Lỗi test kết nối:", err);
+                showToast("Kết nối thất bại! Hãy kiểm tra lại địa chỉ Endpoint hoặc CORS.", "error");
+                updateStatusBadge(false);
+            } finally {
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+            }
+        }
+
+        async function silentTestConnection() {
+            try {
+                await Promise.race([
+                    fetchAIResponse("Hi", aiConfig.endpoint, aiConfig.model, aiConfig.apiKey, "Liveness test"),
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 2500))
+                ]);
+                updateStatusBadge(true);
+            } catch(e) {
+                updateStatusBadge(false);
+            }
+        }
+
+        function updateStatusBadge(isConnected) {
+            const dot = document.getElementById('statusDot');
+            const text = document.getElementById('statusText');
+            const badge = document.getElementById('aiStatusBadge');
+            
+            if (!dot || !text || !badge) return;
+            
+            if (isConnected) {
+                dot.style.backgroundColor = 'var(--success)';
+                text.innerText = `Qwen 2.5 Active (${aiConfig.model})`;
+                badge.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+                badge.style.background = 'rgba(16, 185, 129, 0.15)';
+            } else {
+                dot.style.backgroundColor = '#ef4444';
+                text.innerText = `Qwen 2.5 Offline`;
+                badge.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+                badge.style.background = 'rgba(239, 68, 68, 0.15)';
+            }
+        }
+
+        // Generic API fetch function
+        async function fetchAIResponse(userPrompt, endpoint = aiConfig.endpoint, model = aiConfig.model, apiKey = aiConfig.apiKey, sysPrompt = aiConfig.systemPrompt) {
+            const isOpenAI = endpoint.includes('/v1') || apiKey !== '';
+            let url = endpoint;
+            let headers = { "Content-Type": "application/json" };
+            
+            if (apiKey) {
+                headers["Authorization"] = `Bearer ${apiKey}`;
+            }
+            
+            let body;
+            
+            if (isOpenAI) {
+                if (!url.endsWith('/chat/completions') && !url.includes('/generate')) {
+                    url = url.endsWith('/') ? url + 'v1/chat/completions' : url + '/v1/chat/completions';
+                }
+                body = JSON.stringify({
+                    model: model,
+                    messages: [
+                        { role: "system", content: sysPrompt },
+                        { role: "user", content: userPrompt }
+                    ],
+                    temperature: 0.7
+                });
+            } else {
+                if (!url.endsWith('/api/generate')) {
+                    url = url.endsWith('/') ? url + 'api/generate' : url + '/api/generate';
+                }
+                body = JSON.stringify({
+                    model: model,
+                    prompt: sysPrompt + "\n\nYêu cầu cụ thể: " + userPrompt,
+                    stream: false,
+                    options: { temperature: 0.7 }
+                });
+            }
+            
+            const response = await fetch(url, {
+                method: "POST",
+                headers: headers,
+                body: body
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP Error ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            if (isOpenAI) {
+                return data.choices[0].message.content.trim();
+            } else {
+                return data.response.trim();
+            }
+        }
+
+        // Field improvement logic (Inline AI Assist)
+        async function generateField(fieldId) {
+            const element = document.getElementById(fieldId);
+            if (!element) return;
+            
+            const labelRow = element.previousElementSibling;
+            const originalButton = labelRow ? labelRow.querySelector('.btn-ai-inline') : null;
+            
+            const projName = document.getElementById('proj_name').value;
+            const projProduct = document.getElementById('proj_product').value;
+            const projTech = document.getElementById('proj_tech').value;
+            
+            const fieldLabels = {
+                proj_name: "Tên dự án khởi nghiệp công nghệ cao",
+                proj_product: "Sản phẩm/dịch vụ chính",
+                proj_tech: "Công nghệ chính ứng dụng",
+                proj_problem_sol: "Mô tả vấn đề đang gặp phải và giải pháp của dự án",
+                proj_urgency: "Tính cấp thiết của dự án",
+                proj_goal_eco: "Mục tiêu kinh tế - xã hội",
+                proj_goal_tech: "Mục tiêu khoa học công nghệ",
+                prod_desc: "Giải trình minh chứng sản phẩm phù hợp với phụ lục QĐ 23/2026/QĐ-TTg",
+                prod_process: "Quy trình hoạt động, cấu phần sản phẩm và lưu đồ hoạt động",
+                prod_superiority: "Chất lượng, tính năng vượt trội, khả năng thay thế hàng nhập khẩu",
+                prod_other: "Các sản phẩm/dịch vụ phụ khác",
+                tech_desc: "Giải trình sự phù hợp của công nghệ với QĐ 23/2026/QĐ-TTg",
+                tech_process: "Quy trình công nghệ chi tiết từng bước",
+                tech_feasibility: "Tính khả thi kỹ thuật công nghệ giải quyết nỗi đau khách hàng",
+                tech_security: "Hệ thống bảo mật, an toàn dữ liệu, tính mở rộng",
+                tech_efficiency: "Hiệu quả công nghệ đối với ngành sản xuất/xã hội",
+                innov_newness: "Tính mới, sáng tạo độc đáo của sản phẩm và công nghệ",
+                env_iso: "Hệ thống quản lý tiêu chuẩn chất lượng áp dụng",
+                env_desc: "Biện pháp thân thiện môi trường và tiết kiệm năng lượng",
+                competitor_1: "Thông tin chi tiết về đối thủ cạnh tranh 1 (ưu điểm/nhược điểm)",
+                competitor_2: "Thông tin chi tiết về đối thủ cạnh tranh 2 (ưu điểm/nhược điểm)"
+            };
+            
+            const fieldName = fieldLabels[fieldId] || "Thông tin dự án";
+            const currentValue = element.value;
+            
+            if (originalButton) {
+                originalButton.innerHTML = '<i class="fa-solid fa-circle-notch spinner-icon"></i> Đang viết...';
+                originalButton.disabled = true;
+            }
+            element.classList.add('ai-loading-glow');
+            
+            const prompt = `Bạn hãy tối ưu hóa, viết chi tiết hơn phần "${fieldName}" cho dự án sau:
+- Tên dự án: ${projName}
+- Sản phẩm chính: ${projProduct}
+- Công nghệ chính: ${projTech}
+
+Giá trị hiện tại đang viết nháp là:
+"${currentValue}"
+
+Yêu cầu: Hãy viết lại thật chỉn chu, khoa học, chuyên nghiệp, sử dụng ngôn từ học thuật chuẩn xác cho thuyết minh dự án của Vườn ươm SHTP-IC. Không đưa thêm lời giải thích nào khác ngoài văn bản tối ưu.`;
+
+            try {
+                const response = await fetchAIResponse(prompt);
+                element.value = response;
+                saveFormToStorage();
+                showToast(`Đã tối ưu hóa trường "${fieldName}"!`, "success");
+            } catch(e) {
+                console.error(e);
+                showToast("Lỗi khi kết nối với AI! Hãy kiểm tra cấu hình kết nối.", "error");
+            } finally {
+                element.classList.remove('ai-loading-glow');
+                if (originalButton) {
+                    originalButton.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> AI Viết';
+                    originalButton.disabled = false;
+                }
+            }
+        }
+
+        // Copilot chat drawer controls
+        function toggleCopilot() {
+            const sidebar = document.getElementById('copilotSidebar');
+            const btn = document.getElementById('copilotFloatBtn');
+            const container = document.querySelector('.app-container');
+            
+            if (sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+                btn.classList.remove('active');
+                container.classList.remove('chat-active');
+            } else {
+                sidebar.classList.add('active');
+                btn.classList.add('active');
+                container.classList.add('chat-active');
+                setTimeout(() => document.getElementById('chatInput').focus(), 300);
+            }
+        }
+
+        function handleChatKeyDown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendChatMessage();
+            }
+        }
+
+        async function sendChatMessage() {
+            const chatInput = document.getElementById('chatInput');
+            const text = chatInput.value.trim();
+            if (!text) return;
+            
+            const chatBody = document.getElementById('chatBody');
+            
+            const userMsg = document.createElement('div');
+            userMsg.className = 'chat-msg user';
+            userMsg.innerHTML = `${escapeHTML(text)}<div class="chat-msg-time">Vừa xong</div>`;
+            chatBody.appendChild(userMsg);
+            
+            chatInput.value = '';
+            chatBody.scrollTop = chatBody.scrollHeight;
+            
+            const aiMsg = document.createElement('div');
+            aiMsg.className = 'chat-msg assistant';
+            aiMsg.innerHTML = '<i class="fa-solid fa-circle-notch spinner-icon"></i> AI đang suy nghĩ...';
+            chatBody.appendChild(aiMsg);
+            chatBody.scrollTop = chatBody.scrollHeight;
+            
+            const projName = document.getElementById('proj_name').value;
+            const projProduct = document.getElementById('proj_product').value;
+            const projTech = document.getElementById('proj_tech').value;
+            
+            const chatPrompt = `Ngữ cảnh dự án hiện tại của người dùng:
+- Tên dự án: ${projName}
+- Sản phẩm chính: ${projProduct}
+- Công nghệ chính: ${projTech}
+
+Câu hỏi/Yêu cầu của người dùng: ${text}`;
+            
+            try {
+                const response = await fetchAIResponse(chatPrompt);
+                aiMsg.innerHTML = `${formatChatResponse(response)}<div class="chat-msg-time">Vừa xong</div>`;
+            } catch(e) {
+                aiMsg.innerHTML = `<span style="color: #ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> Lỗi kết nối AI. Vui lòng kiểm tra lại cấu hình.</span>`;
+            } finally {
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+
+        function formatChatResponse(text) {
+            let formatted = text
+                .replace(/\n/g, '<br>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/`(.*?)`/g, '<code>$1</code>');
+            
+            return `${formatted} <br><button onclick="applyAITextToCurrentField(this)" class="btn-ai-inline" style="margin-top: 8px;"><i class="fa-solid fa-copy"></i> Áp dụng vào trường đang điền</button>`;
+        }
+
+        function applyAITextToCurrentField(button) {
+            const parent = button.parentElement;
+            let clone = parent.cloneNode(true);
+            const btn = clone.querySelector('button');
+            if (btn) btn.remove();
+            const time = clone.querySelector('.chat-msg-time');
+            if (time) time.remove();
+            
+            let textContent = clone.innerText.replace(/<br>/g, '\n').trim();
+            
+            const activeTab = document.querySelector('.tab-content.active');
+            if (activeTab) {
+                const textarea = activeTab.querySelector('textarea, input[type="text"]');
+                if (textarea) {
+                    textarea.value = textContent;
+                    textarea.focus();
+                    saveFormToStorage();
+                    showToast("Đã áp dụng văn bản AI vào trường nhập liệu!", "success");
+                    return;
+                }
+            }
+            showToast("Hãy chuyển sang tab có trường nhập liệu để áp dụng!", "warning");
+        }
+
+        async function quickAction(type) {
+            const chatBody = document.getElementById('chatBody');
+            
+            if (type === 'clear_chat') {
+                chatBody.innerHTML = `
+                    <div class="chat-msg assistant">
+                        Chào bạn! Tôi là trợ lý AI Qwen 2.5. Tôi có thể giúp bạn tối ưu hóa, dịch thuật hoặc điền nháp toàn bộ thông tin dự án SHTP-IC này.
+                        <div class="chat-msg-time">Vừa xong</div>
+                    </div>`;
+                showToast("Đã xoá lịch sử chat", "info");
+                return;
+            }
+            
+            const projName = document.getElementById('proj_name').value;
+            const projProduct = document.getElementById('proj_product').value;
+            
+            if (!projName || !projProduct) {
+                showToast("Vui lòng điền Tên dự án và Sản phẩm chính trước!", "warning");
+                return;
+            }
+            
+            const aiMsg = document.createElement('div');
+            aiMsg.className = 'chat-msg assistant';
+            aiMsg.innerHTML = '<i class="fa-solid fa-circle-notch spinner-icon"></i> Đang thực hiện hành động nhanh...';
+            chatBody.appendChild(aiMsg);
+            chatBody.scrollTop = chatBody.scrollHeight;
+            
+            let prompt = "";
+            if (type === 'draft_all') {
+                prompt = `Dựa trên thông tin dự án sau:
+- Tên dự án: ${projName}
+- Sản phẩm chính: ${projProduct}
+
+Hãy phác thảo nháp các phần sau (mỗi phần viết khoảng 2-3 câu ngắn gọn nhưng đầy đủ chuyên môn):
+1. Vấn đề và giải pháp (proj_problem_sol)
+2. Tính cấp thiết (proj_urgency)
+3. Mục tiêu kinh tế xã hội (proj_goal_eco)
+4. Mục tiêu KHCN (proj_goal_tech)
+
+Định dạng trả về dưới dạng JSON thô (không có thẻ code \`\`\`json):
+{
+  "proj_problem_sol": "...",
+  "proj_urgency": "...",
+  "proj_goal_eco": "...",
+  "proj_goal_tech": "..."
+}`;
+            } else if (type === 'academic') {
+                const activeTab = document.querySelector('.tab-content.active');
+                const field = activeTab ? activeTab.querySelector('textarea, input[type="text"]') : null;
+                if (!field) {
+                    aiMsg.innerHTML = `Không tìm thấy ô nhập liệu nào khả dụng ở tab hiện tại để nâng cấp văn phong.`;
+                    return;
+                }
+                prompt = `Nâng cấp văn phong khoa học học thuật cho nội dung sau: "${field.value}"`;
+            } else if (type === 'translate') {
+                const activeTab = document.querySelector('.tab-content.active');
+                const field = activeTab ? activeTab.querySelector('textarea, input[type="text"]') : null;
+                if (!field) {
+                    aiMsg.innerHTML = `Không tìm thấy ô nhập liệu nào khả dụng ở tab hiện tại để dịch thuật.`;
+                    return;
+                }
+                prompt = `Dịch toàn bộ văn bản sau sang tiếng Anh học thuật kỹ thuật: "${field.value}"`;
+            }
+            
+            try {
+                const response = await fetchAIResponse(prompt);
+                
+                if (type === 'draft_all') {
+                    try {
+                        let jsonStr = response;
+                        if (response.includes('```')) {
+                            jsonStr = response.replace(/```json/g, '').replace(/```/g, '').trim();
+                        }
+                        const data = JSON.parse(jsonStr);
+                        for (let k in data) {
+                            const input = document.getElementById(k);
+                            if (input) input.value = data[k];
+                        }
+                        saveFormToStorage();
+                        aiMsg.innerHTML = `Đã tự động điền nháp toàn bộ thông tin cơ bản cho dự án của bạn! Bạn có thể xem ở các tab tương ứng.<div class="chat-msg-time">Vừa xong</div>`;
+                        showToast("Đã điền nháp form thành công!", "success");
+                    } catch(jsonErr) {
+                        console.error(jsonErr);
+                        aiMsg.innerHTML = `Tôi đã tạo bản nháp nhưng gặp lỗi định dạng dữ liệu tự động. Nội dung bản phác thảo là:<br><br>${response.replace(/\n/g, '<br>')}`;
+                    }
+                } else {
+                    aiMsg.innerHTML = `${formatChatResponse(response)}<div class="chat-msg-time">Vừa xong</div>`;
+                }
+            } catch(e) {
+                aiMsg.innerHTML = `<span style="color: #ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> Lỗi thực thi. Hãy kiểm tra kết nối AI.</span>`;
+            } finally {
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }
+        }
+
+        // Local Storage & Autosave
+        function saveFormToStorage() {
+            const data = {};
+            const textFields = [
+                'proj_name', 'proj_product', 'proj_tech', 'proj_field',
+                'proj_problem_sol', 'proj_urgency', 'proj_goal_eco', 'proj_goal_tech',
+                'prod_name', 'prod_pl2_name', 'prod_pl2_no', 'prod_desc', 'prod_process', 'prod_superiority', 'prod_other',
+                'tech_name', 'tech_pl1_name', 'tech_pl1_no', 'tech_desc', 'tech_process', 'tech_feasibility', 'tech_security', 'tech_efficiency',
+                'innov_newness', 'innov_ip', 'env_iso', 'env_desc', 'competitor_1', 'competitor_2',
+                'res_budget', 'res_staff'
+            ];
+            
+            textFields.forEach(f => {
+                const el = document.getElementById(f);
+                if (el) data[f] = el.value;
+            });
+            
+            for (let i = 1; i <= 5; i++) {
+                const el = document.getElementById(`sp${i}`);
+                if (el) data[`sp${i}`] = el.checked;
+            }
+            
+            localStorage.setItem('shtp_proposal_data', JSON.stringify(data));
+        }
+
+        function loadFormValues() {
+            const saved = localStorage.getItem('shtp_proposal_data');
+            const data = saved ? JSON.parse(saved) : defaultDemoData;
+            
+            for (let k in data) {
+                const el = document.getElementById(k);
+                if (el) {
+                    if (el.type === 'checkbox') {
+                        el.checked = data[k];
+                    } else {
+                        el.value = data[k];
+                    }
+                }
+            }
+        }
+
+        function resetFormToDemo() {
+            if (confirm("Bạn có chắc muốn xóa tất cả thay đổi và khôi phục về dữ liệu Demo mẫu gốc?")) {
+                localStorage.removeItem('shtp_proposal_data');
+                loadFormValues();
+                showToast("Đã khôi phục dữ liệu mẫu gốc!", "info");
+            }
+        }
+
+        function initAutosave() {
+            const elements = document.querySelectorAll('.form-control, input[type="checkbox"]');
+            elements.forEach(el => {
+                el.addEventListener('input', saveFormToStorage);
+                el.addEventListener('change', saveFormToStorage);
+            });
+        }
+
+        function syncWordForm() {
+            showToast("Đang kết nối để đồng bộ biểu mẫu...", "info");
+            setTimeout(() => {
+                loadFormValues();
+                showToast("Đồng bộ dữ liệu thành công từ kho lưu trữ!", "success");
+            }, 1000);
+        }
+
+        // Real Word Export
+        function exportToWord() {
+            showToast("Đang biên dịch thuyết minh chuẩn SHTP-IC...", "info");
+            
+            const val = (id) => {
+                const el = document.getElementById(id);
+                return el ? escapeHTML(el.value) : '';
+            };
+            
+            let supportRows = '';
+            const supportDetails = [
+                {
+                    id: 'sp1', code: 'a', name: 'Hỗ trợ sử dụng cơ sở kỹ thuật, không gian làm việc',
+                    status: 'Thiếu không gian làm việc và chỗ thử nghiệm sản phẩm.',
+                    demand: 'Hỗ trợ không gian làm việc khoảng 25-30m² cho 5 nhân sự R&D tại Vườn ươm SHTP-IC với chi phí ưu đãi.',
+                    result: 'Được bố trí không gian văn phòng làm việc và tận dụng không gian sáng chế của Vườn ươm.'
+                },
+                {
+                    id: 'sp2', code: 'b', name: 'Hỗ trợ tư vấn sở hữu trí tuệ, khai thác tài sản trí tuệ',
+                    status: 'Sản phẩm có tính mới và sáng tạo nhưng chưa đăng ký bảo hộ SHTT.',
+                    demand: 'Tư vấn thủ tục xác lập, tra cứu và xây dựng hồ sơ đăng ký Sáng chế / Giải pháp hữu ích.',
+                    result: 'Nộp thành công 01 đơn đăng ký Sáng chế/GPHI đứng tên Công ty.'
+                },
+                {
+                    id: 'sp3', code: 'c', name: 'Hỗ trợ chứng nhận ISO / Tiêu chuẩn chất lượng',
+                    status: 'Dự án chưa áp dụng hệ thống quản lý chất lượng ISO.',
+                    demand: 'Hỗ trợ tư vấn đánh giá và cấp chứng nhận ISO 9001:2015.',
+                    result: 'Được cấp giấy chứng nhận hệ thống quản lý chất lượng ISO 9001:2015.'
+                },
+                {
+                    id: 'sp4', code: 'd', name: 'Hỗ trợ thử nghiệm & Đo lường chất lượng sản phẩm',
+                    status: 'Mẫu thiết bị IoT chưa được đo lường thử nghiệm tại cơ quan chức năng.',
+                    demand: 'Hỗ trợ chi phí thử nghiệm độ bền, chuẩn phát sóng tại trung tâm kiểm định đo lường.',
+                    result: 'Phiếu kết quả thử nghiệm đạt tiêu chuẩn chất lượng quy định.'
+                },
+                {
+                    id: 'sp5', code: 'đ', name: 'Hỗ trợ Truyền thông, Xúc tiến thương mại & Hội chợ',
+                    status: 'Chưa tham gia nhiều triển lãm, hội chợ kết nối xúc tiến thương mại.',
+                    demand: 'Hỗ trợ chi phí gian hàng trưng bày sản phẩm tại các hội chợ công nghệ cao.',
+                    result: 'Gian hàng trưng bày giới thiệu sản phẩm và tiếp cận khách hàng mới.'
+                }
+            ];
+            
+            let rowCount = 1;
+            supportDetails.forEach(s => {
+                const chk = document.getElementById(s.id);
+                if (chk && chk.checked) {
+                    supportRows += `
+                        <tr>
+                            <td align="center" style="border: 1px solid #000000; padding: 6px;">${rowCount++}</td>
+                            <td style="border: 1px solid #000000; padding: 6px;"><b>${s.code}) ${s.name}</b></td>
+                            <td style="border: 1px solid #000000; padding: 6px;">${s.status}</td>
+                            <td style="border: 1px solid #000000; padding: 6px;">${s.demand}</td>
+                            <td style="border: 1px solid #000000; padding: 6px;">${s.result}</td>
+                        </tr>
+                    `;
+                }
+            });
+
+            if (!supportRows) {
+                supportRows = '<tr><td colspan="5" align="center" style="border: 1px solid #000000; padding: 6px;">Không có đề xuất hỗ trợ nào được tích chọn</td></tr>';
+            }
+
+            const docHTML = `
+            <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+            <head>
+                <meta charset="utf-8">
+                <title>Thuyết minh Dự án SHTP-IC</title>
+                <style>
+                    body {
+                        font-family: "Times New Roman", Times, serif;
+                        font-size: 13pt;
+                        line-height: 1.45;
+                        color: #000000;
+                        margin: 1in;
+                    }
+                    p { margin: 0 0 6pt 0; text-align: justify; }
+                    .header-table { width: 100%; border: none; margin-bottom: 24pt; }
+                    .header-table td { border: none; padding: 0; font-size: 11pt; text-align: center; }
+                    .doc-title { text-align: center; font-size: 14pt; font-weight: bold; margin-bottom: 20pt; text-transform: uppercase; }
+                    .section-title { font-size: 13pt; font-weight: bold; margin-top: 14pt; margin-bottom: 6pt; text-transform: uppercase; }
+                    .subsection-title { font-size: 13pt; font-weight: bold; margin-top: 10pt; margin-bottom: 4pt; }
+                    table.data-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin: 10pt 0;
+                    }
+                    table.data-table th, table.data-table td {
+                        border: 1px solid #000000;
+                        padding: 6px 10px;
+                        font-size: 12pt;
+                        vertical-align: top;
+                    }
+                    table.data-table th {
+                        background-color: #f2f2f2;
+                        font-weight: bold;
+                        text-align: center;
+                    }
+                    .bullet-list { margin-left: 20pt; }
+                </style>
+            </head>
+            <body>
+                <table class="header-table">
+                    <tr>
+                        <td width="45%" align="center">
+                            <b>BAN QUẢN LÝ KHU CÔNG NGHỆ CAO TP.HCM</b><br>
+                            <b>VƯỜN ƯƠM DOANH NGHIỆP CÔNG NGHỆ CAO</b><br>
+                            -----
+                        </td>
+                        <td width="55%" align="center">
+                            <b>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</b><br>
+                            <b>Độc lập - Tự do - Hạnh phúc</b><br>
+                            -----
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="doc-title">
+                    THUYẾT MINH CHI TIẾT DỰ ÁN ĐĂNG KÝ ƯƠM TẠO<br>
+                    TẠI VƯỜN ƯƠM DOANH NGHIỆP CÔNG NGHỆ CAO (SHTP-IC)
+                </div>
+
+                <div class="section-title">I. THÔNG TIN CHUNG VỀ DỰ ÁN</div>
+                <p><b>1. Tên dự án:</b> ${val('proj_name')}</p>
+                <p><b>2. Sản phẩm/dịch vụ chính:</b> ${val('proj_product')}</p>
+                <p><b>3. Công nghệ chính của dự án:</b> ${val('proj_tech')}</p>
+                <p><b>4. Lĩnh vực hoạt động:</b> ${val('proj_field')}</p>
+
+                <div class="section-title">II. NỘI DUNG CHI TIẾT CỦA DỰ ÁN</div>
+                
+                <div class="subsection-title">1. Giới thiệu tóm tắt về dự án</div>
+                <p><b>- Vấn đề dự án đang muốn giải quyết và giải pháp nêu ra:</b></p>
+                <p style="text-indent: 0.5in;">${val('proj_problem_sol').replace(/\n/g, '<br>')}</p>
+                
+                <p><b>- Tính cấp thiết thực hiện dự án:</b></p>
+                <p style="text-indent: 0.5in;">${val('proj_urgency').replace(/\n/g, '<br>')}</p>
+                
+                <p><b>- Mục tiêu kinh tế - xã hội của dự án:</b></p>
+                <p style="text-indent: 0.5in;">${val('proj_goal_eco').replace(/\n/g, '<br>')}</p>
+                
+                <p><b>- Mục tiêu về khoa học công nghệ của dự án:</b></p>
+                <p style="text-indent: 0.5in;">${val('proj_goal_tech').replace(/\n/g, '<br>')}</p>
+
+                <div class="subsection-title">2. Công nghệ, sản phẩm đăng ký ươm tạo của dự án</div>
+                <p><b>2.1. Sản phẩm đăng ký ươm tạo của dự án:</b></p>
+                <table class="data-table" style="border: 1px solid #000000; border-collapse: collapse; width: 100%;">
+                    <thead>
+                        <tr>
+                            <th width="35%" style="border: 1px solid #000000; padding: 6px; background-color: #f2f2f2;">Tên sản phẩm ươm tạo của dự án</th>
+                            <th width="50%" style="border: 1px solid #000000; padding: 6px; background-color: #f2f2f2;">Tên sản phẩm theo Phụ lục II – Quyết định số 23/2026/QĐ-TTg</th>
+                            <th width="15%" style="border: 1px solid #000000; padding: 6px; background-color: #f2f2f2;">Số TT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border: 1px solid #000000; padding: 6px;">${val('prod_name')}</td>
+                            <td style="border: 1px solid #000000; padding: 6px;">${val('prod_pl2_name')}</td>
+                            <td align="center" style="border: 1px solid #000000; padding: 6px;">${val('prod_pl2_no')}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><b>- Giải trình minh chứng sản phẩm đăng ký ươm tạo phù hợp với sản phẩm công nghệ cao:</b></p>
+                <p style="text-indent: 0.5in;">${val('prod_desc').replace(/\n/g, '<br>')}</p>
+
+                <p><b>- Quy trình hoạt động của sản phẩm, cấu phần hình thành, mối quan hệ và sơ đồ hoạt động:</b></p>
+                <p style="text-indent: 0.5in;">${val('prod_process').replace(/\n/g, '<br>')}</p>
+
+                <p><b>- Chất lượng, tính năng vượt trội, giá trị gia tăng và khả năng thay thế hàng nhập khẩu:</b></p>
+                <p style="text-indent: 0.5in;">${val('prod_superiority').replace(/\n/g, '<br>')}</p>
+
+                <p><b>- Các sản phẩm/dịch vụ khác có thể tạo ra từ dự án:</b></p>
+                <p style="text-indent: 0.5in;">${val('prod_other').replace(/\n/g, '<br>')}</p>
+
+                <p><b>2.2. Công nghệ đăng ký ươm tạo của dự án:</b></p>
+                <table class="data-table" style="border: 1px solid #000000; border-collapse: collapse; width: 100%;">
+                    <thead>
+                        <tr>
+                            <th width="35%" style="border: 1px solid #000000; padding: 6px; background-color: #f2f2f2;">Tên công nghệ của dự án</th>
+                            <th width="50%" style="border: 1px solid #000000; padding: 6px; background-color: #f2f2f2;">Tên công nghệ theo Phụ lục I – Quyết định số 23/2026/QĐ-TTg</th>
+                            <th width="15%" style="border: 1px solid #000000; padding: 6px; background-color: #f2f2f2;">Số TT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border: 1px solid #000000; padding: 6px;">${val('tech_name')}</td>
+                            <td style="border: 1px solid #000000; padding: 6px;">${val('tech_pl1_name')}</td>
+                            <td align="center" style="border: 1px solid #000000; padding: 6px;">${val('tech_pl1_no')}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><b>- Giải trình minh chứng công nghệ đăng ký ươm tạo phù hợp với công nghệ cao:</b></p>
+                <p style="text-indent: 0.5in;">${val('tech_desc').replace(/\n/g, '<br>')}</p>
+
+                <p><b>- Mô tả chi tiết quy trình công nghệ và điểm nổi bật:</b></p>
+                <p style="text-indent: 0.5in;">${val('tech_process').replace(/\n/g, '<br>')}</p>
+
+                <p><b>- Tính khả thi về mặt kỹ thuật công nghệ triển khai thực hiện:</b></p>
+                <p style="text-indent: 0.5in;">${val('tech_feasibility').replace(/\n/g, '<br>')}</p>
+
+                <p><b>- Khả năng bảo mật, an toàn dữ liệu, tính mở rộng:</b></p>
+                <p style="text-indent: 0.5in;">${val('tech_security').replace(/\n/g, '<br>')}</p>
+
+                <p><b>- Tính hiệu quả của công nghệ ươm tạo nâng cao năng suất, hiện đại hóa sản xuất:</b></p>
+                <p style="text-indent: 0.5in;">${val('tech_efficiency').replace(/\n/g, '<br>')}</p>
+
+                <div class="subsection-title">3. Hoạt động Đổi mới sáng tạo của dự án</div>
+                <p><b>- Tính mới, tính sáng tạo trong công nghệ và sản phẩm ươm tạo:</b></p>
+                <p style="text-indent: 0.5in;">${val('innov_newness').replace(/\n/g, '<br>')}</p>
+                <p><b>- Khả năng đăng ký xác lập quyền sở hữu trí tuệ:</b> ${val('innov_ip')}</p>
+
+                <div class="subsection-title">4. Biện pháp bảo vệ môi trường, tiết kiệm năng lượng</div>
+                <p><b>- Hệ thống quản lý chất lượng, tiêu chuẩn đang áp dụng:</b> ${val('env_iso')}</p>
+                <p><b>- Biện pháp áp dụng thân thiện môi trường:</b></p>
+                <p style="text-indent: 0.5in;">${val('env_desc').replace(/\n/g, '<br>')}</p>
+
+                <div class="subsection-title">5. Tiềm năng thương mại và đối thủ cạnh tranh</div>
+                <p><b>- Đối thủ cạnh tranh 1:</b> ${val('competitor_1')}</p>
+                <p><b>- Đối thủ cạnh tranh 2:</b> ${val('competitor_2')}</p>
+
+                <div class="subsection-title">6. Nguồn lực thực hiện và lộ trình phát triển</div>
+                <p><b>- Tổng kinh phí đã đầu tư thực tế:</b> ${val('res_budget')}</p>
+                <p><b>- Tổng số lượng nhân sự hiện tại:</b> ${val('res_staff')}</p>
+
+                <div class="section-title">III. ĐỀ XUẤT CẦN HỖ TRỢ KHI THAM GIA ƯƠM TẠO (ĐÃ TÍCH CHỌN)</div>
+                <table class="data-table" style="border: 1px solid #000000; border-collapse: collapse; width: 100%;">
+                    <thead>
+                        <tr>
+                            <th width="5%" style="border: 1px solid #000000; padding: 6px; background-color: #f2f2f2;">STT</th>
+                            <th width="25%" style="border: 1px solid #000000; padding: 6px; background-color: #f2f2f2;">Nội dung đề xuất hỗ trợ</th>
+                            <th width="20%" style="border: 1px solid #000000; padding: 6px; background-color: #f2f2f2;">Thực trạng hiện tại</th>
+                            <th width="25%" style="border: 1px solid #000000; padding: 6px; background-color: #f2f2f2;">Nhu cầu cần hỗ trợ</th>
+                            <th width="25%" style="border: 1px solid #000000; padding: 6px; background-color: #f2f2f2;">Kết quả mong muốn đạt được</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${supportRows}
+                    </tbody>
+                </table>
+
+                <br><br>
+                <table class="header-table" style="margin-top: 30pt; width: 100%;">
+                    <tr>
+                        <td width="50%"></td>
+                        <td width="50%" align="center">
+                            <i>TP. Hồ Chí Minh, Ngày.....Tháng.....Năm 2026</i><br>
+                            <b>ĐẠI DIỆN DỰ ÁN</b><br>
+                            <i>(Ký, ghi rõ họ tên)</i>
+                            <br><br><br><br>
+                        </td>
+                    </tr>
+                </table>
+            </body>
+            </html>
+            `;
+            
+            const blob = new Blob(['\ufeff' + docHTML], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `Thuyet_Minh_SHTP-IC_${val('proj_name').replace(/\s+/g, '_')}.doc`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            showToast("Thuyết minh dự án đã được xuất ra file Word (.doc) thành công!", "success");
+        }
+
+        // Global switches
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
 
-            document.getElementById(tabId).classList.add('active');
+            const contentEl = document.getElementById(tabId);
+            if (contentEl) contentEl.classList.add('active');
 
             const titles = {
                 'tab1': 'I & II.1. THÔNG TIN CHUNG VỀ DỰ ÁN (GIỚI THIỆU TÓM TẮT)',
@@ -420,9 +1445,19 @@ Bước 4: Xuất công thức phân bón/thuốc bảo vệ thực vật tươn
                 'tab6': 'III.2. CÁC NỘI DUNG DỰ ÁN ĐỀ XUẤT CẦN HỖ TRỢ (DANH SÁCH TÍCH CHỌN)'
             };
 
-            document.getElementById('tabTitle').innerText = titles[tabId];
-            event.currentTarget.classList.add('active');
+            const titleEl = document.getElementById('tabTitle');
+            if (titleEl) titleEl.innerText = titles[tabId];
+            
+            const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+            if (activeBtn) activeBtn.classList.add('active');
         }
+
+        // Init on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadFormValues();
+            loadAISettings();
+            initAutosave();
+        });
     </script>
 </body>
 </html>
