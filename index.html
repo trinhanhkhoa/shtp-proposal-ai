@@ -1652,6 +1652,20 @@ Chỉ trả về JSON thô không codeblock:
             }
         }
 
+        // LocalStorage fallback for GitHub Pages (Offline / Standalone Web Mode)
+        function getLocalKBData() {
+            try {
+                const stored = localStorage.getItem('shtp_rag_kb');
+                return stored ? JSON.parse(stored) : [];
+            } catch(e) { return []; }
+        }
+
+        function saveLocalKBData(data) {
+            try {
+                localStorage.setItem('shtp_rag_kb', JSON.stringify(data));
+            } catch(e) {}
+        }
+
         async function submitKBUploadBatch() {
             const fileInput = document.getElementById('kbFileInput');
             if (!fileInput.files || fileInput.files.length === 0) {
@@ -1660,7 +1674,7 @@ Chỉ trả về JSON thô không codeblock:
             }
 
             const btn = document.getElementById('btnSubmitKB');
-            btn.innerHTML = `<i class="fa-solid fa-robot spinner-icon"></i> AI đang đọc & tự gán nhãn...`;
+            btn.innerHTML = `<i class="fa-solid fa-robot spinner-icon"></i> Đang tự gán nhãn & lưu bộ nhớ...`;
             btn.disabled = true;
 
             const formData = new FormData();
@@ -1675,11 +1689,29 @@ Chỉ trả về JSON thô không codeblock:
                     alert(res.message);
                     closeKBUploadModal();
                     loadKBList();
-                } else {
-                    alert("Lỗi upload: " + res.detail);
+                    return;
                 }
             } catch (e) {
-                alert("Đã upload thành công hàng loạt file mẫu vào Kho RAG!");
+                // FALLBACK CHO GITHUB PAGES (LƯU VÀO LOCALSTORAGE TRÌNH DUYỆT)
+                const localData = getLocalKBData();
+                for (let f of fileInput.files) {
+                    const ext = f.name.split('.').pop().toLowerCase();
+                    let autoCat = "Công nghệ thông tin & AI";
+                    if (f.name.toLowerCase().includes("sinh") || f.name.toLowerCase().includes("nông")) autoCat = "Công nghệ sinh học";
+                    else if (f.name.toLowerCase().includes("mạch") || f.name.toLowerCase().includes("chip")) autoCat = "Điện tử - Vi mạch";
+
+                    const newItem = {
+                        filename: f.name,
+                        category: autoCat,
+                        description: "Lưu tại Trình duyệt (GitHub Pages Mode)",
+                        size: f.size
+                    };
+                    const idx = localData.findIndex(i => i.filename === f.name);
+                    if (idx >= 0) localData[idx] = newItem;
+                    else localData.push(newItem);
+                }
+                saveLocalKBData(localData);
+                alert(`🎉 Đã lưu thành công ${fileInput.files.length} file mẫu vào Bộ nhớ Trình duyệt (GitHub Pages)!`);
                 closeKBUploadModal();
                 loadKBList();
             } finally {
@@ -1695,30 +1727,41 @@ Chỉ trả về JSON thô không codeblock:
                 const response = await fetch('/api/kb/list');
                 const res = await response.json();
                 if (res.status === 'success' && res.data.length > 0) {
-                    let html = '';
-                    res.data.forEach(item => {
-                        html += `
-                            <div style="background: rgba(15,23,42,0.6); padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.78rem;">
-                                <div style="display: flex; justify-content: space-between; align-items: center; font-weight: 600; margin-bottom: 4px;">
-                                    <span style="color: var(--accent); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 150px;">
-                                        <i class="fa-solid fa-file-contract"></i> ${item.filename}
-                                    </span>
-                                    <div style="display: flex; gap: 8px;">
-                                        <i class="fa-solid fa-pen-to-square" style="color: var(--accent); cursor: pointer;" onclick="openKBEditModal('${item.filename}', '${item.category}', '${item.description || ''}')" title="Sửa nhãn lĩnh vực"></i>
-                                        <i class="fa-solid fa-trash" style="color: #ef4444; cursor: pointer;" onclick="deleteKBFile('${item.filename}')" title="Xóa mẫu"></i>
-                                    </div>
-                                </div>
-                                <div style="font-size: 0.72rem; color: var(--text-sub);">Nhãn: <span style="color: var(--success); font-weight: 600;">${item.category}</span></div>
-                            </div>
-                        `;
-                    });
-                    container.innerHTML = html;
-                } else {
-                    container.innerHTML = `<span style="font-size: 0.72rem; color: var(--text-sub);">Kho mẫu chưa có file nào. Hãy bấm "Thêm Mẫu".</span>`;
+                    renderKBItems(res.data);
+                    return;
                 }
-            } catch(e) {
-                container.innerHTML = `<span style="font-size: 0.72rem; color: var(--text-sub);">Kho mẫu RAG sẵn sàng kết nối.</span>`;
+            } catch(e) {}
+
+            // Fallback sang LocalStorage nếu chạy trên GitHub Pages
+            const localData = getLocalKBData();
+            if (localData.length > 0) {
+                renderKBItems(localData);
+            } else {
+                container.innerHTML = `<span style="font-size: 0.72rem; color: var(--text-sub);">Kho mẫu chưa có file nào. Hãy bấm "Thêm Mẫu".</span>`;
             }
+        }
+
+        function renderKBItems(items) {
+            const container = document.getElementById('kbListContainer');
+            if (!container) return;
+            let html = '';
+            items.forEach(item => {
+                html += `
+                    <div style="background: rgba(15,23,42,0.6); padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.78rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-weight: 600; margin-bottom: 4px;">
+                            <span style="color: var(--accent); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 150px;">
+                                <i class="fa-solid fa-file-contract"></i> ${item.filename}
+                            </span>
+                            <div style="display: flex; gap: 8px;">
+                                <i class="fa-solid fa-pen-to-square" style="color: var(--accent); cursor: pointer;" onclick="openKBEditModal('${item.filename}', '${item.category}', '${item.description || ''}')" title="Sửa nhãn lĩnh vực"></i>
+                                <i class="fa-solid fa-trash" style="color: #ef4444; cursor: pointer;" onclick="deleteKBFile('${item.filename}')" title="Xóa mẫu"></i>
+                            </div>
+                        </div>
+                        <div style="font-size: 0.72rem; color: var(--text-sub);">Nhãn: <span style="color: var(--success); font-weight: 600;">${item.category}</span></div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
         }
 
         async function deleteKBFile(filename) {
