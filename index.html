@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Dự Thảo Thuyết Minh Dự Án SHTP-IC (Chuẩn Form 100%)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --primary: #2563eb;
+            --primary-glow: rgba(37, 99, 235, 0.35);
+            --accent: #38bdf8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+
+        header {
+            background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100;
+        }
+        .logo-group { display: flex; align-items: center; gap: 12px; }
+        .logo-icon {
+            width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; font-size: 1.2rem;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+        .badge-ai {
+            background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); color: var(--success);
+            padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 6px;
+        }
+        .status-dot { width: 8px; height: 8px; background-color: var(--success); border-radius: 50%; animation: pulse 2s infinite; }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .app-container {
+            display: grid; grid-template-columns: 280px 1fr; gap: 20px; padding: 20px; flex: 1; max-width: 1750px; margin: 0 auto; width: 100%;
+        }
+
+        .sidebar { display: flex; flex-direction: column; gap: 16px; }
+        .card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 18px; }
+        .card-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; color: var(--text-main); }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #1d4ed8); color: white; border: none; border-radius: 8px;
+            padding: 12px; font-weight: 600; font-size: 0.9rem; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 4px 12px var(--primary-glow); transition: all 0.2s;
+        }
+
+        .main-content { display: flex; flex-direction: column; gap: 16px; }
+
+        .tab-menu { display: flex; gap: 8px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; flex-wrap: wrap; }
+        .tab-btn {
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); color: var(--text-sub); padding: 10px 16px; border-radius: 8px;
+            font-weight: 600; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s;
+        }
+        .tab-btn:hover { background: rgba(56, 189, 248, 0.1); color: var(--text-main); }
+        .tab-btn.active { background: rgba(56, 189, 248, 0.18); color: var(--accent); border-color: rgba(56, 189, 248, 0.4); }
+
+        .editor-container { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 14px; flex: 1; display: flex; flex-direction: column; }
+        .editor-header { padding: 14px 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+        .editor-body { padding: 20px; overflow-y: auto; max-height: 650px; display: flex; flex-direction: column; gap: 20px; }
+
+        .tab-content { display: none; flex-direction: column; gap: 20px; }
+        .tab-content.active { display: flex; }
+
+        .section-box { background: rgba(15, 23, 42, 0.5); border: 1px solid var(--border-color); border-radius: 10px; padding: 18px; }
+        .section-title-tag {
+            font-size: 0.95rem; font-weight: 700; color: var(--accent); margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;
+        }
+
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px; color: var(--text-sub); }
+        .form-control {
+            width: 100%; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 12px;
+            color: var(--text-main); font-size: 0.88rem; line-height: 1.5;
+        }
+        textarea.form-control { min-height: 95px; resize: vertical; }
+
+        .table-custom {
+            width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 14px; font-size: 0.85rem;
+        }
+        .table-custom th, .table-custom td {
+            border: 1px solid var(--border-color); padding: 8px 10px; text-align: left; vertical-align: top;
+        }
+        .table-custom th { background: rgba(15, 23, 42, 0.8); color: var(--accent); font-weight: 600; }
+        .table-custom input { width: 100%; background: transparent; border: none; color: var(--text-main); font-size: 0.85rem; }
+
+        .ai-badge-deep {
+            background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 600;
+        }
+
+        .actions-footer { padding: 14px 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; }
+        .btn-success {
+            background: linear-gradient(135deg, #059669, #10b981); color: white; border: none; padding: 10px 18px; border-radius: 8px;
+            font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;
+        }
+
+        .support-item {
+            background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; margin-bottom: 10px;
+            display: flex; gap: 12px; align-items: flex-start;
+        }
+        .support-item input[type="checkbox"] { margin-top: 4px; width: 18px; height: 18px; cursor: pointer; accent-color: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-group">
+            <div class="logo-icon">S</div>
+            <div>
+                <h3 style="font-size: 1.05rem; font-weight: 700;">SHTP-IC Proposal AI Engine</h3>
+                <p style="font-size: 0.72rem; color: var(--text-sub);">Hệ thống Dự thảo Thuyết minh Chi tiết - Đầy đủ 100% Theo Mẫu SHTP-IC gốc</p>
+            </div>
+        </div>
+        <div class="badge-ai">
+            <div class="status-dot"></div>
+            Qwen 2.5 7B Local Active (Free 100%)
+        </div>
+    </header>
+
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-file-pdf" style="color: var(--accent);"></i> Tài liệu thô đã đọc</div>
+                <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.78rem;">
+                    <div style="background: rgba(15,23,42,0.6); padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); display: flex; justify-content: space-between;">
+                        <span><i class="fa-solid fa-file-powerpoint" style="color: #ea580c;"></i> PitchDeck_DuAn.pptx</span>
+                        <i class="fa-solid fa-check" style="color: var(--success);"></i>
+                    </div>
+                    <div style="background: rgba(15,23,42,0.6); padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); display: flex; justify-content: space-between;">
+                        <span><i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i> MoTa_KyThuat_ChiTiet.pdf</span>
+                        <i class="fa-solid fa-check" style="color: var(--success);"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-layer-group" style="color: var(--accent);"></i> Danh Mục Mẫu SHTP-IC</div>
+                <p style="font-size: 0.75rem; color: var(--text-sub); margin-bottom: 10px;">Chuyển Tab để xem các mục đã được AI điền chính xác theo phom gốc.</p>
+                <button class="btn-primary" onclick="alert('Đã đồng bộ toàn bộ form Word!')">
+                    <i class="fa-solid fa-arrows-rotate"></i> Đồng Bộ File Word (.docx)
+                </button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- TAB NAVIGATION -->
+            <div class="tab-menu">
+                <button class="tab-btn" onclick="switchTab('tab1')"><i class="fa-solid fa-info-circle"></i> I & II.1: Giới thiệu</button>
+                <button class="tab-btn active" onclick="switchTab('tab2')"><i class="fa-solid fa-microchip"></i> II.2: Công nghệ & Sản phẩm (Form Gốc)</button>
+                <button class="tab-btn" onclick="switchTab('tab3')"><i class="fa-solid fa-lightbulb"></i> II.3,4: ĐMST & Môi trường</button>
+                <button class="tab-btn" onclick="switchTab('tab4')"><i class="fa-solid fa-chart-pie"></i> II.5: Thị trường & Đối thủ</button>
+                <button class="tab-btn" onclick="switchTab('tab5')"><i class="fa-solid fa-users"></i> II.6 & III: Nhân sự & Lộ trình</button>
+                <button class="tab-btn" onclick="switchTab('tab6')" style="border-color: var(--accent); color: var(--accent);"><i class="fa-solid fa-hand-holding-hand"></i> III.2: ĐỀ XUẤT HỖ TRỢ (TÍCH CHỌN)</button>
+            </div>
+
+            <div class="editor-container">
+                <div class="editor-header">
+                    <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--accent);" id="tabTitle">2. CÔNG NGHỆ, SẢN PHẨM ĐĂNG KÝ ƯƠM TẠO CỦA DỰ ÁN (FORM GỐC CHUẨN)</h3>
+                    <span class="ai-badge-deep"><i class="fa-solid fa-brain"></i> Exact SHTP-IC Template Sync</span>
+                </div>
+
+                <div class="editor-body">
+
+                    <!-- TAB 1: I & II.1 -->
+                    <div class="tab-content" id="tab1">
+                        <div class="section-box">
+                            <div class="section-title-tag">I. THÔNG TIN CHUNG VỀ DỰ ÁN</div>
+                            <div class="form-group"><label>1. Tên dự án:</label><input type="text" class="form-control" value="Hệ thống Tự động hóa Giám sát và Cảnh báo Sớm trong Nông nghiệp Công nghệ cao ứng dụng IoT và AI"></div>
+                            <div class="form-group"><label>2. Sản phẩm/dịch vụ chính:</label><input type="text" class="form-control" value="Thiết bị cảm biến SmartAgri Gateway & Nền tảng SaaS Quản trị Nông trại"></div>
+                            <div class="form-group"><label>3. Công nghệ chính của dự án:</label><input type="text" class="form-control" value="Công nghệ Mạng cảm biến không dây (WSN), Trí tuệ nhân tạo (AI/Computer Vision)"></div>
+                            <div class="form-group"><label>4. Lĩnh vực:</label><input type="text" class="form-control" value="☐ Công nghiệp điện tử, vi mạch bán dẫn   ☒ Công nghệ sinh học   ☐ Khác"></div>
+                        </div>
+                        <div class="section-box">
+                            <div class="section-title-tag">II.1. GIỚI THIỆU TÓM TẮT VỀ DỰ ÁN</div>
+                            <div class="form-group"><label>- Vấn đề dự án đang muốn giải quyết và giải pháp dự án nêu ra:</label><textarea class="form-control">Hiện nay các trang trại nông nghiệp công nghệ cao gặp khó khăn trong việc phát hiện sớm sâu bệnh và tối ưu hóa lượng nước tưới/phân bón thủ công. Dự án cung cấp giải pháp tích hợp các đầu đo IoT thu thập dữ liệu thời gian thực (độ ẩm, pH, dinh dưỡng đất) kết hợp camera AI phân tích hình ảnh lá cây để đưa ra khuyến nghị chính xác, giảm 30% chi phí vận hành.</textarea></div>
+                            <div class="form-group"><label>- Tính cấp thiết thực hiện dự án (nếu có):</label><textarea class="form-control">Xu hướng chuyển đổi số nông nghiệp tại TP.HCM và cả nước đòi hỏi giải pháp Việt hóa với chi phí phù hợp. Các sản phẩm nhập khẩu hiện tại có giá thành cao và khó tùy biến theo điều kiện khí hậu địa phương.</textarea></div>
+                            <div class="form-group"><label>- Mục tiêu kinh tế - xã hội của dự án (nếu có):</label><textarea class="form-control">Tạo nguồn thu 5 tỷ/năm từ năm thứ 3, hỗ trợ 100+ hợp tác xã cắt giảm hóa chất BVTV, góp phần phát triển nông nghiệp xanh bền vững.</textarea></div>
+                            <div class="form-group"><label>- Mục tiêu về khoa học công nghệ của dự án (nếu có):</label><textarea class="form-control">Làm chủ công nghệ nhúng AI Edge trên thiết bị IoT, đăng ký 01 Sáng chế/GPHI và 01 Bản quyền phần mềm.</textarea></div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: CÔNG NGHỆ & SẢN PHẨM (CHUẨN FORM GỐC KHÔNG MẤT NỘI DUNG) -->
+                    <div class="tab-content active" id="tab2">
+                        <!-- 2.1 Sản phẩm -->
+                        <div class="section-box">
+                            <div class="section-title-tag">2.1. SẢN PHẨM ĐĂNG KÝ ƯƠM TẠO CỦA DỰ ÁN</div>
+                            <p style="font-size: 0.78rem; color: var(--warning); margin-bottom: 10px;">* Yêu cầu: Bắt buộc thuộc Phụ lục II – Quyết định số 23/2026/QĐ-TTg ngày 15/5/2026.</p>
+                            
+                            <table class="table-custom">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40%;">Tên sản phẩm ươm tạo của dự án</th>
+                                        <th style="width: 48%;">Tên sản phẩm theo Phụ lục II – Quyết định số 23/2026/QĐ-TTg</th>
+                                        <th style="width: 12%;">Số TT</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="text" value="Nền tảng SmartAgri SaaS & Gateway IoT"></td>
+                                        <td><input type="text" value="Hệ thống, phần mềm quản lý và điều khiển tự động hóa nông nghiệp công nghệ cao"></td>
+                                        <td><input type="text" value="II.18"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="form-group">
+                                <label><b>Mô tả sản phẩm công nghệ cao đăng ký ươm tạo:</b></label>
+                            </div>
+                            <div class="form-group">
+                                <label>- Giải trình minh chứng sản phẩm đăng ký ươm tạo phù hợp với sản phẩm công nghệ cao đã liệt kê ở bảng trên (dựa trên các đặc tính kỹ thuật, các thông số kỹ thuật đặc thù,…dự án đã đạt được hiện tại và dự kiến sẽ đạt được trong tương lai):</label>
+                                <textarea class="form-control" style="min-height: 110px;">+ Hiện tại: Gateway đạt chuẩn IP67, tích hợp 8 kênh cảm biến RS485 (pH, EC, NPK, độ ẩm). Tần số thu thập 5s/lần, độ chính xác 98.5%. Cloud SaaS chịu tải 10,000 thiết bị đồng thời.
++ Tương lai (12 tháng ươm tạo): Nâng cấp chip xử lý AI Edge SoC, tích hợp chuẩn truyền tin vệ tinh băng hẹp (NB-IoT) và giảm tiêu thụ năng lượng 40% dùng pin năng lượng mặt trời.</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>- Mô tả và cung cấp thông tin về quy trình hoạt động của sản phẩm đăng ký ươm tạo; Cấu phần hình thành sản phẩm; mối quan hệ giữa các thành phần; lưu đồ/sơ đồ hoạt động của hệ thống/giải pháp:</label>
+                                <textarea class="form-control" style="min-height: 120px;">+ Các cấu phần: 1. Sensor Node ➔ 2. Gateway IoT Edge ➔ 3. Gateway Cloud MQTT Broker ➔ 4. AI Engine ➔ 5. Controller Relay ➔ 6. Web/App Interface.
++ Mối quan hệ: Sensor đo đạc dữ liệu ➔ Gateway lọc nhiễu & đóng gói dữ liệu ➔ Cloud AI chẩn đoán dịch bệnh & tính toán lượng nước ➔ Phát lệnh Relay mở van tự động ➔ Đẩy cảnh báo lên App cho người quản lý trang trại.</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>- Chất lượng, tính năng vượt trội, giá trị gia tăng và khả năng thay thế sản phẩm nhập khẩu của sản phẩm ươm tạo:</label>
+                                <textarea class="form-control" style="min-height: 90px;">+ Tính năng vượt trội: Tích hợp AI chẩn đoán sâu bệnh Việt hóa trực tiếp tại vi mạch.
++ Thay thế nhập khẩu: Giá thành thiết bị rẻ hơn 60% so với giải pháp nhập khẩu Israel/Hà Lan, miễn phí duy trì phần mềm năm đầu.</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>- Các sản phẩm/dịch vụ khác có thể tạo ra từ dự án ươm tạo (nếu có):</label>
+                                <textarea class="form-control">Dịch vụ tư vấn dữ liệu nông nghiệp số; Thiết bị giám sát thời tiết chuyên dụng cho nhà kính.</textarea>
+                            </div>
+                        </div>
+
+                        <!-- 2.2 Công nghệ -->
+                        <div class="section-box">
+                            <div class="section-title-tag">2.2. CÔNG NGHỆ ĐĂNG KÝ ƯƠM TẠO CỦA DỰ ÁN</div>
+                            <p style="font-size: 0.78rem; color: var(--warning); margin-bottom: 10px;">* Yêu cầu: Bắt buộc thuộc Phụ lục I – Quyết định số 23/2026/QĐ-TTg ngày 15/5/2026.</p>
+                            
+                            <table class="table-custom">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40%;">Tên công nghệ của dự án</th>
+                                        <th style="width: 48%;">Tên công nghệ theo Phụ lục I – Quyết định số 23/2026/QĐ-TTg</th>
+                                        <th style="width: 12%;">Số TT</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="text" value="Công nghệ Trí tuệ nhân tạo (AI/Computer Vision)"></td>
+                                        <td><input type="text" value="Công nghệ Trí tuệ nhân tạo (AI), Thị giác máy tính"></td>
+                                        <td><input type="text" value="I.01"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="form-group">
+                                <label><b>Hiện trạng ứng dụng, ươm tạo công nghệ cao của dự án:</b></label>
+                            </div>
+                            <div class="form-group">
+                                <label>- Giải trình minh chứng công nghệ đăng ký ươm tạo phù hợp với công nghệ cao đã liệt kê ở bảng trên:</label>
+                                <textarea class="form-control">Công nghệ ứng dụng mạng cuộn CNN (YOLOv8 & MobileNetV3) xử lý hình ảnh thời gian thực, đã kiểm chứng trên 5,000 mẫu ảnh lá cây nông nghiệp tại Việt Nam.</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>- Mô tả chi tiết, cụ thể các bước của quy trình công nghệ và nêu điểm nổi bật của công nghệ (kèm theo sơ đồ mô hình minh hoạ):</label>
+                                <textarea class="form-control" style="min-height: 100px;">Quy trình 4 bước: 
+Bước 1: Thu thập ảnh từ camera HD góc rộng tại vườn.
+Bước 2: Chuẩn hóa & lọc nhiễu ánh sáng môi trường.
+Bước 3: Chạy mô hình suy luận AI Edge phát hiện vết bệnh (đạt độ chính xác 94%).
+Bước 4: Xuất công thức phân bón/thuốc bảo vệ thực vật tương ứng.</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>- Tính khả thi về mặt kỹ thuật công nghệ để triển khai thực hiện dự án (Công nghệ ứng dụng có phù hợp để giải quyết các vấn đề khách hàng đang gặp phải):</label>
+                                <textarea class="form-control">Giải quyết triệt để nỗi đau phát hiện sâu bệnh muộn của nông dân, giảm thiểu rủi ro mất mùa và tiết kiệm 35% chi phí mua hóa chất.</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>- Làm rõ các nội dung về tính tương thích, khả năng bảo mật – an toàn dữ liệu, khả năng mở rộng, tính tương tác người dùng… (nếu có):</label>
+                                <textarea class="form-control">Bảo mật chuẩn mã hóa TLS 1.3/AES-256; Kiến trúc Docker Microservices hỗ trợ nâng cấp mở rộng lên 50,000 kết nối; Giao diện Web/App tối ưu đơn giản hóa cho nông dân.</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>- Tính hiệu quả của công nghệ ươm tạo trong việc góp phần trong việc hình thành ngành sản xuất, dịch vụ mới hoặc góp phần hiện đại hóa, nâng cao năng suất, hỗ trợ phát triển các ngành sản xuất, dịch vụ hiện có:</label>
+                                <textarea class="form-control">Thúc đẩy mô hình Nông nghiệp Số 4.0 tại TP.HCM, nâng cao năng suất trồng trọt 25% và hiện đại hóa chuỗi cung ứng nông sản sạch.</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: ĐMST & MÔI TRƯỜNG -->
+                    <div class="tab-content" id="tab3">
+                        <div class="section-box">
+                            <div class="section-title-tag">3. HOẠT ĐỘNG ĐỔI MỚI SÁNG TẠO CỦA DỰ ÁN</div>
+                            <div class="form-group"><label>- Tính mới, tính sáng tạo trong công nghệ và sản phẩm ươm tạo:</label><textarea class="form-control">Sáng tạo trong việc tích hợp AI nhúng trực tiếp lên phần cứng Gateway giá rẻ.</textarea></div>
+                            <div class="form-group"><label>- Khả năng đăng ký xác lập quyền sở hữu trí tuệ (theo dự án tự đánh giá):</label><input type="text" class="form-control" value="☒ Quyền tác giả về chương trình máy tính   ☒ Sáng chế/GPHI   ☐ Nhãn hiệu"></div>
+                        </div>
+                        <div class="section-box">
+                            <div class="section-title-tag">4. ÁP DỤNG BIỆN PHÁP THÂN THIỆN MÔI TRƯỜNG, TIẾT KIỆM NĂNG LƯỢNG</div>
+                            <div class="form-group"><label>- Hệ thống quản lý, tiêu chuẩn chất lượng đang áp dụng (nếu có):</label><input type="text" class="form-control" value="Áp dụng định hướng tiêu chuẩn ISO 9001:2015 và ISO 14001"></div>
+                            <div class="form-group"><label>- Mô tả nội dung áp dụng biện pháp thân thiện môi trường, tiết kiệm năng lượng:</label><textarea class="form-control">Thiết bị sử dụng năng lượng mặt trời dung lượng thấp, vật liệu vỏ bọc nhựa tái chế thân thiện môi trường.</textarea></div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: THỊ TRƯỜNG & ĐỐI THỦ -->
+                    <div class="tab-content" id="tab4">
+                        <div class="section-box">
+                            <div class="section-title-tag">5.3. PHÂN TÍCH ĐỐI THỦ CẠNH TRANH (ĐỦ 2 ĐỐI THỦ)</div>
+                            <div class="form-group"><label>Đối thủ 1 (Netafim Israel):</label><input type="text" class="form-control" value="Giá 20,000 USD | Mạnh: Thương hiệu lớn | Yếu: Giá đắt, không có AI nông nghiệp Việt"></div>
+                            <div class="form-group"><label>Đối thủ 2 (NextFarm VN):</label><input type="text" class="form-control" value="Giá 100 triệu VNĐ | Mạnh: Có kênh nội địa | Yếu: Chưa có AI chẩn đoán bệnh tại thiết bị"></div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 5: NHÂN SỰ & LỘ TRÌNH -->
+                    <div class="tab-content" id="tab5">
+                        <div class="section-box">
+                            <div class="section-title-tag">6. NGUỒN LỰC THỰC HIỆN & LỘ TRÌNH</div>
+                            <div class="form-group"><label>Tổng kinh phí đã đầu tư:</label><input type="text" class="form-control" value="1.200.000.000 VNĐ"></div>
+                            <div class="form-group"><label>Tổng số nhân sự hiện tại:</label><input type="text" class="form-control" value="08 người (Thành viên chính: 5, Cộng tác viên: 3)"></div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 6: DỰ ÁN ĐỀ XUẤT CẦN HỖ TRỢ (TÍCH CHỌN CHUẨN THAM KHẢO VƯỜN ƯƠM) -->
+                    <div class="tab-content" id="tab6">
+                        <div class="section-box">
+                            <div class="section-title-tag">
+                                <span>2. CÁC NỘI DUNG DỰ ÁN ĐỀ XUẤT CẦN HỖ TRỢ KHI THAM GIA ƯƠM TẠO</span>
+                                <span style="font-size: 0.75rem; color: var(--accent);"><i class="fa-solid fa-square-check"></i> Chọn để tự động điền vào Form Word</span>
+                            </div>
+                            <p style="font-size: 0.78rem; color: var(--text-sub); margin-bottom: 14px;">Chuyên viên chỉ cần tích chọn các mục nhu cầu của dự án. Hệ thống sẽ tự động điền các cột "Thực trạng", "Nhu cầu" và "Kết quả mong muốn" chuẩn xác vào bảng trong file Word mẫu!</p>
+
+                            <!-- Item 1 -->
+                            <div class="support-item">
+                                <input type="checkbox" id="sp1" checked>
+                                <div style="flex: 1;">
+                                    <h4 style="font-size: 0.88rem; font-weight: 600; color: var(--accent);">a) Hỗ trợ sử dụng cơ sở kỹ thuật, không gian làm việc (Mục 1)</h4>
+                                    <p style="font-size: 0.78rem; color: var(--text-sub); margin-top: 4px;"><b>Thực trạng:</b> Thiếu không gian làm việc và chỗ thử nghiệm sản phẩm.</p>
+                                    <p style="font-size: 0.78rem; color: var(--text-sub);"><b>Nhu cầu:</b> Hỗ trợ không gian làm việc khoảng 25-30m² cho 5 nhân sự R&D tại Vườn ươm SHTP-IC với chi phí ưu đãi.</p>
+                                    <p style="font-size: 0.78rem; color: var(--success);"><b>Kết quả mong muốn:</b> Được bố trí không gian văn phòng làm việc và tận dụng không gian sáng chế của Vườn ươm.</p>
+                                </div>
+                            </div>
+
+                            <!-- Item 2 -->
+                            <div class="support-item">
+                                <input type="checkbox" id="sp2" checked>
+                                <div style="flex: 1;">
+                                    <h4 style="font-size: 0.88rem; font-weight: 600; color: var(--accent);">b) Hỗ trợ tư vấn sở hữu trí tuệ, khai thác tài sản trí tuệ (Mục 2)</h4>
+                                    <p style="font-size: 0.78rem; color: var(--text-sub); margin-top: 4px;"><b>Thực trạng:</b> Sản phẩm có tính mới và sáng tạo nhưng chưa đăng ký bảo hộ SHTT.</p>
+                                    <p style="font-size: 0.78rem; color: var(--text-sub);"><b>Nhu cầu:</b> Tư vấn thủ tục xác lập, tra cứu và xây dựng hồ sơ đăng ký Sáng chế / Giải pháp hữu ích.</p>
+                                    <p style="font-size: 0.78rem; color: var(--success);"><b>Kết quả mong muốn:</b> Nộp thành công 01 đơn đăng ký Sáng chế/GPHI đứng tên Công ty.</p>
+                                </div>
+                            </div>
+
+                            <!-- Item 3 -->
+                            <div class="support-item">
+                                <input type="checkbox" id="sp3">
+                                <div style="flex: 1;">
+                                    <h4 style="font-size: 0.88rem; font-weight: 600; color: var(--accent);">c) Hỗ trợ chứng nhận ISO / Tiêu chuẩn chất lượng (Mục 3)</h4>
+                                    <p style="font-size: 0.78rem; color: var(--text-sub); margin-top: 4px;"><b>Thực trạng:</b> Dự án chưa áp dụng hệ thống quản lý chất lượng ISO.</p>
+                                    <p style="font-size: 0.78rem; color: var(--text-sub);"><b>Nhu cầu:</b> Hỗ trợ tư vấn đánh giá và cấp chứng nhận ISO 9001:2015.</p>
+                                    <p style="font-size: 0.78rem; color: var(--success);"><b>Kết quả mong muốn:</b> Được cấp giấy chứng nhận hệ thống quản lý chất lượng ISO 9001:2015.</p>
+                                </div>
+                            </div>
+
+                            <!-- Item 4 -->
+                            <div class="support-item">
+                                <input type="checkbox" id="sp4" checked>
+                                <div style="flex: 1;">
+                                    <h4 style="font-size: 0.88rem; font-weight: 600; color: var(--accent);">d) Hỗ trợ thử nghiệm & Đo lường chất lượng sản phẩm (Mục 4)</h4>
+                                    <p style="font-size: 0.78rem; color: var(--text-sub); margin-top: 4px;"><b>Thực trạng:</b> Mẫu thiết bị IoT chưa được đo lường thử nghiệm tại cơ quan chức năng.</p>
+                                    <p style="font-size: 0.78rem; color: var(--text-sub);"><b>Nhu cầu:</b> Hỗ trợ chi phí thử nghiệm độ bền, chuẩn phát sóng tại trung tâm kiểm định đo lường.</p>
+                                    <p style="font-size: 0.78rem; color: var(--success);"><b>Kết quả mong muốn:</b> Phiếu kết quả thử nghiệm đạt tiêu chuẩn chất lượng quy định.</p>
+                                </div>
+                            </div>
+
+                            <!-- Item 5 -->
+                            <div class="support-item">
+                                <input type="checkbox" id="sp5" checked>
+                                <div style="flex: 1;">
+                                    <h4 style="font-size: 0.88rem; font-weight: 600; color: var(--accent);">đ) Hỗ trợ Truyền thông, Xúc tiến thương mại & Hội chợ (Mục 8)</h4>
+                                    <p style="font-size: 0.78rem; color: var(--text-sub); margin-top: 4px;"><b>Thực trạng:</b> Chưa tham gia nhiều triển lãm, hội chợ kết nối xúc tiến thương mại.</p>
+                                    <p style="font-size: 0.78rem; color: var(--text-sub);"><b>Nhu cầu:</b> Hỗ trợ chi phí gian hàng trưng bày sản phẩm tại các hội chợ công nghệ cao.</p>
+                                    <p style="font-size: 0.78rem; color: var(--success);"><b>Kết quả mong muốn:</b> Gian hàng trưng bày giới thiệu sản phẩm và tiếp cận khách hàng mới.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="actions-footer">
+                    <button class="btn-success" onclick="alert('Đã đồng bộ toàn bộ dữ liệu & Tự động điền các mục được tích chọn vào File Word SHTP-IC!')">
+                        <i class="fa-solid fa-file-word"></i> Xuất File Word Chuẩn SHTP-IC (.docx)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+
+            const titles = {
+                'tab1': 'I & II.1. THÔNG TIN CHUNG VỀ DỰ ÁN (GIỚI THIỆU TÓM TẮT)',
+                'tab2': '2. CÔNG NGHỆ, SẢN PHẨM ĐĂNG KÝ ƯƠM TẠO CỦA DỰ ÁN (FORM GỐC CHUẨN)',
+                'tab3': 'II.3 & II.4. HOẠT ĐỘNG ĐỔI MỚI SÁNG TẠO & MÔI TRƯỜNG',
+                'tab4': 'II.5. TIỀM NĂNG THƯƠNG MẠI & PHÂN TÍCH ĐỐI THỦ CẠNH TRANH',
+                'tab5': 'II.6 & III. NGUỒN LỰC THỰC HIỆN & LỘ TRÌNH PHÁT TRIỂN',
+                'tab6': 'III.2. CÁC NỘI DUNG DỰ ÁN ĐỀ XUẤT CẦN HỖ TRỢ (DANH SÁCH TÍCH CHỌN)'
+            };
+
+            document.getElementById('tabTitle').innerText = titles[tabId];
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+</html>
