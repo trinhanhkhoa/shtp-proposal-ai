@@ -1509,39 +1509,7 @@ Chỉ trả về JSON thô không codeblock:
             const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
             if (activeBtn) activeBtn.classList.add('active');
         }
-
-    <!-- MODAL UPLOAD FILE MẪU CŨ LÊN KHO TRI THỨC (RAG) -->
-    <div class="modal-overlay" id="kbUploadModal">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h3><i class="fa-solid fa-book-bookmark"></i> Thêm Bản Thuyết Minh Mẫu Lên Kho RAG</h3>
-                <button class="modal-close" onclick="closeKBUploadModal()">&times;</button>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 14px;">
-                <div class="form-group">
-                    <label>Chọn File Mẫu Cũ (Đã nghiệm thu/Thành công):</label>
-                    <input type="file" class="form-control" id="kbFileInput" accept=".pdf,.docx,.doc,.txt">
-                </div>
-                <div class="form-group">
-                    <label>Gắn Nhãn Lĩnh Vực (Category):</label>
-                    <select class="form-control" id="kbCategoryInput">
-                        <option value="Công nghệ Thông tin & AI">Công nghệ Thông tin & AI</option>
-                        <option value="Công nghệ Sinh học">Công nghệ Sinh học</option>
-                        <option value="Điện tử - Vi mạch">Điện tử - Vi mạch</option>
-                        <option value="Vật liệu mới & Khác">Vật liệu mới & Khác</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Mô tả ngắn về file mẫu này (nếu có):</label>
-                    <input type="text" class="form-control" id="kbDescInput" placeholder="VD: Thuyết minh dự án AI Nông nghiệp đạt giải Nhất năm 2024">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" onclick="closeKBUploadModal()">Hủy</button>
-                <button class="btn-success" onclick="submitKBUpload()"><i class="fa-solid fa-cloud-arrow-up"></i> Tải Lên Kho Mẫu</button>
-            </div>
-        </div>
-    </div>
+    </script>
 
     <script>
         let rawFilesStore = [];
@@ -1558,7 +1526,7 @@ Chỉ trả về JSON thô không codeblock:
             }
             renderRawFileList();
             if (addedCount > 0) {
-                alert();
+                alert(`✅ Đã nhận ${addedCount} file thô từ máy tính! Bấm "Bóc tách & viết form AI" để bắt đầu.`);
             }
         }
 
