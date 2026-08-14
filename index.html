@@ -200,6 +200,26 @@
 </head>
 <body>
 
+    <!-- LOADING OVERLAY PROGRESS MODAL -->
+    <div class="modal-overlay" id="loadingProgressModal">
+        <div class="modal-box" style="text-align: center; width: 440px;">
+            <div class="spinner-icon" style="font-size: 3rem; color: var(--accent); margin-bottom: 16px;">
+                <i class="fa-solid fa-circle-notch"></i>
+            </div>
+            <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px;" id="loadingStepTitle">Qwen 2.5 AI đang đọc file thô...</h3>
+            <p style="font-size: 0.82rem; color: var(--text-sub); margin-bottom: 20px;" id="loadingStepSub">Đang bóc tách dữ liệu từ các tài liệu bạn vừa tải lên</p>
+            
+            <div style="background: var(--bg-dark); height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 10px;">
+                <div id="loadingProgressBar" style="height: 100%; width: 15%; background: linear-gradient(90deg, var(--primary), var(--accent)); transition: width 0.4s ease;"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--accent); font-weight: 600;">
+                <span id="loadingStatusBadge"><i class="fa-solid fa-microchip"></i> Local GPU M1 Active</span>
+                <span id="loadingPercentText">15%</span>
+            </div>
+        </div>
+    </div>
+
+
     <!-- MODAL UPLOAD FILE MẪU CŨ LÊN KHO TRI THỨC (RAG) -->
     <div class="modal-overlay" id="kbUploadModal">
         <div class="modal-box">
@@ -1277,6 +1297,26 @@ Chỉ trả về JSON thô không codeblock:
                 </style>
             </head>
             <body>
+
+    <!-- LOADING OVERLAY PROGRESS MODAL -->
+    <div class="modal-overlay" id="loadingProgressModal">
+        <div class="modal-box" style="text-align: center; width: 440px;">
+            <div class="spinner-icon" style="font-size: 3rem; color: var(--accent); margin-bottom: 16px;">
+                <i class="fa-solid fa-circle-notch"></i>
+            </div>
+            <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px;" id="loadingStepTitle">Qwen 2.5 AI đang đọc file thô...</h3>
+            <p style="font-size: 0.82rem; color: var(--text-sub); margin-bottom: 20px;" id="loadingStepSub">Đang bóc tách dữ liệu từ các tài liệu bạn vừa tải lên</p>
+            
+            <div style="background: var(--bg-dark); height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 10px;">
+                <div id="loadingProgressBar" style="height: 100%; width: 15%; background: linear-gradient(90deg, var(--primary), var(--accent)); transition: width 0.4s ease;"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--accent); font-weight: 600;">
+                <span id="loadingStatusBadge"><i class="fa-solid fa-microchip"></i> Local GPU M1 Active</span>
+                <span id="loadingPercentText">15%</span>
+            </div>
+        </div>
+    </div>
+
                 <table class="header-table">
                     <tr>
                         <td width="45%" align="center">
@@ -1509,12 +1549,17 @@ Chỉ trả về JSON thô không codeblock:
         // Real File Upload Handler (Drag & Drop)
         function handleRawFiles(files) {
             if (!files || files.length === 0) return;
+            let addedCount = 0;
             for (let f of files) {
                 if (!rawFilesStore.some(existing => existing.name === f.name)) {
                     rawFilesStore.push(f);
+                    addedCount++;
                 }
             }
             renderRawFileList();
+            if (addedCount > 0) {
+                alert();
+            }
         }
 
         function renderRawFileList() {
