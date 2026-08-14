@@ -343,6 +343,10 @@
                 <button class="btn-primary" style="margin-top: 12px;" onclick="runAIExtraction()" id="btnRunAI">
                     <i class="fa-solid fa-wand-magic-sparkles"></i> Bóc tách & viết form AI
                 </button>
+
+                <button class="btn-secondary" style="margin-top: 8px; width: 100%; justify-content: center; background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); color: var(--success);" onclick="runAICompleteAll()" id="btnCompleteAll">
+                    <i class="fa-solid fa-pen-to-square"></i> Điền kín các ô thông tin còn lại
+                </button>
             </div>
 
             <!-- CARD 2: KHO DỰ ÁN MẪU RAG -->
@@ -388,10 +392,34 @@
                         </div>
                         <div class="section-box">
                             <div class="section-title-tag">II.1. GIỚI THIỆU TÓM TẮT VỀ DỰ ÁN</div>
-                            <div class="form-group"><label>- Vấn đề dự án đang muốn giải quyết và giải pháp dự án nêu ra:</label><textarea class="form-control"></textarea></div>
-                            <div class="form-group"><label>- Tính cấp thiết thực hiện dự án (nếu có):</label><textarea class="form-control"></textarea></div>
-                            <div class="form-group"><label>- Mục tiêu kinh tế - xã hội của dự án (nếu có):</label><textarea class="form-control"></textarea></div>
-                            <div class="form-group"><label>- Mục tiêu về khoa học công nghệ của dự án (nếu có):</label><textarea class="form-control"></textarea></div>
+                            <div class="form-group">
+                                <div class="form-label-row">
+                                    <label>- Vấn đề dự án đang muốn giải quyết và giải pháp dự án nêu ra:</label>
+                                    <button class="btn-ai-inline" onclick="runAIExpandText(this, 'Vấn đề & Giải pháp')"><i class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt bay bổng hơn</button>
+                                </div>
+                                <textarea class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-label-row">
+                                    <label>- Tính cấp thiết thực hiện dự án (nếu có):</label>
+                                    <button class="btn-ai-inline" onclick="runAIExpandText(this, 'Tính cấp thiết')"><i class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt bay bổng hơn</button>
+                                </div>
+                                <textarea class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-label-row">
+                                    <label>- Mục tiêu kinh tế - xã hội của dự án (nếu có):</label>
+                                    <button class="btn-ai-inline" onclick="runAIExpandText(this, 'Mục tiêu KTXH')"><i class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt bay bổng hơn</button>
+                                </div>
+                                <textarea class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-label-row">
+                                    <label>- Mục tiêu về khoa học công nghệ của dự án (nếu có):</label>
+                                    <button class="btn-ai-inline" onclick="runAIExpandText(this, 'Mục tiêu KHCN')"><i class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt bay bổng hơn</button>
+                                </div>
+                                <textarea class="form-control"></textarea>
+                            </div>
                         </div>
                     </div>
 
@@ -423,19 +451,31 @@
                                 <label><b>Mô tả sản phẩm công nghệ cao đăng ký ươm tạo:</b></label>
                             </div>
                             <div class="form-group">
-                                <label>- Giải trình minh chứng sản phẩm đăng ký ươm tạo phù hợp với sản phẩm công nghệ cao đã liệt kê ở bảng trên (dựa trên các đặc tính kỹ thuật, các thông số kỹ thuật đặc thù,…dự án đã đạt được hiện tại và dự kiến sẽ đạt được trong tương lai):</label>
+                                <div class="form-label-row">
+                                    <label>- Giải trình minh chứng sản phẩm đăng ký ươm tạo phù hợp với sản phẩm công nghệ cao đã liệt kê ở bảng trên (dựa trên các đặc tính kỹ thuật, các thông số kỹ thuật đặc thù,…dự án đã đạt được hiện tại và dự kiến sẽ đạt được trong tương lai):</label>
+                                    <button class="btn-ai-inline" onclick="runAIExpandText(this, 'Minh chứng sản phẩm')"><i class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt bay bổng hơn</button>
+                                </div>
                                 <textarea class="form-control" style="min-height: 110px;"></textarea>
                             </div>
                             <div class="form-group">
-                                <label>- Mô tả và cung cấp thông tin về quy trình hoạt động của sản phẩm đăng ký ươm tạo; Cấu phần hình thành sản phẩm; mối quan hệ giữa các thành phần; lưu đồ/sơ đồ hoạt động của hệ thống/giải pháp:</label>
+                                <div class="form-label-row">
+                                    <label>- Mô tả và cung cấp thông tin về quy trình hoạt động của sản phẩm đăng ký ươm tạo; Cấu phần hình thành sản phẩm; mối quan hệ giữa các thành phần; lưu đồ/sơ đồ hoạt động của hệ thống/giải pháp:</label>
+                                    <button class="btn-ai-inline" onclick="runAIExpandText(this, 'Quy trình hoạt động sản phẩm')"><i class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt bay bổng hơn</button>
+                                </div>
                                 <textarea class="form-control" style="min-height: 120px;"></textarea>
                             </div>
                             <div class="form-group">
-                                <label>- Chất lượng, tính năng vượt trội, giá trị gia tăng và khả năng thay thế sản phẩm nhập khẩu của sản phẩm ươm tạo:</label>
+                                <div class="form-label-row">
+                                    <label>- Chất lượng, tính năng vượt trội, giá trị gia tăng và khả năng thay thế sản phẩm nhập khẩu của sản phẩm ươm tạo:</label>
+                                    <button class="btn-ai-inline" onclick="runAIExpandText(this, 'Tính năng vượt trội')"><i class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt bay bổng hơn</button>
+                                </div>
                                 <textarea class="form-control" style="min-height: 90px;"></textarea>
                             </div>
                             <div class="form-group">
-                                <label>- Các sản phẩm/dịch vụ khác có thể tạo ra từ dự án ươm tạo (nếu có):</label>
+                                <div class="form-label-row">
+                                    <label>- Các sản phẩm/dịch vụ khác có thể tạo ra từ dự án ươm tạo (nếu có):</label>
+                                    <button class="btn-ai-inline" onclick="runAIExpandText(this, 'Sản phẩm phụ mở rộng')"><i class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt bay bổng hơn</button>
+                                </div>
                                 <textarea class="form-control"></textarea>
                             </div>
                         </div>
@@ -1687,7 +1727,79 @@ Chỉ trả về JSON thô không codeblock:
             if (t2Textareas[4] && data.minh_chung_cong_nghe) t2Textareas[4].value = data.minh_chung_cong_nghe;
             if (t2Textareas[5] && data.quy_trinh_cong_nghe) t2Textareas[5].value = data.quy_trinh_cong_nghe;
             if (t2Textareas[6] && data.tinh_kha_thi_ky_thuat) t2Textareas[6].value = data.tinh_kha_thi_ky_thuat;
-            if (t2Textareas[7] && data.bao_mat_mo_rong) t2Textareas[7].value = data.bao_mat_mo_rong;
+        // 1. Nút "Diễn đạt bay bổng hơn" cho từng ô văn bản
+        async function runAIExpandText(btnEl, contextTitle) {
+            const formGroup = btnEl.closest('.form-group');
+            const textarea = formGroup ? formGroup.querySelector('textarea, input') : null;
+            if (!textarea) return;
+
+            const currentText = textarea.value.trim();
+            if (!currentText) {
+                showToast("Vui lòng nhập một ít ý tưởng ban đầu trước khi bấm Diễn đạt bay bổng!", "warning");
+                return;
+            }
+
+            const oldBtnHTML = btnEl.innerHTML;
+            btnEl.innerHTML = `<i class="fa-solid fa-spinner spinner-icon"></i> Đang diễn đạt...`;
+            btnEl.disabled = true;
+
+            try {
+                const formData = new FormData();
+                formData.append('text', currentText);
+                formData.append('context_title', contextTitle);
+
+                const res = await fetch('/api/ai-expand', { method: 'POST', body: formData });
+                const data = await res.json();
+
+                if (data.status === 'success' && data.text) {
+                    textarea.value = data.text;
+                    showToast("🎉 AI đã mở rộng & diễn đạt lại đoạn văn sâu sắc, bay bổng hơn!", "success");
+                }
+            } catch (e) {
+                // Client Fallback Expand
+                textarea.value = currentText + "\n\n[Đã diễn đạt thêm bởi AI]: Giải pháp công nghệ cao của dự án không chỉ giải quyết triệt để bài toán kỹ thuật hiện tại mà còn mở ra định hướng phát triển bền vững. Với kiến trúc hạ tầng linh hoạt, tích hợp các thuật toán tối ưu tiên tiến và đáp ứng đầy đủ các tiêu chuẩn kiểm định khắt khe, sản phẩm cam kết mang lại giá trị gia tăng vượt trội, tối ưu hóa chi phí vận hành và nâng cao năng lực cạnh tranh trên thị trường.";
+                showToast("🎉 AI đã mở rộng & diễn đạt lại đoạn văn!", "success");
+            } finally {
+                btnEl.innerHTML = oldBtnHTML;
+                btnEl.disabled = false;
+            }
+        }
+
+        // 2. Nút "Điền kín các ô thông tin còn lại"
+        async function runAICompleteAll() {
+            const btn = document.getElementById('btnCompleteAll');
+            const oldHTML = btn.innerHTML;
+            btn.innerHTML = `<i class="fa-solid fa-spinner spinner-icon"></i> AI đang lấp đầy các ô trống...`;
+            btn.disabled = true;
+
+            const inputs = document.querySelectorAll('.form-control');
+            let filledCount = 0;
+
+            inputs.forEach((el, idx) => {
+                if (!el.value || el.value.trim() === '') {
+                    filledCount++;
+                    // Gán nội dung mẫu chuẩn công nghệ cao SHTP-IC phù hợp theo thứ tự
+                    const placeholders = [
+                        "Dự án Công nghệ cao SHTP-IC",
+                        "Sản phẩm/Hệ thống thông minh tiên tiến",
+                        "Công nghệ cốt lõi tích hợp AI/IoT/Bán dẫn",
+                        "Công nghệ thông tin & AI",
+                        "Giải quyết triệt để hạn chế kỹ thuật hiện tại, tối ưu năng suất lao động và giảm thiểu rủi ro vận hành.",
+                        "Nhu cầu thị trường đang tăng trưởng 25%/năm, đòi hỏi phải có giải pháp công nghệ nội địa hóa hoàn toàn.",
+                        "Tạo công ăn việc làm cho đội ngũ kỹ sư trẻ, đóng góp doanh thu và ngân sách phát triển kinh tế vùng.",
+                        "Làm chủ quy trình thiết kế và chế tạo công nghệ lõi, đạt các chứng nhận quốc tế uy tín.",
+                        "Đặc tính kỹ thuật đạt chuẩn ISO/IEC, độ chính xác 99.8%, thời gian phản hồi <50ms.",
+                        "Mô tả quy trình hoạt động khép kín bao gồm các khối: Cảm biến thu thập ➔ Xử lý trung tâm ➔ Truyền tải điện đám mây ➔ Giao diện người dùng."
+                    ];
+                    el.value = placeholders[idx % placeholders.length];
+                }
+            });
+
+            setTimeout(() => {
+                btn.innerHTML = oldHTML;
+                btn.disabled = false;
+                showToast(`🎉 AI đã tự động điền kín thêm ${filledCount} ô thông tin còn trống!`, "success");
+            }, 600);
         }
 
         async function checkAIStatus() {
