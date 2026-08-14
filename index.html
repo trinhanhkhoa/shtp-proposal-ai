@@ -1636,19 +1636,34 @@ Chỉ trả về JSON thô không codeblock:
             } catch(e) { loadKBList(); }
         }
 
-        // Real AI Extraction API Execution
+        // Real AI Extraction API Execution with Animated Loading Progress
         async function runAIExtraction() {
             if (rawFilesStore.length === 0) {
-                alert("Vui lòng kéo-thả hoặc chọn ít nhất 1 file dữ liệu thô từ máy tính trước khi bấm Bóc tách!");
+                alert("Vui lòng kéo-thả hoặc chọn ít nhất 1 file dữ liệu thô từ máy tính trước khi bấm bóc tách!");
                 return;
             }
 
             const btn = document.getElementById('btnRunAI');
-            btn.innerHTML = `<i class="fa-solid fa-spinner spinner-icon"></i> Đang đọc file thô...`;
+            const progressModal = document.getElementById('loadingProgressModal');
+            const titleEl = document.getElementById('loadingStepTitle');
+            const subEl = document.getElementById('loadingStepSub');
+            const barEl = document.getElementById('loadingProgressBar');
+            const percentEl = document.getElementById('loadingPercentText');
+
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch spinner-icon"></i> Đang bóc tách...`;
             btn.disabled = true;
+            if (progressModal) progressModal.classList.add('active');
+
+            // Bật hiệu ứng Skeleton Glow Loading trên Form
+            toggleFormSkeletons(true);
 
             try {
-                // Step 1: Upload raw files to backend
+                // Step 1: Upload & Extract Raw Texts
+                if (titleEl) titleEl.innerText = "Đang đọc & bóc tách dữ liệu thô...";
+                if (subEl) subEl.innerText = `Đang xử lý ${rawFilesStore.length} tài liệu (PDF, Word, Slide) bạn vừa tải lên`;
+                if (barEl) barEl.style.width = "30%";
+                if (percentEl) percentEl.innerText = "30%";
+
                 const formData = new FormData();
                 rawFilesStore.forEach(f => formData.append('files', f));
 
@@ -1656,9 +1671,12 @@ Chỉ trả về JSON thô không codeblock:
                 const uploadData = await uploadRes.json();
 
                 if (uploadData.status === 'success') {
-                    btn.innerHTML = `<i class="fa-solid fa-brain spinner-icon"></i> Qwen 2.5 AI đang dự thảo...`;
+                    // Step 2: Query RAG Knowledge Base & Prompt Qwen 2.5
+                    if (titleEl) titleEl.innerText = "Qwen 2.5 AI đang học văn phong RAG & dự thảo...";
+                    if (subEl) subEl.innerText = "Tra cứu văn phong mẫu thuộc lĩnh vực được chọn và điền vào form 11 trang";
+                    if (barEl) barEl.style.width = "75%";
+                    if (percentEl) percentEl.innerText = "75%";
 
-                    // Step 2: Call AI Generate with RAG category
                     const categorySelect = document.getElementById('kbCategorySelect').value;
                     const genFormData = new FormData();
                     genFormData.append('raw_text', uploadData.raw_text);
@@ -1667,17 +1685,36 @@ Chỉ trả về JSON thô không codeblock:
                     const genRes = await fetch('/api/generate', { method: 'POST', body: genFormData });
                     const genData = await genRes.json();
 
+                    if (barEl) barEl.style.width = "100%";
+                    if (percentEl) percentEl.innerText = "100%";
+
                     if (genData.status === 'success' || genData.data) {
-                        fillDataToForm(genData.data);
-                        alert(`🎉 AI (Qwen 2.5) đã bóc tách xong từ ${uploadData.files.length} file thô thực tế và tự động điền vào Form!`);
+                        setTimeout(() => {
+                            fillDataToForm(genData.data);
+                            if (progressModal) progressModal.classList.remove('active');
+                            toggleFormSkeletons(false);
+                            alert(`🎉 Qwen 2.5 AI đã trích xuất thành công từ ${uploadData.files.length} file thô và khớp xong dữ liệu vào Form!`);
+                        }, 400);
                     }
                 }
             } catch (e) {
-                alert("Đã gửi dữ liệu thô sang Ollama AI xử lý!");
+                setTimeout(() => {
+                    if (progressModal) progressModal.classList.remove('active');
+                    toggleFormSkeletons(false);
+                    alert("Đã gửi dữ liệu thô sang Ollama AI xử lý!");
+                }, 400);
             } finally {
-                btn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> Bóc Tách & Viết Form AI`;
+                btn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> Bóc tách & viết form AI`;
                 btn.disabled = false;
             }
+        }
+
+        function toggleFormSkeletons(show) {
+            const controls = document.querySelectorAll('.form-control');
+            controls.forEach(c => {
+                if (show) c.classList.add('ai-loading-glow');
+                else c.classList.remove('ai-loading-glow');
+            });
         }
 
         function fillDataToForm(data) {
