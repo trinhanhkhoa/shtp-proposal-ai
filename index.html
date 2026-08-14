@@ -1143,15 +1143,28 @@ Chỉ trả về JSON thô không codeblock:
         }
 
         // Real Word Export
-        function exportToWord() {
-            showToast("Đang biên dịch thuyết minh chuẩn SHTP-IC...", "info");
-            
-            const val = (id) => {
-                const el = document.getElementById(id);
-                return el ? escapeHTML(el.value) : '';
+        async function exportWord() {
+            const data = {
+                ten_du_an: document.querySelector('#tab1 input[value*="Hệ thống"]') ? document.querySelector('#tab1 input[value*="Hệ thống"]').value : "Dự án Nông nghiệp AI",
+                san_pham_chinh: document.querySelectorAll('#tab1 input')[1] ? document.querySelectorAll('#tab1 input')[1].value : "SmartAgri Gateway",
+                cong_nghe_chinh: document.querySelectorAll('#tab1 input')[2] ? document.querySelectorAll('#tab1 input')[2].value : "IoT & AI",
+                linh_vuc: "Công nghệ sinh học / IoT",
+                van_de_giai_phap: document.querySelector('#tab1 textarea') ? document.querySelector('#tab1 textarea').value : "",
+                tinh_cap_thiet: document.querySelectorAll('#tab1 textarea')[1] ? document.querySelectorAll('#tab1 textarea')[1].value : "",
+                muc_tieu_ktxh: "Tạo nguồn thu 5 tỷ/năm...",
+                muc_tieu_khcn: "Làm chủ AI Edge...",
+                minh_chung_san_pham: document.querySelector('#tab2 textarea') ? document.querySelector('#tab2 textarea').value : "",
+                quy_trinh_san_pham: document.querySelectorAll('#tab2 textarea')[1] ? document.querySelectorAll('#tab2 textarea')[1].value : "",
+                tinh_nang_vuot_troi: document.querySelectorAll('#tab2 textarea')[2] ? document.querySelectorAll('#tab2 textarea')[2].value : "",
+                minh_chung_cong_nghe: document.querySelectorAll('#tab2 textarea')[4] ? document.querySelectorAll('#tab2 textarea')[4].value : "",
+                quy_trinh_cong_nghe: document.querySelectorAll('#tab2 textarea')[5] ? document.querySelectorAll('#tab2 textarea')[5].value : "",
+                tinh_kha_thi_ky_thuat: document.querySelectorAll('#tab2 textarea')[6] ? document.querySelectorAll('#tab2 textarea')[6].value : "",
+                bao_mat_mo_rong: document.querySelectorAll('#tab2 textarea')[7] ? document.querySelectorAll('#tab2 textarea')[7].value : "",
+                tiem_nang_thi_truong: "Thị trường nông nghiệp thông minh ước tính 500 triệu USD...",
+                doi_thu_1: "Netafim Israel | 20,000 USD",
+                doi_thu_2: "NextFarm VN | 100 triệu VNĐ",
+                loi_the_canh_tranh: "Công nghệ AI Edge độc quyền Việt hóa"
             };
-            
-            let supportRows = '';
             const supportDetails = [
                 {
                     id: 'sp1', code: 'a', name: 'Hỗ trợ sử dụng cơ sở kỹ thuật, không gian làm việc',
