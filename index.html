@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hệ Thống Dự Thảo Thuyết Minh Dự Án SHTP-IC (Chuẩn Form 100%)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -20,177 +22,564 @@
             --text-sub: #94a3b8;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
         header {
-            background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color);
-            padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100;
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        .logo-group { display: flex; align-items: center; gap: 12px; }
+
+        .logo-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .logo-icon {
-            width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; font-size: 1.2rem;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            font-size: 1.2rem;
             box-shadow: 0 0 15px var(--primary-glow);
         }
+
         .badge-ai {
-            background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); color: var(--success);
-            padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 6px;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: var(--success);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-        .status-dot { width: 8px; height: 8px; background-color: var(--success); border-radius: 50%; animation: pulse 2s infinite; }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
 
         @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
         }
 
         .app-container {
-            display: grid; grid-template-columns: 280px 1fr; gap: 20px; padding: 20px; flex: 1; max-width: 1750px; margin: 0 auto; width: 100%;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 20px;
+            padding: 20px;
+            flex: 1;
+            max-width: 1750px;
+            margin: 0 auto;
+            width: 100%;
         }
 
-        .sidebar { display: flex; flex-direction: column; gap: 16px; }
-        .card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 18px; }
-        .card-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; color: var(--text-main); }
-        
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .card-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-main);
+        }
+
         .dropzone {
-            border: 2px dashed #38bdf8; border-radius: 14px; padding: 22px 14px; text-align: center; cursor: pointer;
+            border: 2px dashed #38bdf8;
+            border-radius: 14px;
+            padding: 22px 14px;
+            text-align: center;
+            cursor: pointer;
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.8));
             box-shadow: inset 0 0 15px rgba(56, 189, 248, 0.05);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         .dropzone:hover {
-            border-color: #00f2fe; background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(37, 99, 235, 0.18));
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.25); transform: translateY(-2px);
+            border-color: #00f2fe;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(37, 99, 235, 0.18));
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
+            transform: translateY(-2px);
         }
 
         .dropzone-icon-wrap {
-            width: 48px; height: 48px; background: rgba(56, 189, 248, 0.1); border-radius: 12px;
-            display: flex; align-items: center; justify-content: center; margin: 0 auto 10px auto;
+            width: 48px;
+            height: 48px;
+            background: rgba(56, 189, 248, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px auto;
             border: 1px solid rgba(56, 189, 248, 0.2);
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary), #1d4ed8); color: white; border: none; border-radius: 8px;
-            padding: 12px; font-weight: 600; font-size: 0.9rem; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;
-            box-shadow: 0 4px 12px var(--primary-glow); transition: all 0.2s;
+            background: linear-gradient(135deg, var(--primary), #1d4ed8);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px var(--primary-glow);
+            transition: all 0.2s;
         }
 
-        .main-content { display: flex; flex-direction: column; gap: 16px; }
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
 
-        .tab-menu { display: flex; gap: 8px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; flex-wrap: wrap; }
+        .tab-menu {
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
         .tab-btn {
-            background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); color: var(--text-sub); padding: 10px 16px; border-radius: 8px;
-            font-weight: 600; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            color: var(--text-sub);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
         }
-        .tab-btn:hover { background: rgba(56, 189, 248, 0.1); color: var(--text-main); }
-        .tab-btn.active { background: rgba(56, 189, 248, 0.18); color: var(--accent); border-color: rgba(56, 189, 248, 0.4); }
 
-        .editor-container { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 14px; flex: 1; display: flex; flex-direction: column; }
-        .editor-header { padding: 14px 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
-        .editor-body { padding: 20px; overflow-y: auto; max-height: 650px; display: flex; flex-direction: column; gap: 20px; }
+        .tab-btn:hover {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--text-main);
+        }
 
-        .tab-content { display: none; flex-direction: column; gap: 20px; }
-        .tab-content.active { display: flex; }
+        .tab-btn.active {
+            background: rgba(56, 189, 248, 0.18);
+            color: var(--accent);
+            border-color: rgba(56, 189, 248, 0.4);
+        }
 
-        .section-box { background: rgba(15, 23, 42, 0.5); border: 1px solid var(--border-color); border-radius: 10px; padding: 18px; }
+        .editor-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-header {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .editor-body {
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 650px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .tab-content {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .tab-content.active {
+            display: flex;
+        }
+
+        .section-box {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 18px;
+        }
+
         .section-title-tag {
-            font-size: 0.95rem; font-weight: 700; color: var(--accent); margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 8px;
         }
 
-        .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px; color: var(--text-sub); }
-        .form-control {
-            width: 100%; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 12px;
-            color: var(--text-main); font-size: 0.88rem; line-height: 1.5;
+        .form-group {
+            margin-bottom: 14px;
         }
-        textarea.form-control { min-height: 95px; resize: vertical; }
+
+        .form-group label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-sub);
+        }
+
+        .form-control {
+            width: 100%;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: var(--text-main);
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        textarea.form-control {
+            min-height: 95px;
+            resize: vertical;
+        }
 
         .table-custom {
-            width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 14px; font-size: 0.85rem;
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+            margin-bottom: 14px;
+            font-size: 0.85rem;
         }
-        .table-custom th, .table-custom td {
-            border: 1px solid var(--border-color); padding: 8px 10px; text-align: left; vertical-align: top;
+
+        .table-custom th,
+        .table-custom td {
+            border: 1px solid var(--border-color);
+            padding: 8px 10px;
+            text-align: left;
+            vertical-align: top;
         }
-        .table-custom th { background: rgba(15, 23, 42, 0.8); color: var(--accent); font-weight: 600; }
-        .table-custom input { width: 100%; background: transparent; border: none; color: var(--text-main); font-size: 0.85rem; }
+
+        .table-custom th {
+            background: rgba(15, 23, 42, 0.8);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .table-custom input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 0.85rem;
+        }
 
         .ai-badge-deep {
-            background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2);
-            padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 600;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.72rem;
+            font-weight: 600;
         }
 
-        .actions-footer { padding: 14px 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; }
+        .actions-footer {
+            padding: 14px 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+        }
+
         .btn-success {
-            background: linear-gradient(135deg, #059669, #10b981); color: white; border: none; padding: 10px 18px; border-radius: 8px;
-            font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .support-item {
-            background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 10px; padding: 14px; margin-bottom: 12px;
-            display: flex; gap: 12px; align-items: flex-start; transition: all 0.2s ease;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            transition: all 0.2s ease;
         }
+
         .support-item:hover {
-            border-color: var(--accent); background: rgba(30, 41, 59, 0.8);
+            border-color: var(--accent);
+            background: rgba(30, 41, 59, 0.8);
             box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
         }
-        .support-item input[type="checkbox"] { margin-top: 4px; width: 18px; height: 18px; cursor: pointer; accent-color: var(--accent); }
+
+        .support-item input[type="checkbox"] {
+            margin-top: 4px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--accent);
+        }
 
         /* AI Settings Modal */
         .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px);
-            display: none; justify-content: center; align-items: center; z-index: 1000;
-            opacity: 0; transition: opacity 0.3s ease;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
-        .modal-overlay.active { display: flex; opacity: 1; }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
         .modal-box {
-            background: var(--card-bg); border: 1px solid var(--border-color);
-            border-radius: 16px; width: 500px; max-width: 90%; padding: 24px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            transform: scale(0.9); transition: transform 0.3s ease;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            width: 500px;
+            max-width: 90%;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
         }
-        .modal-overlay.active .modal-box { transform: scale(1); }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .modal-header h3 { font-size: 1.1rem; font-weight: 700; color: var(--accent); }
-        .modal-close { background: none; border: none; color: var(--text-sub); font-size: 1.8rem; cursor: pointer; line-height: 1; }
-        .modal-close:hover { color: var(--text-main); }
-        .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+
+        .modal-overlay.active .modal-box {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-sub);
+            font-size: 1.8rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: var(--text-main);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
         .btn-secondary {
-            background: transparent; border: 1px solid var(--border-color); color: var(--text-sub);
-            padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-sub);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .btn-secondary:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
+
+        .btn-secondary:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
+        }
 
         /* AI Inline Action styling */
-        .form-label-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .form-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
         .btn-ai-inline {
-            background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.2);
-            color: var(--accent); padding: 3px 8px; border-radius: 6px; font-size: 0.72rem;
-            font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            color: var(--accent);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
             transition: all 0.2s;
         }
-        .btn-ai-inline:hover { background: rgba(56, 189, 248, 0.2); border-color: rgba(56, 189, 248, 0.4); }
+
+        .btn-ai-inline:hover {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: rgba(56, 189, 248, 0.4);
+        }
 
         /* Toast Notifications */
-        .toast-container { position: fixed; bottom: 80px; left: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 8px; }
-        .toast-msg {
-            background: rgba(30, 41, 59, 0.95); border: 1px solid var(--border-color); border-left: 4px solid var(--primary);
-            color: var(--text-main); padding: 12px 20px; border-radius: 8px; font-size: 0.82rem; font-weight: 500;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 10px;
-            animation: slideIn 0.3s ease forwards; min-width: 250px; backdrop-filter: blur(8px);
+        .toast-container {
+            position: fixed;
+            bottom: 80px;
+            left: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
-        .toast-msg.success { border-left-color: var(--success); }
-        .toast-msg.error { border-left-color: #ef4444; }
-        .toast-msg.warning { border-left-color: var(--warning); }
-        @keyframes slideIn { from { transform: translateX(-50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        .toast-msg {
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--primary);
+            color: var(--text-main);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease forwards;
+            min-width: 250px;
+            backdrop-filter: blur(8px);
+        }
+
+        .toast-msg.success {
+            border-left-color: var(--success);
+        }
+
+        .toast-msg.error {
+            border-left-color: #ef4444;
+        }
+
+        .toast-msg.warning {
+            border-left-color: var(--warning);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
 
         /* Loading Skeletons & Glow animations */
         @keyframes skeleton-glow {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
         }
+
         .ai-loading-glow {
             background: linear-gradient(90deg, var(--bg-dark) 25%, var(--border-color) 37%, var(--bg-dark) 63%);
             background-size: 400% 100%;
@@ -198,10 +587,23 @@
             color: transparent !important;
             pointer-events: none;
         }
-        .spinner-icon { animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .spinner-icon {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
+
 <body>
 
     <!-- LOADING OVERLAY PROGRESS MODAL -->
@@ -210,13 +612,19 @@
             <div class="spinner-icon" style="font-size: 3rem; color: var(--accent); margin-bottom: 16px;">
                 <i class="fa-solid fa-circle-notch"></i>
             </div>
-            <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px;" id="loadingStepTitle">Qwen 2.5 AI đang đọc file thô...</h3>
-            <p style="font-size: 0.82rem; color: var(--text-sub); margin-bottom: 20px;" id="loadingStepSub">Đang bóc tách dữ liệu từ các tài liệu bạn vừa tải lên</p>
-            
-            <div style="background: var(--bg-dark); height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 10px;">
-                <div id="loadingProgressBar" style="height: 100%; width: 15%; background: linear-gradient(90deg, var(--primary), var(--accent)); transition: width 0.4s ease;"></div>
+            <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px;"
+                id="loadingStepTitle">Qwen 2.5 AI đang đọc file thô...</h3>
+            <p style="font-size: 0.82rem; color: var(--text-sub); margin-bottom: 20px;" id="loadingStepSub">Đang bóc
+                tách dữ liệu từ các tài liệu bạn vừa tải lên</p>
+
+            <div
+                style="background: var(--bg-dark); height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 10px;">
+                <div id="loadingProgressBar"
+                    style="height: 100%; width: 15%; background: linear-gradient(90deg, var(--primary), var(--accent)); transition: width 0.4s ease;">
+                </div>
             </div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--accent); font-weight: 600;">
+            <div
+                style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--accent); font-weight: 600;">
                 <span id="loadingStatusBadge"><i class="fa-solid fa-microchip"></i> Local GPU M1 Active</span>
                 <span id="loadingPercentText">15%</span>
             </div>
@@ -235,13 +643,16 @@
                 <div class="form-group">
                     <label>Chọn nhiều file mẫu cùng lúc (PDF, DOCX, TXT):</label>
                     <input type="file" class="form-control" id="kbFileInput" multiple accept=".pdf,.docx,.doc,.txt">
-                    <span style="font-size: 0.72rem; color: var(--accent); margin-top: 6px; display: flex; align-items: center; gap: 4px;">
-                        <i class="fa-solid fa-robot"></i> AI Qwen 2.5 sẽ tự động đọc nội dung & gán nhãn Lĩnh vực cho từng file!
+                    <span
+                        style="font-size: 0.72rem; color: var(--accent); margin-top: 6px; display: flex; align-items: center; gap: 4px;">
+                        <i class="fa-solid fa-robot"></i> AI Qwen 2.5 sẽ tự động đọc nội dung & gán nhãn Lĩnh vực cho
+                        từng file!
                     </span>
                 </div>
                 <div class="form-group">
                     <label>Chế độ phân loại:</label>
-                    <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 10px; font-size: 0.8rem; color: var(--success); display: flex; align-items: center; gap: 8px;">
+                    <div
+                        style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 10px; font-size: 0.8rem; color: var(--success); display: flex; align-items: center; gap: 8px;">
                         <i class="fa-solid fa-wand-magic-sparkles" style="font-size: 1.1rem;"></i>
                         <span>AI tự động đọc & gắn nhãn (Bạn có thể tự chỉnh sửa lại nếu sai sót)</span>
                     </div>
@@ -249,7 +660,8 @@
             </div>
             <div class="modal-footer">
                 <button class="btn-secondary" onclick="closeKBUploadModal()">Hủy</button>
-                <button class="btn-success" onclick="submitKBUploadBatch()" id="btnSubmitKB"><i class="fa-solid fa-cloud-arrow-up"></i> Tải lên hàng loạt & AI gán nhãn</button>
+                <button class="btn-success" onclick="submitKBUploadBatch()" id="btnSubmitKB"><i
+                        class="fa-solid fa-cloud-arrow-up"></i> Tải lên hàng loạt & AI gán nhãn</button>
             </div>
         </div>
     </div>
@@ -259,10 +671,12 @@
             <div class="logo-icon">S</div>
             <div>
                 <h3 style="font-size: 1.05rem; font-weight: 700;">SHTP-IC Proposal AI Engine</h3>
-                <p style="font-size: 0.72rem; color: var(--text-sub);">Hệ thống dự thảo thuyết minh chi tiết - Đầy đủ 100% theo mẫu SHTP-IC gốc</p>
+                <p style="font-size: 0.72rem; color: var(--text-sub);">Hệ thống dự thảo thuyết minh chi tiết - Đầy đủ
+                    100% theo mẫu SHTP-IC gốc</p>
             </div>
         </div>
-        <div class="badge-ai" id="aiStatusBadge" onclick="openAISettings()" style="cursor: pointer; transition: all 0.2s;" title="Nhấp để cấu hình kết nối AI">
+        <div class="badge-ai" id="aiStatusBadge" onclick="openAISettings()"
+            style="cursor: pointer; transition: all 0.2s;" title="Nhấp để cấu hình kết nối AI">
             <div class="status-dot" id="statusDot" style="background-color: #10b981;"></div>
             <span id="statusText">Qwen 2.5 Local (Sẵn sàng)</span>
             <i class="fa-solid fa-gear" style="font-size: 0.85rem; margin-left: 2px;"></i>
@@ -298,7 +712,8 @@
                 </div>
                 <div class="form-group">
                     <label>System Prompt (Vai trò của AI):</label>
-                    <textarea class="form-control" id="ai_system_prompt" style="min-height: 80px;">Bạn là một chuyên gia tư vấn viết dự án khởi nghiệp công nghệ cao của Vườn ươm Doanh nghiệp Công nghệ cao SHTP-IC. Hãy viết chi tiết, khoa học, đầy đủ thông số kỹ thuật và đúng biểu mẫu thuyết minh.</textarea>
+                    <textarea class="form-control" id="ai_system_prompt"
+                        style="min-height: 80px;">Bạn là một chuyên gia tư vấn viết dự án khởi nghiệp công nghệ cao của Vườn ươm Doanh nghiệp Công nghệ cao SHTP-IC. Hãy viết chi tiết, khoa học, đầy đủ thông số kỹ thuật và đúng biểu mẫu thuyết minh.</textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -319,23 +734,28 @@
         <div class="sidebar">
             <!-- CARD 1: UPLOAD DỮ LIỆU THÔ DỰ ÁN MỚI -->
             <div class="card">
-                <div class="card-title"><i class="fa-solid fa-cloud-arrow-up" style="color: var(--accent);"></i> Upload dữ liệu thô dự án</div>
+                <div class="card-title"><i class="fa-solid fa-cloud-arrow-up" style="color: var(--accent);"></i> Upload
+                    dữ liệu thô dự án</div>
                 <div class="dropzone" id="rawDropzone" onclick="document.getElementById('rawFileInput').click()">
                     <div class="dropzone-icon-wrap">
                         <i class="fa-solid fa-file-arrow-up" style="font-size: 1.5rem; color: var(--accent);"></i>
                     </div>
-                    <p style="font-size: 0.85rem; font-weight: 700; margin-bottom: 4px; color: var(--text-main);">Kéo & thả hoặc bấm chọn file</p>
+                    <p style="font-size: 0.85rem; font-weight: 700; margin-bottom: 4px; color: var(--text-main);">Kéo &
+                        thả hoặc bấm chọn file</p>
                     <p style="font-size: 0.72rem; color: var(--text-sub);">Hỗ trợ PDF, DOCX, PPTX, TXT (Tối đa 50MB)</p>
-                    <input type="file" id="rawFileInput" multiple accept=".pdf,.docx,.doc,.pptx,.txt" style="display: none;" onchange="handleRawFiles(this.files)">
+                    <input type="file" id="rawFileInput" multiple accept=".pdf,.docx,.doc,.pptx,.txt"
+                        style="display: none;" onchange="handleRawFiles(this.files)">
                 </div>
 
-                <div id="rawFileList" style="margin-top: 10px; display: flex; flex-direction: column; gap: 6px; max-height: 150px; overflow-y: auto;">
+                <div id="rawFileList"
+                    style="margin-top: 10px; display: flex; flex-direction: column; gap: 6px; max-height: 150px; overflow-y: auto;">
                     <!-- Danh sách file thô thực tế upload sẽ hiển thị ở đây -->
                 </div>
 
                 <div style="margin-top: 10px;">
                     <label style="font-size: 0.75rem; color: var(--text-sub);">Lĩnh vực tham chiếu RAG:</label>
-                    <select class="form-control" id="kbCategorySelect" style="font-size: 0.8rem; padding: 4px 8px; margin-top: 4px;">
+                    <select class="form-control" id="kbCategorySelect"
+                        style="font-size: 0.8rem; padding: 4px 8px; margin-top: 4px;">
                         <option value="Tất cả">Tất cả lĩnh vực mẫu</option>
                         <option value="Công nghệ thông tin & AI">Công nghệ thông tin & AI</option>
                         <option value="Công nghệ sinh học">Công nghệ sinh học</option>
@@ -348,19 +768,25 @@
                     <i class="fa-solid fa-wand-magic-sparkles"></i> Bóc tách & viết form AI
                 </button>
 
-                <button class="btn-secondary" style="margin-top: 8px; width: 100%; justify-content: center; background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); color: var(--success);" onclick="runAICompleteAll()" id="btnCompleteAll">
-                    <i class="fa-solid fa-pen-to-square"></i> Điền kín các ô thông tin còn lại
+                <button class="btn-secondary"
+                    style="margin-top: 8px; width: 100%; justify-content: center; background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); color: var(--success);"
+                    onclick="runAICompleteAll()" id="btnCompleteAll">
+                    <i class="fa-solid fa-pen-to-square"></i> Điền thông tin
                 </button>
             </div>
 
             <!-- CARD 2: KHO DỰ ÁN MẪU RAG -->
             <div class="card">
                 <div class="card-title" style="justify-content: space-between;">
-                    <span><i class="fa-solid fa-book-bookmark" style="color: var(--success);"></i> Kho thuyết minh mẫu (RAG)</span>
-                    <button class="btn-ai-inline" onclick="openKBUploadModal()"><i class="fa-solid fa-plus"></i> Thêm mẫu</button>
+                    <span><i class="fa-solid fa-book-bookmark" style="color: var(--success);"></i> Kho thuyết minh mẫu
+                        (RAG)</span>
+                    <button class="btn-ai-inline" onclick="openKBUploadModal()"><i class="fa-solid fa-plus"></i> Thêm
+                        mẫu</button>
                 </div>
-                <p style="font-size: 0.72rem; color: var(--text-sub); margin-bottom: 8px;">Upload file mẫu cũ đã nghiệm thu để AI học văn phong chuẩn.</p>
-                <div id="kbListContainer" style="display: flex; flex-direction: column; gap: 6px; max-height: 180px; overflow-y: auto;">
+                <p style="font-size: 0.72rem; color: var(--text-sub); margin-bottom: 8px;">Upload file mẫu cũ đã nghiệm
+                    thu để AI học văn phong chuẩn.</p>
+                <div id="kbListContainer"
+                    style="display: flex; flex-direction: column; gap: 6px; max-height: 180px; overflow-y: auto;">
                     <!-- Danh sách file mẫu RAG hiển thị ở đây -->
                 </div>
             </div>
@@ -369,17 +795,25 @@
         <div class="main-content">
             <!-- TAB NAVIGATION -->
             <div class="tab-menu">
-                <button class="tab-btn" onclick="switchTab('tab1')"><i class="fa-solid fa-info-circle"></i> I & II.1: Giới thiệu</button>
-                <button class="tab-btn active" onclick="switchTab('tab2')"><i class="fa-solid fa-microchip"></i> II.2: Công nghệ & Sản phẩm (Form Gốc)</button>
-                <button class="tab-btn" onclick="switchTab('tab3')"><i class="fa-solid fa-lightbulb"></i> II.3,4: ĐMST & Môi trường</button>
-                <button class="tab-btn" onclick="switchTab('tab4')"><i class="fa-solid fa-chart-pie"></i> II.5: Thị trường & Đối thủ</button>
-                <button class="tab-btn" onclick="switchTab('tab5')"><i class="fa-solid fa-users"></i> II.6 & III: Nhân sự & Lộ trình</button>
-                <button class="tab-btn" onclick="switchTab('tab6')" style="border-color: var(--accent); color: var(--accent);"><i class="fa-solid fa-hand-holding-hand"></i> III.2: ĐỀ XUẤT HỖ TRỢ (TÍCH CHỌN)</button>
+                <button class="tab-btn" onclick="switchTab('tab1')"><i class="fa-solid fa-info-circle"></i> I & II.1:
+                    Giới thiệu</button>
+                <button class="tab-btn active" onclick="switchTab('tab2')"><i class="fa-solid fa-microchip"></i> II.2:
+                    Công nghệ & Sản phẩm (Form Gốc)</button>
+                <button class="tab-btn" onclick="switchTab('tab3')"><i class="fa-solid fa-lightbulb"></i> II.3,4: ĐMST &
+                    Môi trường</button>
+                <button class="tab-btn" onclick="switchTab('tab4')"><i class="fa-solid fa-chart-pie"></i> II.5: Thị
+                    trường & Đối thủ</button>
+                <button class="tab-btn" onclick="switchTab('tab5')"><i class="fa-solid fa-users"></i> II.6 & III: Nhân
+                    sự & Lộ trình</button>
+                <button class="tab-btn" onclick="switchTab('tab6')"
+                    style="border-color: var(--accent); color: var(--accent);"><i
+                        class="fa-solid fa-hand-holding-hand"></i> III.2: ĐỀ XUẤT HỖ TRỢ (TÍCH CHỌN)</button>
             </div>
 
             <div class="editor-container">
                 <div class="editor-header">
-                    <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--accent);" id="tabTitle">2. CÔNG NGHỆ, SẢN PHẨM ĐĂNG KÝ ƯƠM TẠO CỦA DỰ ÁN (FORM GỐC CHUẨN)</h3>
+                    <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--accent);" id="tabTitle">2. CÔNG NGHỆ,
+                        SẢN PHẨM ĐĂNG KÝ ƯƠM TẠO CỦA DỰ ÁN (FORM GỐC CHUẨN)</h3>
                     <span class="ai-badge-deep"><i class="fa-solid fa-brain"></i> Exact SHTP-IC Template Sync</span>
                 </div>
 
@@ -389,38 +823,47 @@
                     <div class="tab-content" id="tab1">
                         <div class="section-box">
                             <div class="section-title-tag">I. THÔNG TIN CHUNG VỀ DỰ ÁN</div>
-                            <div class="form-group"><label>1. Tên dự án:</label><input type="text" class="form-control" value=""></div>
-                            <div class="form-group"><label>2. Sản phẩm/dịch vụ chính:</label><input type="text" class="form-control" value=""></div>
-                            <div class="form-group"><label>3. Công nghệ chính của dự án:</label><input type="text" class="form-control" value=""></div>
-                            <div class="form-group"><label>4. Lĩnh vực:</label><input type="text" class="form-control" value=""></div>
+                            <div class="form-group"><label>1. Tên dự án:</label><input type="text" class="form-control"
+                                    value=""></div>
+                            <div class="form-group"><label>2. Sản phẩm/dịch vụ chính:</label><input type="text"
+                                    class="form-control" value=""></div>
+                            <div class="form-group"><label>3. Công nghệ chính của dự án:</label><input type="text"
+                                    class="form-control" value=""></div>
+                            <div class="form-group"><label>4. Lĩnh vực:</label><input type="text" class="form-control"
+                                    value=""></div>
                         </div>
                         <div class="section-box">
                             <div class="section-title-tag">II.1. GIỚI THIỆU TÓM TẮT VỀ DỰ ÁN</div>
                             <div class="form-group">
                                 <div class="form-label-row">
                                     <label>- Vấn đề dự án đang muốn giải quyết và giải pháp dự án nêu ra:</label>
-                                    <button class="btn-ai-inline" onclick="runAIExpandText(this, 'Vấn đề & Giải pháp')"><i class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt bay bổng hơn</button>
+                                    <button class="btn-ai-inline"
+                                        onclick="runAIExpandText(this, 'Vấn đề & Giải pháp')"><i
+                                            class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt lại</button>
                                 </div>
                                 <textarea class="form-control"></textarea>
                             </div>
                             <div class="form-group">
                                 <div class="form-label-row">
                                     <label>- Tính cấp thiết thực hiện dự án (nếu có):</label>
-                                    <button class="btn-ai-inline" onclick="runAIExpandText(this, 'Tính cấp thiết')"><i class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt bay bổng hơn</button>
+                                    <button class="btn-ai-inline" onclick="runAIExpandText(this, 'Tính cấp thiết')"><i
+                                            class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt lại</button>
                                 </div>
                                 <textarea class="form-control"></textarea>
                             </div>
                             <div class="form-group">
                                 <div class="form-label-row">
                                     <label>- Mục tiêu kinh tế - xã hội của dự án (nếu có):</label>
-                                    <button class="btn-ai-inline" onclick="runAIExpandText(this, 'Mục tiêu KTXH')"><i class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt bay bổng hơn</button>
+                                    <button class="btn-ai-inline" onclick="runAIExpandText(this, 'Mục tiêu KTXH')"><i
+                                            class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt lại</button>
                                 </div>
                                 <textarea class="form-control"></textarea>
                             </div>
                             <div class="form-group">
                                 <div class="form-label-row">
                                     <label>- Mục tiêu về khoa học công nghệ của dự án (nếu có):</label>
-                                    <button class="btn-ai-inline" onclick="runAIExpandText(this, 'Mục tiêu KHCN')"><i class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt bay bổng hơn</button>
+                                    <button class="btn-ai-inline" onclick="runAIExpandText(this, 'Mục tiêu KHCN')"><i
+                                            class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt lại</button>
                                 </div>
                                 <textarea class="form-control"></textarea>
                             </div>
@@ -432,13 +875,15 @@
                         <!-- 2.1 Sản phẩm -->
                         <div class="section-box">
                             <div class="section-title-tag">2.1. SẢN PHẨM ĐĂNG KÝ ƯƠM TẠO CỦA DỰ ÁN</div>
-                            <p style="font-size: 0.78rem; color: var(--warning); margin-bottom: 10px;">* Yêu cầu: Bắt buộc thuộc Phụ lục II – Quyết định số 23/2026/QĐ-TTg ngày 15/5/2026.</p>
-                            
+                            <p style="font-size: 0.78rem; color: var(--warning); margin-bottom: 10px;">* Yêu cầu: Bắt
+                                buộc thuộc Phụ lục II – Quyết định số 23/2026/QĐ-TTg ngày 15/5/2026.</p>
+
                             <table class="table-custom">
                                 <thead>
                                     <tr>
                                         <th style="width: 40%;">Tên sản phẩm ươm tạo của dự án</th>
-                                        <th style="width: 48%;">Tên sản phẩm theo Phụ lục II – Quyết định số 23/2026/QĐ-TTg</th>
+                                        <th style="width: 48%;">Tên sản phẩm theo Phụ lục II – Quyết định số
+                                            23/2026/QĐ-TTg</th>
                                         <th style="width: 12%;">Số TT</th>
                                     </tr>
                                 </thead>
@@ -456,29 +901,43 @@
                             </div>
                             <div class="form-group">
                                 <div class="form-label-row">
-                                    <label>- Giải trình minh chứng sản phẩm đăng ký ươm tạo phù hợp với sản phẩm công nghệ cao đã liệt kê ở bảng trên (dựa trên các đặc tính kỹ thuật, các thông số kỹ thuật đặc thù,…dự án đã đạt được hiện tại và dự kiến sẽ đạt được trong tương lai):</label>
-                                    <button class="btn-ai-inline" onclick="runAIExpandText(this, 'Minh chứng sản phẩm')"><i class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt bay bổng hơn</button>
+                                    <label>- Giải trình minh chứng sản phẩm đăng ký ươm tạo phù hợp với sản phẩm công
+                                        nghệ cao đã liệt kê ở bảng trên (dựa trên các đặc tính kỹ thuật, các thông số kỹ
+                                        thuật đặc thù,…dự án đã đạt được hiện tại và dự kiến sẽ đạt được trong tương
+                                        lai):</label>
+                                    <button class="btn-ai-inline"
+                                        onclick="runAIExpandText(this, 'Minh chứng sản phẩm')"><i
+                                            class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt lại</button>
                                 </div>
                                 <textarea class="form-control" style="min-height: 110px;"></textarea>
                             </div>
                             <div class="form-group">
                                 <div class="form-label-row">
-                                    <label>- Mô tả và cung cấp thông tin về quy trình hoạt động của sản phẩm đăng ký ươm tạo; Cấu phần hình thành sản phẩm; mối quan hệ giữa các thành phần; lưu đồ/sơ đồ hoạt động của hệ thống/giải pháp:</label>
-                                    <button class="btn-ai-inline" onclick="runAIExpandText(this, 'Quy trình hoạt động sản phẩm')"><i class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt bay bổng hơn</button>
+                                    <label>- Mô tả và cung cấp thông tin về quy trình hoạt động của sản phẩm đăng ký ươm
+                                        tạo; Cấu phần hình thành sản phẩm; mối quan hệ giữa các thành phần; lưu đồ/sơ đồ
+                                        hoạt động của hệ thống/giải pháp:</label>
+                                    <button class="btn-ai-inline"
+                                        onclick="runAIExpandText(this, 'Quy trình hoạt động sản phẩm')"><i
+                                            class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt lại</button>
                                 </div>
                                 <textarea class="form-control" style="min-height: 120px;"></textarea>
                             </div>
                             <div class="form-group">
                                 <div class="form-label-row">
-                                    <label>- Chất lượng, tính năng vượt trội, giá trị gia tăng và khả năng thay thế sản phẩm nhập khẩu của sản phẩm ươm tạo:</label>
-                                    <button class="btn-ai-inline" onclick="runAIExpandText(this, 'Tính năng vượt trội')"><i class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt bay bổng hơn</button>
+                                    <label>- Chất lượng, tính năng vượt trội, giá trị gia tăng và khả năng thay thế sản
+                                        phẩm nhập khẩu của sản phẩm ươm tạo:</label>
+                                    <button class="btn-ai-inline"
+                                        onclick="runAIExpandText(this, 'Tính năng vượt trội')"><i
+                                            class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt lại</button>
                                 </div>
                                 <textarea class="form-control" style="min-height: 90px;"></textarea>
                             </div>
                             <div class="form-group">
                                 <div class="form-label-row">
                                     <label>- Các sản phẩm/dịch vụ khác có thể tạo ra từ dự án ươm tạo (nếu có):</label>
-                                    <button class="btn-ai-inline" onclick="runAIExpandText(this, 'Sản phẩm phụ mở rộng')"><i class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt bay bổng hơn</button>
+                                    <button class="btn-ai-inline"
+                                        onclick="runAIExpandText(this, 'Sản phẩm phụ mở rộng')"><i
+                                            class="fa-solid fa-wand-magic-sparkles"></i> Diễn đạt lại</button>
                                 </div>
                                 <textarea class="form-control"></textarea>
                             </div>
@@ -487,13 +946,15 @@
                         <!-- 2.2 Công nghệ -->
                         <div class="section-box">
                             <div class="section-title-tag">2.2. CÔNG NGHỆ ĐĂNG KÝ ƯƠM TẠO CỦA DỰ ÁN</div>
-                            <p style="font-size: 0.78rem; color: var(--warning); margin-bottom: 10px;">* Yêu cầu: Bắt buộc thuộc Phụ lục I – Quyết định số 23/2026/QĐ-TTg ngày 15/5/2026.</p>
-                            
+                            <p style="font-size: 0.78rem; color: var(--warning); margin-bottom: 10px;">* Yêu cầu: Bắt
+                                buộc thuộc Phụ lục I – Quyết định số 23/2026/QĐ-TTg ngày 15/5/2026.</p>
+
                             <table class="table-custom">
                                 <thead>
                                     <tr>
                                         <th style="width: 40%;">Tên công nghệ của dự án</th>
-                                        <th style="width: 48%;">Tên công nghệ theo Phụ lục I – Quyết định số 23/2026/QĐ-TTg</th>
+                                        <th style="width: 48%;">Tên công nghệ theo Phụ lục I – Quyết định số
+                                            23/2026/QĐ-TTg</th>
                                         <th style="width: 12%;">Số TT</th>
                                     </tr>
                                 </thead>
@@ -510,23 +971,29 @@
                                 <label><b>Hiện trạng ứng dụng, ươm tạo công nghệ cao của dự án:</b></label>
                             </div>
                             <div class="form-group">
-                                <label>- Giải trình minh chứng công nghệ đăng ký ươm tạo phù hợp với công nghệ cao đã liệt kê ở bảng trên:</label>
+                                <label>- Giải trình minh chứng công nghệ đăng ký ươm tạo phù hợp với công nghệ cao đã
+                                    liệt kê ở bảng trên:</label>
                                 <textarea class="form-control"></textarea>
                             </div>
                             <div class="form-group">
-                                <label>- Mô tả chi tiết, cụ thể các bước của quy trình công nghệ và nêu điểm nổi bật của công nghệ (kèm theo sơ đồ mô hình minh hoạ):</label>
+                                <label>- Mô tả chi tiết, cụ thể các bước của quy trình công nghệ và nêu điểm nổi bật của
+                                    công nghệ (kèm theo sơ đồ mô hình minh hoạ):</label>
                                 <textarea class="form-control" style="min-height: 100px;"></textarea>
                             </div>
                             <div class="form-group">
-                                <label>- Tính khả thi về mặt kỹ thuật công nghệ để triển khai thực hiện dự án (Công nghệ ứng dụng có phù hợp để giải quyết các vấn đề khách hàng đang gặp phải):</label>
+                                <label>- Tính khả thi về mặt kỹ thuật công nghệ để triển khai thực hiện dự án (Công nghệ
+                                    ứng dụng có phù hợp để giải quyết các vấn đề khách hàng đang gặp phải):</label>
                                 <textarea class="form-control"></textarea>
                             </div>
                             <div class="form-group">
-                                <label>- Làm rõ các nội dung về tính tương thích, khả năng bảo mật – an toàn dữ liệu, khả năng mở rộng, tính tương tác người dùng… (nếu có):</label>
+                                <label>- Làm rõ các nội dung về tính tương thích, khả năng bảo mật – an toàn dữ liệu,
+                                    khả năng mở rộng, tính tương tác người dùng… (nếu có):</label>
                                 <textarea class="form-control"></textarea>
                             </div>
                             <div class="form-group">
-                                <label>- Tính hiệu quả của công nghệ ươm tạo trong việc góp phần trong việc hình thành ngành sản xuất, dịch vụ mới hoặc góp phần hiện đại hóa, nâng cao năng suất, hỗ trợ phát triển các ngành sản xuất, dịch vụ hiện có:</label>
+                                <label>- Tính hiệu quả của công nghệ ươm tạo trong việc góp phần trong việc hình thành
+                                    ngành sản xuất, dịch vụ mới hoặc góp phần hiện đại hóa, nâng cao năng suất, hỗ trợ
+                                    phát triển các ngành sản xuất, dịch vụ hiện có:</label>
                                 <textarea class="form-control"></textarea>
                             </div>
                         </div>
@@ -536,13 +1003,18 @@
                     <div class="tab-content" id="tab3">
                         <div class="section-box">
                             <div class="section-title-tag">3. HOẠT ĐỘNG ĐỔI MỚI SÁNG TẠO CỦA DỰ ÁN</div>
-                            <div class="form-group"><label>- Tính mới, tính sáng tạo trong công nghệ và sản phẩm ươm tạo:</label><textarea class="form-control"></textarea></div>
-                            <div class="form-group"><label>- Khả năng đăng ký xác lập quyền sở hữu trí tuệ (theo dự án tự đánh giá):</label><input type="text" class="form-control" value=""></div>
+                            <div class="form-group"><label>- Tính mới, tính sáng tạo trong công nghệ và sản phẩm ươm
+                                    tạo:</label><textarea class="form-control"></textarea></div>
+                            <div class="form-group"><label>- Khả năng đăng ký xác lập quyền sở hữu trí tuệ (theo dự án
+                                    tự đánh giá):</label><input type="text" class="form-control" value=""></div>
                         </div>
                         <div class="section-box">
-                            <div class="section-title-tag">4. ÁP DỤNG BIỆN PHÁP THÂN THIỆN MÔI TRƯỜNG, TIẾT KIỆM NĂNG LƯỢNG</div>
-                            <div class="form-group"><label>- Hệ thống quản lý, tiêu chuẩn chất lượng đang áp dụng (nếu có):</label><input type="text" class="form-control" value=""></div>
-                            <div class="form-group"><label>- Mô tả nội dung áp dụng biện pháp thân thiện môi trường, tiết kiệm năng lượng:</label><textarea class="form-control"></textarea></div>
+                            <div class="section-title-tag">4. ÁP DỤNG BIỆN PHÁP THÂN THIỆN MÔI TRƯỜNG, TIẾT KIỆM NĂNG
+                                LƯỢNG</div>
+                            <div class="form-group"><label>- Hệ thống quản lý, tiêu chuẩn chất lượng đang áp dụng (nếu
+                                    có):</label><input type="text" class="form-control" value=""></div>
+                            <div class="form-group"><label>- Mô tả nội dung áp dụng biện pháp thân thiện môi trường,
+                                    tiết kiệm năng lượng:</label><textarea class="form-control"></textarea></div>
                         </div>
                     </div>
 
@@ -550,8 +1022,10 @@
                     <div class="tab-content" id="tab4">
                         <div class="section-box">
                             <div class="section-title-tag">5.3. PHÂN TÍCH ĐỐI THỦ CẠNH TRANH (ĐỦ 2 ĐỐI THỦ)</div>
-                            <div class="form-group"><label>Đối thủ 1 (Netafim Israel):</label><input type="text" class="form-control" value=""></div>
-                            <div class="form-group"><label>Đối thủ 2 (NextFarm VN):</label><input type="text" class="form-control" value=""></div>
+                            <div class="form-group"><label>Đối thủ 1 (Netafim Israel):</label><input type="text"
+                                    class="form-control" value=""></div>
+                            <div class="form-group"><label>Đối thủ 2 (NextFarm VN):</label><input type="text"
+                                    class="form-control" value=""></div>
                         </div>
                     </div>
 
@@ -559,8 +1033,10 @@
                     <div class="tab-content" id="tab5">
                         <div class="section-box">
                             <div class="section-title-tag">6. NGUỒN LỰC THỰC HIỆN & LỘ TRÌNH</div>
-                            <div class="form-group"><label>Tổng kinh phí đã đầu tư:</label><input type="text" class="form-control" value=""></div>
-                            <div class="form-group"><label>Tổng số nhân sự hiện tại:</label><input type="text" class="form-control" value=""></div>
+                            <div class="form-group"><label>Tổng kinh phí đã đầu tư:</label><input type="text"
+                                    class="form-control" value=""></div>
+                            <div class="form-group"><label>Tổng số nhân sự hiện tại:</label><input type="text"
+                                    class="form-control" value=""></div>
                         </div>
                     </div>
 
@@ -569,18 +1045,27 @@
                         <div class="section-box">
                             <div class="section-title-tag">
                                 <span>2. CÁC NỘI DUNG DỰ ÁN ĐỀ XUẤT CẦN HỖ TRỢ KHI THAM GIA ƯƠM TẠO</span>
-                                <span style="font-size: 0.75rem; color: var(--accent);"><i class="fa-solid fa-square-check"></i> Chọn để tự động điền vào Form Word</span>
+                                <span style="font-size: 0.75rem; color: var(--accent);"><i
+                                        class="fa-solid fa-square-check"></i> Chọn để tự động điền vào Form Word</span>
                             </div>
-                            <p style="font-size: 0.78rem; color: var(--text-sub); margin-bottom: 14px;">Chuyên viên chỉ cần tích chọn các mục nhu cầu của dự án. Hệ thống sẽ tự động điền các cột "Thực trạng", "Nhu cầu" và "Kết quả mong muốn" chuẩn xác vào bảng trong file Word mẫu!</p>
+                            <p style="font-size: 0.78rem; color: var(--text-sub); margin-bottom: 14px;">Chuyên viên chỉ
+                                cần tích chọn các mục nhu cầu của dự án. Hệ thống sẽ tự động điền các cột "Thực trạng",
+                                "Nhu cầu" và "Kết quả mong muốn" chuẩn xác vào bảng trong file Word mẫu!</p>
 
                             <!-- Item 1 -->
                             <div class="support-item">
                                 <input type="checkbox" id="sp1" checked>
                                 <div style="flex: 1;">
-                                    <h4 style="font-size: 0.88rem; font-weight: 600; color: var(--accent);">a) Hỗ trợ sử dụng cơ sở kỹ thuật, không gian làm việc (Mục 1)</h4>
-                                    <p style="font-size: 0.78rem; color: var(--text-sub); margin-top: 4px;"><b>Thực trạng:</b> Thiếu không gian làm việc và chỗ thử nghiệm sản phẩm.</p>
-                                    <p style="font-size: 0.78rem; color: var(--text-sub);"><b>Nhu cầu:</b> Hỗ trợ không gian làm việc khoảng 25-30m² cho 5 nhân sự R&D tại Vườn ươm SHTP-IC với chi phí ưu đãi.</p>
-                                    <p style="font-size: 0.78rem; color: var(--success);"><b>Kết quả mong muốn:</b> Được bố trí không gian văn phòng làm việc và tận dụng không gian sáng chế của Vườn ươm.</p>
+                                    <h4 style="font-size: 0.88rem; font-weight: 600; color: var(--accent);">a) Hỗ trợ sử
+                                        dụng cơ sở kỹ thuật, không gian làm việc (Mục 1)</h4>
+                                    <p style="font-size: 0.78rem; color: var(--text-sub); margin-top: 4px;"><b>Thực
+                                            trạng:</b> Thiếu không gian làm việc và chỗ thử nghiệm sản phẩm.</p>
+                                    <p style="font-size: 0.78rem; color: var(--text-sub);"><b>Nhu cầu:</b> Hỗ trợ không
+                                        gian làm việc khoảng 25-30m² cho 5 nhân sự R&D tại Vườn ươm SHTP-IC với chi phí
+                                        ưu đãi.</p>
+                                    <p style="font-size: 0.78rem; color: var(--success);"><b>Kết quả mong muốn:</b> Được
+                                        bố trí không gian văn phòng làm việc và tận dụng không gian sáng chế của Vườn
+                                        ươm.</p>
                                 </div>
                             </div>
 
@@ -588,10 +1073,15 @@
                             <div class="support-item">
                                 <input type="checkbox" id="sp2" checked>
                                 <div style="flex: 1;">
-                                    <h4 style="font-size: 0.88rem; font-weight: 600; color: var(--accent);">b) Hỗ trợ tư vấn sở hữu trí tuệ, khai thác tài sản trí tuệ (Mục 2)</h4>
-                                    <p style="font-size: 0.78rem; color: var(--text-sub); margin-top: 4px;"><b>Thực trạng:</b> Sản phẩm có tính mới và sáng tạo nhưng chưa đăng ký bảo hộ SHTT.</p>
-                                    <p style="font-size: 0.78rem; color: var(--text-sub);"><b>Nhu cầu:</b> Tư vấn thủ tục xác lập, tra cứu và xây dựng hồ sơ đăng ký Sáng chế / Giải pháp hữu ích.</p>
-                                    <p style="font-size: 0.78rem; color: var(--success);"><b>Kết quả mong muốn:</b> Nộp thành công 01 đơn đăng ký Sáng chế/GPHI đứng tên Công ty.</p>
+                                    <h4 style="font-size: 0.88rem; font-weight: 600; color: var(--accent);">b) Hỗ trợ tư
+                                        vấn sở hữu trí tuệ, khai thác tài sản trí tuệ (Mục 2)</h4>
+                                    <p style="font-size: 0.78rem; color: var(--text-sub); margin-top: 4px;"><b>Thực
+                                            trạng:</b> Sản phẩm có tính mới và sáng tạo nhưng chưa đăng ký bảo hộ SHTT.
+                                    </p>
+                                    <p style="font-size: 0.78rem; color: var(--text-sub);"><b>Nhu cầu:</b> Tư vấn thủ
+                                        tục xác lập, tra cứu và xây dựng hồ sơ đăng ký Sáng chế / Giải pháp hữu ích.</p>
+                                    <p style="font-size: 0.78rem; color: var(--success);"><b>Kết quả mong muốn:</b> Nộp
+                                        thành công 01 đơn đăng ký Sáng chế/GPHI đứng tên Công ty.</p>
                                 </div>
                             </div>
 
@@ -599,10 +1089,14 @@
                             <div class="support-item">
                                 <input type="checkbox" id="sp3">
                                 <div style="flex: 1;">
-                                    <h4 style="font-size: 0.88rem; font-weight: 600; color: var(--accent);">c) Hỗ trợ chứng nhận ISO / Tiêu chuẩn chất lượng (Mục 3)</h4>
-                                    <p style="font-size: 0.78rem; color: var(--text-sub); margin-top: 4px;"><b>Thực trạng:</b> Dự án chưa áp dụng hệ thống quản lý chất lượng ISO.</p>
-                                    <p style="font-size: 0.78rem; color: var(--text-sub);"><b>Nhu cầu:</b> Hỗ trợ tư vấn đánh giá và cấp chứng nhận ISO 9001:2015.</p>
-                                    <p style="font-size: 0.78rem; color: var(--success);"><b>Kết quả mong muốn:</b> Được cấp giấy chứng nhận hệ thống quản lý chất lượng ISO 9001:2015.</p>
+                                    <h4 style="font-size: 0.88rem; font-weight: 600; color: var(--accent);">c) Hỗ trợ
+                                        chứng nhận ISO / Tiêu chuẩn chất lượng (Mục 3)</h4>
+                                    <p style="font-size: 0.78rem; color: var(--text-sub); margin-top: 4px;"><b>Thực
+                                            trạng:</b> Dự án chưa áp dụng hệ thống quản lý chất lượng ISO.</p>
+                                    <p style="font-size: 0.78rem; color: var(--text-sub);"><b>Nhu cầu:</b> Hỗ trợ tư vấn
+                                        đánh giá và cấp chứng nhận ISO 9001:2015.</p>
+                                    <p style="font-size: 0.78rem; color: var(--success);"><b>Kết quả mong muốn:</b> Được
+                                        cấp giấy chứng nhận hệ thống quản lý chất lượng ISO 9001:2015.</p>
                                 </div>
                             </div>
 
@@ -610,10 +1104,15 @@
                             <div class="support-item">
                                 <input type="checkbox" id="sp4" checked>
                                 <div style="flex: 1;">
-                                    <h4 style="font-size: 0.88rem; font-weight: 600; color: var(--accent);">d) Hỗ trợ thử nghiệm & Đo lường chất lượng sản phẩm (Mục 4)</h4>
-                                    <p style="font-size: 0.78rem; color: var(--text-sub); margin-top: 4px;"><b>Thực trạng:</b> Mẫu thiết bị IoT chưa được đo lường thử nghiệm tại cơ quan chức năng.</p>
-                                    <p style="font-size: 0.78rem; color: var(--text-sub);"><b>Nhu cầu:</b> Hỗ trợ chi phí thử nghiệm độ bền, chuẩn phát sóng tại trung tâm kiểm định đo lường.</p>
-                                    <p style="font-size: 0.78rem; color: var(--success);"><b>Kết quả mong muốn:</b> Phiếu kết quả thử nghiệm đạt tiêu chuẩn chất lượng quy định.</p>
+                                    <h4 style="font-size: 0.88rem; font-weight: 600; color: var(--accent);">d) Hỗ trợ
+                                        thử nghiệm & Đo lường chất lượng sản phẩm (Mục 4)</h4>
+                                    <p style="font-size: 0.78rem; color: var(--text-sub); margin-top: 4px;"><b>Thực
+                                            trạng:</b> Mẫu thiết bị IoT chưa được đo lường thử nghiệm tại cơ quan chức
+                                        năng.</p>
+                                    <p style="font-size: 0.78rem; color: var(--text-sub);"><b>Nhu cầu:</b> Hỗ trợ chi
+                                        phí thử nghiệm độ bền, chuẩn phát sóng tại trung tâm kiểm định đo lường.</p>
+                                    <p style="font-size: 0.78rem; color: var(--success);"><b>Kết quả mong muốn:</b>
+                                        Phiếu kết quả thử nghiệm đạt tiêu chuẩn chất lượng quy định.</p>
                                 </div>
                             </div>
 
@@ -621,10 +1120,15 @@
                             <div class="support-item">
                                 <input type="checkbox" id="sp5" checked>
                                 <div style="flex: 1;">
-                                    <h4 style="font-size: 0.88rem; font-weight: 600; color: var(--accent);">đ) Hỗ trợ Truyền thông, Xúc tiến thương mại & Hội chợ (Mục 8)</h4>
-                                    <p style="font-size: 0.78rem; color: var(--text-sub); margin-top: 4px;"><b>Thực trạng:</b> Chưa tham gia nhiều triển lãm, hội chợ kết nối xúc tiến thương mại.</p>
-                                    <p style="font-size: 0.78rem; color: var(--text-sub);"><b>Nhu cầu:</b> Hỗ trợ chi phí gian hàng trưng bày sản phẩm tại các hội chợ công nghệ cao.</p>
-                                    <p style="font-size: 0.78rem; color: var(--success);"><b>Kết quả mong muốn:</b> Gian hàng trưng bày giới thiệu sản phẩm và tiếp cận khách hàng mới.</p>
+                                    <h4 style="font-size: 0.88rem; font-weight: 600; color: var(--accent);">đ) Hỗ trợ
+                                        Truyền thông, Xúc tiến thương mại & Hội chợ (Mục 8)</h4>
+                                    <p style="font-size: 0.78rem; color: var(--text-sub); margin-top: 4px;"><b>Thực
+                                            trạng:</b> Chưa tham gia nhiều triển lãm, hội chợ kết nối xúc tiến thương
+                                        mại.</p>
+                                    <p style="font-size: 0.78rem; color: var(--text-sub);"><b>Nhu cầu:</b> Hỗ trợ chi
+                                        phí gian hàng trưng bày sản phẩm tại các hội chợ công nghệ cao.</p>
+                                    <p style="font-size: 0.78rem; color: var(--success);"><b>Kết quả mong muốn:</b> Gian
+                                        hàng trưng bày giới thiệu sản phẩm và tiếp cận khách hàng mới.</p>
                                 </div>
                             </div>
                         </div>
@@ -633,7 +1137,8 @@
                 </div>
 
                 <div class="actions-footer">
-                    <button class="btn-success" onclick="alert('Đã đồng bộ toàn bộ dữ liệu & Tự động điền các mục được tích chọn vào File Word SHTP-IC!')">
+                    <button class="btn-success"
+                        onclick="alert('Đã đồng bộ toàn bộ dữ liệu & Tự động điền các mục được tích chọn vào File Word SHTP-IC!')">
                         <i class="fa-solid fa-file-word"></i> Xuất File Word Chuẩn SHTP-IC (.docx)
                     </button>
                 </div>
@@ -649,19 +1154,25 @@
         </div>
         <div class="copilot-body" id="chatBody">
             <div class="chat-msg assistant">
-                Chào bạn! Tôi là trợ lý AI Qwen 2.5. Tôi có thể giúp bạn tối ưu hóa, dịch thuật hoặc điền nháp toàn bộ thông tin dự án SHTP-IC này.
+                Chào bạn! Tôi là trợ lý AI Qwen 2.5. Tôi có thể giúp bạn tối ưu hóa, dịch thuật hoặc điền nháp toàn bộ
+                thông tin dự án SHTP-IC này.
                 <div class="chat-msg-time">Vừa xong</div>
             </div>
         </div>
         <div class="copilot-footer">
             <div class="quick-actions">
-                <button class="btn-quick" onclick="quickAction('draft_all')"><i class="fa-solid fa-pen-fancy"></i> Điền nháp Form</button>
-                <button class="btn-quick" onclick="quickAction('academic')"><i class="fa-solid fa-graduation-cap"></i> Văn phong khoa học</button>
-                <button class="btn-quick" onclick="quickAction('translate')"><i class="fa-solid fa-language"></i> Dịch sang Anh</button>
-                <button class="btn-quick" onclick="quickAction('clear_chat')"><i class="fa-solid fa-trash"></i> Xoá Chat</button>
+                <button class="btn-quick" onclick="quickAction('draft_all')"><i class="fa-solid fa-pen-fancy"></i> Điền
+                    nháp Form</button>
+                <button class="btn-quick" onclick="quickAction('academic')"><i class="fa-solid fa-graduation-cap"></i>
+                    Văn phong khoa học</button>
+                <button class="btn-quick" onclick="quickAction('translate')"><i class="fa-solid fa-language"></i> Dịch
+                    sang Anh</button>
+                <button class="btn-quick" onclick="quickAction('clear_chat')"><i class="fa-solid fa-trash"></i> Xoá
+                    Chat</button>
             </div>
             <div class="chat-input-wrap">
-                <textarea class="chat-input" id="chatInput" placeholder="Hỏi AI hoặc yêu cầu viết..." onkeydown="handleChatKeyDown(event)"></textarea>
+                <textarea class="chat-input" id="chatInput" placeholder="Hỏi AI hoặc yêu cầu viết..."
+                    onkeydown="handleChatKeyDown(event)"></textarea>
                 <button class="btn-chat-send" onclick="sendChatMessage()" id="btnSendChat">
                     <i class="fa-solid fa-paper-plane"></i>
                 </button>
@@ -728,15 +1239,15 @@
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = `toast-msg ${type}`;
-            
+
             let icon = '<i class="fa-solid fa-info-circle"></i>';
             if (type === 'success') icon = '<i class="fa-solid fa-circle-check"></i>';
             if (type === 'error') icon = '<i class="fa-solid fa-circle-exclamation"></i>';
             if (type === 'warning') icon = '<i class="fa-solid fa-triangle-exclamation"></i>';
-            
+
             toast.innerHTML = `${icon} <span>${message}</span>`;
             container.appendChild(toast);
-            
+
             setTimeout(() => {
                 toast.style.opacity = '0';
                 setTimeout(() => toast.remove(), 300);
@@ -757,7 +1268,7 @@
             if (saved) {
                 try {
                     aiConfig = JSON.parse(saved);
-                } catch(e) {
+                } catch (e) {
                     console.error("Lỗi parse config", e);
                 }
             }
@@ -765,7 +1276,7 @@
             document.getElementById('ai_model').value = aiConfig.model;
             document.getElementById('ai_key').value = aiConfig.apiKey || '';
             document.getElementById('ai_system_prompt').value = aiConfig.systemPrompt;
-            
+
             // Auto test connection on load
             silentTestConnection();
         }
@@ -775,7 +1286,7 @@
             aiConfig.model = document.getElementById('ai_model').value.trim();
             aiConfig.apiKey = document.getElementById('ai_key').value.trim();
             aiConfig.systemPrompt = document.getElementById('ai_system_prompt').value.trim();
-            
+
             localStorage.setItem('shtp_ai_config', JSON.stringify(aiConfig));
             showToast("Đã lưu cấu hình AI!", "success");
             closeAISettings();
@@ -788,12 +1299,12 @@
             const originalHTML = btn.innerHTML;
             btn.innerHTML = '<i class="fa-solid fa-circle-notch spinner-icon"></i> Đang kết nối...';
             btn.disabled = true;
-            
+
             const endpoint = document.getElementById('ai_endpoint').value.trim();
             const model = document.getElementById('ai_model').value.trim();
             const apiKey = document.getElementById('ai_key').value.trim();
             const sysPrompt = document.getElementById('ai_system_prompt').value.trim();
-            
+
             try {
                 const response = await fetchAIResponse("Hãy trả lời từ 'OK' ngắn gọn.", endpoint, model, apiKey, sysPrompt);
                 if (response && (response.toLowerCase().includes('ok') || response.trim().length > 0)) {
@@ -819,7 +1330,7 @@
                     new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 2500))
                 ]);
                 updateStatusBadge(true);
-            } catch(e) {
+            } catch (e) {
                 updateStatusBadge(false);
             }
         }
@@ -828,9 +1339,9 @@
             const dot = document.getElementById('statusDot');
             const text = document.getElementById('statusText');
             const badge = document.getElementById('aiStatusBadge');
-            
+
             if (!dot || !text || !badge) return;
-            
+
             if (isConnected) {
                 dot.style.backgroundColor = 'var(--success)';
                 text.innerText = `Qwen 2.5 Active (${aiConfig.model})`;
@@ -849,13 +1360,13 @@
             const isOpenAI = endpoint.includes('/v1') || apiKey !== '';
             let url = endpoint;
             let headers = { "Content-Type": "application/json" };
-            
+
             if (apiKey) {
                 headers["Authorization"] = `Bearer ${apiKey}`;
             }
-            
+
             let body;
-            
+
             if (isOpenAI) {
                 if (!url.endsWith('/chat/completions') && !url.includes('/generate')) {
                     url = url.endsWith('/') ? url + 'v1/chat/completions' : url + '/v1/chat/completions';
@@ -879,19 +1390,19 @@
                     options: { temperature: 0.7 }
                 });
             }
-            
+
             const response = await fetch(url, {
                 method: "POST",
                 headers: headers,
                 body: body
             });
-            
+
             if (!response.ok) {
                 throw new Error(`HTTP Error ${response.status}`);
             }
-            
+
             const data = await response.json();
-            
+
             if (isOpenAI) {
                 return data.choices[0].message.content.trim();
             } else {
@@ -903,14 +1414,14 @@
         async function generateField(fieldId) {
             const element = document.getElementById(fieldId);
             if (!element) return;
-            
+
             const labelRow = element.previousElementSibling;
             const originalButton = labelRow ? labelRow.querySelector('.btn-ai-inline') : null;
-            
+
             const projName = document.getElementById('proj_name').value;
             const projProduct = document.getElementById('proj_product').value;
             const projTech = document.getElementById('proj_tech').value;
-            
+
             const fieldLabels = {
                 proj_name: "Tên dự án khởi nghiệp công nghệ cao",
                 proj_product: "Sản phẩm/dịch vụ chính",
@@ -934,16 +1445,16 @@
                 competitor_1: "Thông tin chi tiết về đối thủ cạnh tranh 1 (ưu điểm/nhược điểm)",
                 competitor_2: "Thông tin chi tiết về đối thủ cạnh tranh 2 (ưu điểm/nhược điểm)"
             };
-            
+
             const fieldName = fieldLabels[fieldId] || "Thông tin dự án";
             const currentValue = element.value;
-            
+
             if (originalButton) {
                 originalButton.innerHTML = '<i class="fa-solid fa-circle-notch spinner-icon"></i> Đang viết...';
                 originalButton.disabled = true;
             }
             element.classList.add('ai-loading-glow');
-            
+
             const prompt = `Viết lại/tối ưu trường "${fieldName}" (văn phong khoa học SHTP-IC, ngắn gọn, súc tích):
 Dự án: ${projName}
 Sản phẩm: ${projProduct}
@@ -956,7 +1467,7 @@ Yêu cầu: Không hội thoại, không giải thích thêm, chỉ trả về n
                 element.value = response;
                 saveFormToStorage();
                 showToast(`Đã tối ưu hóa trường "${fieldName}"!`, "success");
-            } catch(e) {
+            } catch (e) {
                 console.error(e);
                 showToast("Lỗi khi kết nối với AI! Hãy kiểm tra cấu hình kết nối.", "error");
             } finally {
@@ -973,7 +1484,7 @@ Yêu cầu: Không hội thoại, không giải thích thêm, chỉ trả về n
             const sidebar = document.getElementById('copilotSidebar');
             const btn = document.getElementById('copilotFloatBtn');
             const container = document.querySelector('.app-container');
-            
+
             if (sidebar.classList.contains('active')) {
                 sidebar.classList.remove('active');
                 btn.classList.remove('active');
@@ -997,33 +1508,33 @@ Yêu cầu: Không hội thoại, không giải thích thêm, chỉ trả về n
             const chatInput = document.getElementById('chatInput');
             const text = chatInput.value.trim();
             if (!text) return;
-            
+
             const chatBody = document.getElementById('chatBody');
-            
+
             const userMsg = document.createElement('div');
             userMsg.className = 'chat-msg user';
             userMsg.innerHTML = `${escapeHTML(text)}<div class="chat-msg-time">Vừa xong</div>`;
             chatBody.appendChild(userMsg);
-            
+
             chatInput.value = '';
             chatBody.scrollTop = chatBody.scrollHeight;
-            
+
             const aiMsg = document.createElement('div');
             aiMsg.className = 'chat-msg assistant';
             aiMsg.innerHTML = '<i class="fa-solid fa-circle-notch spinner-icon"></i> AI đang suy nghĩ...';
             chatBody.appendChild(aiMsg);
             chatBody.scrollTop = chatBody.scrollHeight;
-            
+
             const projName = document.getElementById('proj_name').value;
             const projProduct = document.getElementById('proj_product').value;
             const projTech = document.getElementById('proj_tech').value;
-            
+
             const chatPrompt = `Dự án: ${projName} | SP: ${projProduct} | CN: ${projTech}\nYêu cầu: ${text}`;
-            
+
             try {
                 const response = await fetchAIResponse(chatPrompt);
                 aiMsg.innerHTML = `${formatChatResponse(response)}<div class="chat-msg-time">Vừa xong</div>`;
-            } catch(e) {
+            } catch (e) {
                 aiMsg.innerHTML = `<span style="color: #ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> Lỗi kết nối AI. Vui lòng kiểm tra lại cấu hình.</span>`;
             } finally {
                 chatBody.scrollTop = chatBody.scrollHeight;
@@ -1031,7 +1542,7 @@ Yêu cầu: Không hội thoại, không giải thích thêm, chỉ trả về n
         }
 
         function escapeHTML(str) {
-            return str.replace(/[&<>'"]/g, 
+            return str.replace(/[&<>'"]/g,
                 tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
             );
         }
@@ -1042,7 +1553,7 @@ Yêu cầu: Không hội thoại, không giải thích thêm, chỉ trả về n
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\*(.*?)\*/g, '<em>$1</em>')
                 .replace(/`(.*?)`/g, '<code>$1</code>');
-            
+
             return `${formatted} <br><button onclick="applyAITextToCurrentField(this)" class="btn-ai-inline" style="margin-top: 8px;"><i class="fa-solid fa-copy"></i> Áp dụng vào trường đang điền</button>`;
         }
 
@@ -1053,9 +1564,9 @@ Yêu cầu: Không hội thoại, không giải thích thêm, chỉ trả về n
             if (btn) btn.remove();
             const time = clone.querySelector('.chat-msg-time');
             if (time) time.remove();
-            
+
             let textContent = clone.innerText.replace(/<br>/g, '\n').trim();
-            
+
             const activeTab = document.querySelector('.tab-content.active');
             if (activeTab) {
                 const textarea = activeTab.querySelector('textarea, input[type="text"]');
@@ -1072,7 +1583,7 @@ Yêu cầu: Không hội thoại, không giải thích thêm, chỉ trả về n
 
         async function quickAction(type) {
             const chatBody = document.getElementById('chatBody');
-            
+
             if (type === 'clear_chat') {
                 chatBody.innerHTML = `
                     <div class="chat-msg assistant">
@@ -1082,21 +1593,21 @@ Yêu cầu: Không hội thoại, không giải thích thêm, chỉ trả về n
                 showToast("Đã xoá lịch sử chat", "info");
                 return;
             }
-            
+
             const projName = document.getElementById('proj_name').value;
             const projProduct = document.getElementById('proj_product').value;
-            
+
             if (!projName || !projProduct) {
                 showToast("Vui lòng điền Tên dự án và Sản phẩm chính trước!", "warning");
                 return;
             }
-            
+
             const aiMsg = document.createElement('div');
             aiMsg.className = 'chat-msg assistant';
             aiMsg.innerHTML = '<i class="fa-solid fa-circle-notch spinner-icon"></i> Đang thực hiện hành động nhanh...';
             chatBody.appendChild(aiMsg);
             chatBody.scrollTop = chatBody.scrollHeight;
-            
+
             let prompt = "";
             if (type === 'draft_all') {
                 prompt = `Phác thảo dự án SHTP-IC dạng JSON (mỗi mục 2-3 câu ngắn gọn, súc tích):
@@ -1126,10 +1637,10 @@ Chỉ trả về JSON thô không codeblock:
                 }
                 prompt = `Translate to technical English, keep it concise: "${field.value}". Output only the translation.`;
             }
-            
+
             try {
                 const response = await fetchAIResponse(prompt);
-                
+
                 if (type === 'draft_all') {
                     try {
                         let jsonStr = response;
@@ -1144,14 +1655,14 @@ Chỉ trả về JSON thô không codeblock:
                         saveFormToStorage();
                         aiMsg.innerHTML = `Đã tự động điền nháp toàn bộ thông tin cơ bản cho dự án của bạn! Bạn có thể xem ở các tab tương ứng.<div class="chat-msg-time">Vừa xong</div>`;
                         showToast("Đã điền nháp form thành công!", "success");
-                    } catch(jsonErr) {
+                    } catch (jsonErr) {
                         console.error(jsonErr);
                         aiMsg.innerHTML = `Tôi đã tạo bản nháp nhưng gặp lỗi định dạng dữ liệu tự động. Nội dung bản phác thảo là:<br><br>${response.replace(/\n/g, '<br>')}`;
                     }
                 } else {
                     aiMsg.innerHTML = `${formatChatResponse(response)}<div class="chat-msg-time">Vừa xong</div>`;
                 }
-            } catch(e) {
+            } catch (e) {
                 aiMsg.innerHTML = `<span style="color: #ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> Lỗi thực thi. Hãy kiểm tra kết nối AI.</span>`;
             } finally {
                 chatBody.scrollTop = chatBody.scrollHeight;
@@ -1169,24 +1680,24 @@ Chỉ trả về JSON thô không codeblock:
                 'innov_newness', 'innov_ip', 'env_iso', 'env_desc', 'competitor_1', 'competitor_2',
                 'res_budget', 'res_staff'
             ];
-            
+
             textFields.forEach(f => {
                 const el = document.getElementById(f);
                 if (el) data[f] = el.value;
             });
-            
+
             for (let i = 1; i <= 5; i++) {
                 const el = document.getElementById(`sp${i}`);
                 if (el) data[`sp${i}`] = el.checked;
             }
-            
+
             localStorage.setItem('shtp_proposal_data', JSON.stringify(data));
         }
 
         function loadFormValues() {
             const saved = localStorage.getItem('shtp_proposal_data');
             const data = saved ? JSON.parse(saved) : defaultDemoData;
-            
+
             for (let k in data) {
                 const el = document.getElementById(k);
                 if (el) {
@@ -1270,7 +1781,7 @@ Chỉ trả về JSON thô không codeblock:
                     showToast("🎉 Tải xuống file Word (.docx) chuẩn mẫu SHTP-IC thành công!", "success");
                     return;
                 }
-            } catch (e) {}
+            } catch (e) { }
 
             // Fallback trực tiếp tải Blob Word nếu chạy Standalone GitHub Pages Mode
             const docHTML = `
@@ -1291,7 +1802,7 @@ Chỉ trả về JSON thô không codeblock:
             `;
             const blob = new Blob(['\ufeff' + docHTML], { type: 'application/msword' });
             const url = URL.createObjectURL(blob);
-            
+
             const link = document.createElement('a');
             link.href = url;
             link.download = `Thuyet_Minh_SHTP-IC_${payload.ten_du_an.replace(/\s+/g, '_')}.docx`;
@@ -1299,7 +1810,7 @@ Chỉ trả về JSON thô không codeblock:
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(url);
-            
+
             showToast("Thuyết minh dự án đã được xuất ra file Word (.docx) thành công!", "success");
         }
 
@@ -1322,7 +1833,7 @@ Chỉ trả về JSON thô không codeblock:
 
             const titleEl = document.getElementById('tabTitle');
             if (titleEl) titleEl.innerText = titles[tabId];
-            
+
             const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
             if (activeBtn) activeBtn.classList.add('active');
         }
@@ -1357,7 +1868,8 @@ Chỉ trả về JSON thô không codeblock:
             </div>
             <div class="modal-footer">
                 <button class="btn-secondary" onclick="closeKBEditModal()">Hủy</button>
-                <button class="btn-success" onclick="submitKBUpdate()"><i class="fa-solid fa-floppy-disk"></i> Lưu nhãn mới</button>
+                <button class="btn-success" onclick="submitKBUpdate()"><i class="fa-solid fa-floppy-disk"></i> Lưu nhãn
+                    mới</button>
             </div>
         </div>
     </div>
@@ -1483,13 +1995,13 @@ Chỉ trả về JSON thô không codeblock:
             try {
                 const stored = localStorage.getItem('shtp_rag_kb');
                 return stored ? JSON.parse(stored) : [];
-            } catch(e) { return []; }
+            } catch (e) { return []; }
         }
 
         function saveLocalKBData(data) {
             try {
                 localStorage.setItem('shtp_rag_kb', JSON.stringify(data));
-            } catch(e) {}
+            } catch (e) { }
         }
 
         async function submitKBUploadBatch() {
@@ -1556,7 +2068,7 @@ Chỉ trả về JSON thô không codeblock:
                     renderKBItems(res.data);
                     return;
                 }
-            } catch(e) {}
+            } catch (e) { }
 
             // Fallback sang LocalStorage nếu chạy trên GitHub Pages
             const localData = getLocalKBData();
@@ -1592,7 +2104,7 @@ Chỉ trả về JSON thô không codeblock:
 
         async function deleteKBFile(filename) {
             if (!confirm(`Xóa file mẫu '${filename}' khỏi Kho RAG?`)) return;
-            
+
             // Xóa khỏi LocalStorage
             let localData = getLocalKBData();
             localData = localData.filter(i => i.filename !== filename);
@@ -1600,7 +2112,7 @@ Chỉ trả về JSON thô không codeblock:
 
             try {
                 await fetch(`/api/kb/delete/${filename}`, { method: 'DELETE' });
-            } catch(e) {}
+            } catch (e) { }
             finally {
                 loadKBList();
             }
@@ -1676,7 +2188,7 @@ Chỉ trả về JSON thô không codeblock:
                     san_pham_chinh: "Sản phẩm/Dịch vụ công nghệ bóc tách từ tài liệu thô",
                     cong_nghe_chinh: "Công nghệ cốt lõi trích xuất từ tài liệu đính kèm",
                     linh_vuc: document.getElementById('kbCategorySelect').value || "Công nghệ thông tin & AI",
-                    van_de_giai_phap: "Bóc tách từ file: " + rawFilesStore.map(f=>f.name).join(", "),
+                    van_de_giai_phap: "Bóc tách từ file: " + rawFilesStore.map(f => f.name).join(", "),
                     tinh_cap_thiet: "Dữ liệu được trích xuất tự động từ các tài liệu thô bạn vừa tải lên.",
                     muc_tieu_ktxh: "Đóng góp phát triển kinh tế xã hội địa phương và ngành công nghệ.",
                     muc_tieu_khcn: "Nâng cao năng lực nghiên cứu phát triển và làm chủ công nghệ mới.",
@@ -1731,111 +2243,111 @@ Chỉ trả về JSON thô không codeblock:
             if (t2Textareas[4] && data.minh_chung_cong_nghe) t2Textareas[4].value = data.minh_chung_cong_nghe;
             if (t2Textareas[5] && data.quy_trinh_cong_nghe) t2Textareas[5].value = data.quy_trinh_cong_nghe;
             if (t2Textareas[6] && data.tinh_kha_thi_ky_thuat) t2Textareas[6].value = data.tinh_kha_thi_ky_thuat;
-        // 1. Nút "Diễn đạt bay bổng hơn" cho từng ô văn bản
-        async function runAIExpandText(btnEl, contextTitle) {
-            const formGroup = btnEl.closest('.form-group');
-            const textarea = formGroup ? formGroup.querySelector('textarea, input') : null;
-            if (!textarea) return;
+            // 1. Nút "Diễn đạt bay bổng hơn" cho từng ô văn bản
+            async function runAIExpandText(btnEl, contextTitle) {
+                const formGroup = btnEl.closest('.form-group');
+                const textarea = formGroup ? formGroup.querySelector('textarea, input') : null;
+                if (!textarea) return;
 
-            const currentText = textarea.value.trim();
-            if (!currentText) {
-                showToast("Vui lòng nhập một ít ý tưởng ban đầu trước khi bấm Diễn đạt bay bổng!", "warning");
-                return;
+                const currentText = textarea.value.trim();
+                if (!currentText) {
+                    showToast("Vui lòng nhập một ít ý tưởng ban đầu trước khi bấm Diễn đạt bay bổng!", "warning");
+                    return;
+                }
+
+                const oldBtnHTML = btnEl.innerHTML;
+                btnEl.innerHTML = `<i class="fa-solid fa-spinner spinner-icon"></i> Đang diễn đạt...`;
+                btnEl.disabled = true;
+
+                try {
+                    const formData = new FormData();
+                    formData.append('text', currentText);
+                    formData.append('context_title', contextTitle);
+
+                    const res = await fetch('/api/ai-expand', { method: 'POST', body: formData });
+                    const data = await res.json();
+
+                    if (data.status === 'success' && data.text) {
+                        textarea.value = data.text;
+                        showToast("🎉 AI đã mở rộng & diễn đạt lại đoạn văn sâu sắc, bay bổng hơn!", "success");
+                    }
+                } catch (e) {
+                    // Client Fallback Expand
+                    textarea.value = currentText + "\n\n[Đã diễn đạt thêm bởi AI]: Giải pháp công nghệ cao của dự án không chỉ giải quyết triệt để bài toán kỹ thuật hiện tại mà còn mở ra định hướng phát triển bền vững. Với kiến trúc hạ tầng linh hoạt, tích hợp các thuật toán tối ưu tiên tiến và đáp ứng đầy đủ các tiêu chuẩn kiểm định khắt khe, sản phẩm cam kết mang lại giá trị gia tăng vượt trội, tối ưu hóa chi phí vận hành và nâng cao năng lực cạnh tranh trên thị trường.";
+                    showToast("🎉 AI đã mở rộng & diễn đạt lại đoạn văn!", "success");
+                } finally {
+                    btnEl.innerHTML = oldBtnHTML;
+                    btnEl.disabled = false;
+                }
             }
 
-            const oldBtnHTML = btnEl.innerHTML;
-            btnEl.innerHTML = `<i class="fa-solid fa-spinner spinner-icon"></i> Đang diễn đạt...`;
-            btnEl.disabled = true;
+            // 2. Nút "Điền kín các ô thông tin còn lại"
+            async function runAICompleteAll() {
+                const btn = document.getElementById('btnCompleteAll');
+                const oldHTML = btn.innerHTML;
+                btn.innerHTML = `<i class="fa-solid fa-spinner spinner-icon"></i> AI đang lấp đầy các ô trống...`;
+                btn.disabled = true;
 
-            try {
-                const formData = new FormData();
-                formData.append('text', currentText);
-                formData.append('context_title', contextTitle);
+                const inputs = document.querySelectorAll('.form-control');
+                let filledCount = 0;
 
-                const res = await fetch('/api/ai-expand', { method: 'POST', body: formData });
-                const data = await res.json();
+                inputs.forEach((el, idx) => {
+                    if (!el.value || el.value.trim() === '') {
+                        filledCount++;
+                        // Gán nội dung mẫu chuẩn công nghệ cao SHTP-IC phù hợp theo thứ tự
+                        const placeholders = [
+                            "Dự án Công nghệ cao SHTP-IC",
+                            "Sản phẩm/Hệ thống thông minh tiên tiến",
+                            "Công nghệ cốt lõi tích hợp AI/IoT/Bán dẫn",
+                            "Công nghệ thông tin & AI",
+                            "Giải quyết triệt để hạn chế kỹ thuật hiện tại, tối ưu năng suất lao động và giảm thiểu rủi ro vận hành.",
+                            "Nhu cầu thị trường đang tăng trưởng 25%/năm, đòi hỏi phải có giải pháp công nghệ nội địa hóa hoàn toàn.",
+                            "Tạo công ăn việc làm cho đội ngũ kỹ sư trẻ, đóng góp doanh thu và ngân sách phát triển kinh tế vùng.",
+                            "Làm chủ quy trình thiết kế và chế tạo công nghệ lõi, đạt các chứng nhận quốc tế uy tín.",
+                            "Đặc tính kỹ thuật đạt chuẩn ISO/IEC, độ chính xác 99.8%, thời gian phản hồi <50ms.",
+                            "Mô tả quy trình hoạt động khép kín bao gồm các khối: Cảm biến thu thập ➔ Xử lý trung tâm ➔ Truyền tải điện đám mây ➔ Giao diện người dùng."
+                        ];
+                        el.value = placeholders[idx % placeholders.length];
+                    }
+                });
 
-                if (data.status === 'success' && data.text) {
-                    textarea.value = data.text;
-                    showToast("🎉 AI đã mở rộng & diễn đạt lại đoạn văn sâu sắc, bay bổng hơn!", "success");
-                }
-            } catch (e) {
-                // Client Fallback Expand
-                textarea.value = currentText + "\n\n[Đã diễn đạt thêm bởi AI]: Giải pháp công nghệ cao của dự án không chỉ giải quyết triệt để bài toán kỹ thuật hiện tại mà còn mở ra định hướng phát triển bền vững. Với kiến trúc hạ tầng linh hoạt, tích hợp các thuật toán tối ưu tiên tiến và đáp ứng đầy đủ các tiêu chuẩn kiểm định khắt khe, sản phẩm cam kết mang lại giá trị gia tăng vượt trội, tối ưu hóa chi phí vận hành và nâng cao năng lực cạnh tranh trên thị trường.";
-                showToast("🎉 AI đã mở rộng & diễn đạt lại đoạn văn!", "success");
-            } finally {
-                btnEl.innerHTML = oldBtnHTML;
-                btnEl.disabled = false;
+                setTimeout(() => {
+                    btn.innerHTML = oldHTML;
+                    btn.disabled = false;
+                    showToast(`🎉 AI đã tự động điền kín thêm ${filledCount} ô thông tin còn trống!`, "success");
+                }, 600);
             }
-        }
 
-        // 2. Nút "Điền kín các ô thông tin còn lại"
-        async function runAICompleteAll() {
-            const btn = document.getElementById('btnCompleteAll');
-            const oldHTML = btn.innerHTML;
-            btn.innerHTML = `<i class="fa-solid fa-spinner spinner-icon"></i> AI đang lấp đầy các ô trống...`;
-            btn.disabled = true;
+            async function checkAIStatus() {
+                const statusBadge = document.getElementById('aiStatusBadge');
+                const statusDot = document.getElementById('statusDot');
+                const statusText = document.getElementById('statusText');
 
-            const inputs = document.querySelectorAll('.form-control');
-            let filledCount = 0;
-
-            inputs.forEach((el, idx) => {
-                if (!el.value || el.value.trim() === '') {
-                    filledCount++;
-                    // Gán nội dung mẫu chuẩn công nghệ cao SHTP-IC phù hợp theo thứ tự
-                    const placeholders = [
-                        "Dự án Công nghệ cao SHTP-IC",
-                        "Sản phẩm/Hệ thống thông minh tiên tiến",
-                        "Công nghệ cốt lõi tích hợp AI/IoT/Bán dẫn",
-                        "Công nghệ thông tin & AI",
-                        "Giải quyết triệt để hạn chế kỹ thuật hiện tại, tối ưu năng suất lao động và giảm thiểu rủi ro vận hành.",
-                        "Nhu cầu thị trường đang tăng trưởng 25%/năm, đòi hỏi phải có giải pháp công nghệ nội địa hóa hoàn toàn.",
-                        "Tạo công ăn việc làm cho đội ngũ kỹ sư trẻ, đóng góp doanh thu và ngân sách phát triển kinh tế vùng.",
-                        "Làm chủ quy trình thiết kế và chế tạo công nghệ lõi, đạt các chứng nhận quốc tế uy tín.",
-                        "Đặc tính kỹ thuật đạt chuẩn ISO/IEC, độ chính xác 99.8%, thời gian phản hồi <50ms.",
-                        "Mô tả quy trình hoạt động khép kín bao gồm các khối: Cảm biến thu thập ➔ Xử lý trung tâm ➔ Truyền tải điện đám mây ➔ Giao diện người dùng."
-                    ];
-                    el.value = placeholders[idx % placeholders.length];
-                }
-            });
-
-            setTimeout(() => {
-                btn.innerHTML = oldHTML;
-                btn.disabled = false;
-                showToast(`🎉 AI đã tự động điền kín thêm ${filledCount} ô thông tin còn trống!`, "success");
-            }, 600);
-        }
-
-        async function checkAIStatus() {
-            const statusBadge = document.getElementById('aiStatusBadge');
-            const statusDot = document.getElementById('statusDot');
-            const statusText = document.getElementById('statusText');
-
-            try {
-                const res = await fetch('/api/ai-status');
-                const data = await res.json();
-                if (data.online) {
-                    if (statusText) statusText.innerText = "Qwen 2.5 Local (Sẵn sàng)";
-                    if (statusDot) statusDot.style.backgroundColor = "#10b981";
-                    if (statusBadge) statusBadge.title = "AI Ollama đang chạy offline trên MacBook M1 của bạn!";
-                } else {
-                    if (statusText) statusText.innerText = "Qwen 2.5 (Sẵn sàng Bóc Tách)";
+                try {
+                    const res = await fetch('/api/ai-status');
+                    const data = await res.json();
+                    if (data.online) {
+                        if (statusText) statusText.innerText = "Qwen 2.5 Local (Sẵn sàng)";
+                        if (statusDot) statusDot.style.backgroundColor = "#10b981";
+                        if (statusBadge) statusBadge.title = "AI Ollama đang chạy offline trên MacBook M1 của bạn!";
+                    } else {
+                        if (statusText) statusText.innerText = "Qwen 2.5 (Sẵn sàng Bóc Tách)";
+                        if (statusDot) statusDot.style.backgroundColor = "#38bdf8";
+                        if (statusBadge) statusBadge.title = "Hệ thống sẵn sàng nhận file và bóc tách dữ liệu!";
+                    }
+                } catch (e) {
+                    if (statusText) statusText.innerText = "Qwen 2.5 (Sẵn sàng)";
                     if (statusDot) statusDot.style.backgroundColor = "#38bdf8";
-                    if (statusBadge) statusBadge.title = "Hệ thống sẵn sàng nhận file và bóc tách dữ liệu!";
                 }
-            } catch(e) {
-                if (statusText) statusText.innerText = "Qwen 2.5 (Sẵn sàng)";
-                if (statusDot) statusDot.style.backgroundColor = "#38bdf8";
             }
-        }
 
-        // Init on page load
-        window.addEventListener('DOMContentLoaded', () => {
-            renderRawFileList();
-            loadKBList();
-            checkAIStatus();
-        });
+            // Init on page load
+            window.addEventListener('DOMContentLoaded', () => {
+                renderRawFileList();
+                loadKBList();
+                checkAIStatus();
+            });
     </script>
 </body>
-</html>
 
+</html>
