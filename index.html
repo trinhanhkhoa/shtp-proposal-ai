@@ -1179,302 +1179,78 @@ Chỉ trả về JSON thô không codeblock:
             }, 1000);
         }
 
-        // Real Word Export
+        // Real Native Word Export (.docx) via FastAPI & docxtpl Engine
         async function exportWord() {
-            const data = {
-                ten_du_an: document.querySelector('#tab1 input[value*="Hệ thống"]') ? document.querySelector('#tab1 input[value*="Hệ thống"]').value : "Dự án Nông nghiệp AI",
-                san_pham_chinh: document.querySelectorAll('#tab1 input')[1] ? document.querySelectorAll('#tab1 input')[1].value : "SmartAgri Gateway",
-                cong_nghe_chinh: document.querySelectorAll('#tab1 input')[2] ? document.querySelectorAll('#tab1 input')[2].value : "IoT & AI",
-                linh_vuc: "Công nghệ sinh học / IoT",
-                van_de_giai_phap: document.querySelector('#tab1 textarea') ? document.querySelector('#tab1 textarea').value : "",
-                tinh_cap_thiet: document.querySelectorAll('#tab1 textarea')[1] ? document.querySelectorAll('#tab1 textarea')[1].value : "",
-                muc_tieu_ktxh: "Tạo nguồn thu 5 tỷ/năm...",
-                muc_tieu_khcn: "Làm chủ AI Edge...",
-                minh_chung_san_pham: document.querySelector('#tab2 textarea') ? document.querySelector('#tab2 textarea').value : "",
-                quy_trinh_san_pham: document.querySelectorAll('#tab2 textarea')[1] ? document.querySelectorAll('#tab2 textarea')[1].value : "",
-                tinh_nang_vuot_troi: document.querySelectorAll('#tab2 textarea')[2] ? document.querySelectorAll('#tab2 textarea')[2].value : "",
-                minh_chung_cong_nghe: document.querySelectorAll('#tab2 textarea')[4] ? document.querySelectorAll('#tab2 textarea')[4].value : "",
-                quy_trinh_cong_nghe: document.querySelectorAll('#tab2 textarea')[5] ? document.querySelectorAll('#tab2 textarea')[5].value : "",
-                tinh_kha_thi_ky_thuat: document.querySelectorAll('#tab2 textarea')[6] ? document.querySelectorAll('#tab2 textarea')[6].value : "",
-                bao_mat_mo_rong: document.querySelectorAll('#tab2 textarea')[7] ? document.querySelectorAll('#tab2 textarea')[7].value : "",
-                tiem_nang_thi_truong: "Thị trường nông nghiệp thông minh ước tính 500 triệu USD...",
-                doi_thu_1: "Netafim Israel | 20,000 USD",
-                doi_thu_2: "NextFarm VN | 100 triệu VNĐ",
-                loi_the_canh_tranh: "Công nghệ AI Edge độc quyền Việt hóa"
+            showToast("Đang sinh file Word (.docx) chuẩn biểu mẫu SHTP-IC...", "info");
+
+            const inputs = document.querySelectorAll('input, textarea');
+            const payload = {
+                ten_du_an: document.querySelectorAll('#tab1 input')[0]?.value || "Giải pháp công nghệ cao",
+                san_pham_chinh: document.querySelectorAll('#tab1 input')[1]?.value || "Sản phẩm chính",
+                cong_nghe_chinh: document.querySelectorAll('#tab1 input')[2]?.value || "Công nghệ chính",
+                linh_vuc: document.querySelectorAll('#tab1 input')[3]?.value || "Công nghệ cao",
+                van_de_giai_phap: document.querySelectorAll('#tab1 textarea')[0]?.value || "",
+                tinh_cap_thiet: document.querySelectorAll('#tab1 textarea')[1]?.value || "",
+                muc_tieu_ktxh: document.querySelectorAll('#tab1 textarea')[2]?.value || "",
+                muc_tieu_khcn: document.querySelectorAll('#tab1 textarea')[3]?.value || "",
+                minh_chung_san_pham: document.querySelectorAll('#tab2 textarea')[0]?.value || "",
+                quy_trinh_san_pham: document.querySelectorAll('#tab2 textarea')[1]?.value || "",
+                tinh_nang_vuot_troi: document.querySelectorAll('#tab2 textarea')[2]?.value || "",
+                minh_chung_cong_nghe: document.querySelectorAll('#tab2 textarea')[4]?.value || "",
+                quy_trinh_cong_nghe: document.querySelectorAll('#tab2 textarea')[5]?.value || "",
+                tinh_kha_thi_ky_thuat: document.querySelectorAll('#tab2 textarea')[6]?.value || "",
+                bao_mat_mo_rong: document.querySelectorAll('#tab2 textarea')[7]?.value || "",
+                tiem_nang_thi_truong: "Tiềm năng thị trường công nghệ cao...",
+                doi_thu_1: "Đối thủ cạnh tranh 1...",
+                doi_thu_2: "Đối thủ cạnh tranh 2...",
+                loi_the_canh_tranh: "Lợi thế cạnh tranh vượt trội..."
             };
-            const supportDetails = [
-                {
-                    id: 'sp1', code: 'a', name: 'Hỗ trợ sử dụng cơ sở kỹ thuật, không gian làm việc',
-                    status: 'Thiếu không gian làm việc và chỗ thử nghiệm sản phẩm.',
-                    demand: 'Hỗ trợ không gian làm việc khoảng 25-30m² cho 5 nhân sự R&D tại Vườn ươm SHTP-IC với chi phí ưu đãi.',
-                    result: 'Được bố trí không gian văn phòng làm việc và tận dụng không gian sáng chế của Vườn ươm.'
-                },
-                {
-                    id: 'sp2', code: 'b', name: 'Hỗ trợ tư vấn sở hữu trí tuệ, khai thác tài sản trí tuệ',
-                    status: 'Sản phẩm có tính mới và sáng tạo nhưng chưa đăng ký bảo hộ SHTT.',
-                    demand: 'Tư vấn thủ tục xác lập, tra cứu và xây dựng hồ sơ đăng ký Sáng chế / Giải pháp hữu ích.',
-                    result: 'Nộp thành công 01 đơn đăng ký Sáng chế/GPHI đứng tên Công ty.'
-                },
-                {
-                    id: 'sp3', code: 'c', name: 'Hỗ trợ chứng nhận ISO / Tiêu chuẩn chất lượng',
-                    status: 'Dự án chưa áp dụng hệ thống quản lý chất lượng ISO.',
-                    demand: 'Hỗ trợ tư vấn đánh giá và cấp chứng nhận ISO 9001:2015.',
-                    result: 'Được cấp giấy chứng nhận hệ thống quản lý chất lượng ISO 9001:2015.'
-                },
-                {
-                    id: 'sp4', code: 'd', name: 'Hỗ trợ thử nghiệm & Đo lường chất lượng sản phẩm',
-                    status: 'Mẫu thiết bị IoT chưa được đo lường thử nghiệm tại cơ quan chức năng.',
-                    demand: 'Hỗ trợ chi phí thử nghiệm độ bền, chuẩn phát sóng tại trung tâm kiểm định đo lường.',
-                    result: 'Phiếu kết quả thử nghiệm đạt tiêu chuẩn chất lượng quy định.'
-                },
-                {
-                    id: 'sp5', code: 'đ', name: 'Hỗ trợ Truyền thông, Xúc tiến thương mại & Hội chợ',
-                    status: 'Chưa tham gia nhiều triển lãm, hội chợ kết nối xúc tiến thương mại.',
-                    demand: 'Hỗ trợ chi phí gian hàng trưng bày sản phẩm tại các hội chợ công nghệ cao.',
-                    result: 'Gian hàng trưng bày giới thiệu sản phẩm và tiếp cận khách hàng mới.'
-                }
-            ];
-            
-            let rowCount = 1;
-            supportDetails.forEach(s => {
-                const chk = document.getElementById(s.id);
-                if (chk && chk.checked) {
-                    supportRows += `
-                        <tr>
-                            <td align="center" style="border: 1px solid #000000; padding: 6px;">${rowCount++}</td>
-                            <td style="border: 1px solid #000000; padding: 6px;"><b>${s.code}) ${s.name}</b></td>
-                            <td style="border: 1px solid #000000; padding: 6px;">${s.status}</td>
-                            <td style="border: 1px solid #000000; padding: 6px;">${s.demand}</td>
-                            <td style="border: 1px solid #000000; padding: 6px;">${s.result}</td>
-                        </tr>
-                    `;
-                }
-            });
 
-            if (!supportRows) {
-                supportRows = '<tr><td colspan="5" align="center" style="border: 1px solid #000000; padding: 6px;">Không có đề xuất hỗ trợ nào được tích chọn</td></tr>';
-            }
+            try {
+                const response = await fetch('/api/export-word', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
 
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = `Thuyet_Minh_Du_An_SHTPIC_${payload.ten_du_an.replace(/\s+/g, '_')}.docx`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    showToast("🎉 Tải xuống file Word (.docx) chuẩn mẫu SHTP-IC thành công!", "success");
+                    return;
+                }
+            } catch (e) {}
+
+            // Fallback trực tiếp tải Blob Word nếu chạy Standalone GitHub Pages Mode
             const docHTML = `
             <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
-            <head>
-                <meta charset="utf-8">
-                <title>Thuyết minh Dự án SHTP-IC</title>
-                <style>
-                    body {
-                        font-family: "Times New Roman", Times, serif;
-                        font-size: 13pt;
-                        line-height: 1.45;
-                        color: #000000;
-                        margin: 1in;
-                    }
-                    p { margin: 0 0 6pt 0; text-align: justify; }
-                    .header-table { width: 100%; border: none; margin-bottom: 24pt; }
-                    .header-table td { border: none; padding: 0; font-size: 11pt; text-align: center; }
-                    .doc-title { text-align: center; font-size: 14pt; font-weight: bold; margin-bottom: 20pt; text-transform: uppercase; }
-                    .section-title { font-size: 13pt; font-weight: bold; margin-top: 14pt; margin-bottom: 6pt; text-transform: uppercase; }
-                    .subsection-title { font-size: 13pt; font-weight: bold; margin-top: 10pt; margin-bottom: 4pt; }
-                    table.data-table {
-                        width: 100%;
-                        border-collapse: collapse;
-                        margin: 10pt 0;
-                    }
-                    table.data-table th, table.data-table td {
-                        border: 1px solid #000000;
-                        padding: 6px 10px;
-                        font-size: 12pt;
-                        vertical-align: top;
-                    }
-                    table.data-table th {
-                        background-color: #f2f2f2;
-                        font-weight: bold;
-                        text-align: center;
-                    }
-                    .bullet-list { margin-left: 20pt; }
-                </style>
-            </head>
-            <body>
-
-    <!-- LOADING OVERLAY PROGRESS MODAL -->
-    <div class="modal-overlay" id="loadingProgressModal">
-        <div class="modal-box" style="text-align: center; width: 440px;">
-            <div class="spinner-icon" style="font-size: 3rem; color: var(--accent); margin-bottom: 16px;">
-                <i class="fa-solid fa-circle-notch"></i>
-            </div>
-            <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px;" id="loadingStepTitle">Qwen 2.5 AI đang đọc file thô...</h3>
-            <p style="font-size: 0.82rem; color: var(--text-sub); margin-bottom: 20px;" id="loadingStepSub">Đang bóc tách dữ liệu từ các tài liệu bạn vừa tải lên</p>
-            
-            <div style="background: var(--bg-dark); height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 10px;">
-                <div id="loadingProgressBar" style="height: 100%; width: 15%; background: linear-gradient(90deg, var(--primary), var(--accent)); transition: width 0.4s ease;"></div>
-            </div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--accent); font-weight: 600;">
-                <span id="loadingStatusBadge"><i class="fa-solid fa-microchip"></i> Local GPU M1 Active</span>
-                <span id="loadingPercentText">15%</span>
-            </div>
-        </div>
-    </div>
-
-                <table class="header-table">
-                    <tr>
-                        <td width="45%" align="center">
-                            <b>BAN QUẢN LÝ KHU CÔNG NGHỆ CAO TP.HCM</b><br>
-                            <b>VƯỜN ƯƠM DOANH NGHIỆP CÔNG NGHỆ CAO</b><br>
-                            -----
-                        </td>
-                        <td width="55%" align="center">
-                            <b>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</b><br>
-                            <b>Độc lập - Tự do - Hạnh phúc</b><br>
-                            -----
-                        </td>
-                    </tr>
-                </table>
-
-                <div class="doc-title">
-                    THUYẾT MINH CHI TIẾT DỰ ÁN ĐĂNG KÝ ƯƠM TẠO<br>
-                    TẠI VƯỜN ƯƠM DOANH NGHIỆP CÔNG NGHỆ CAO (SHTP-IC)
-                </div>
-
-                <div class="section-title">I. THÔNG TIN CHUNG VỀ DỰ ÁN</div>
-                <p><b>1. Tên dự án:</b> ${val('proj_name')}</p>
-                <p><b>2. Sản phẩm/dịch vụ chính:</b> ${val('proj_product')}</p>
-                <p><b>3. Công nghệ chính của dự án:</b> ${val('proj_tech')}</p>
-                <p><b>4. Lĩnh vực hoạt động:</b> ${val('proj_field')}</p>
-
-                <div class="section-title">II. NỘI DUNG CHI TIẾT CỦA DỰ ÁN</div>
-                
-                <div class="subsection-title">1. Giới thiệu tóm tắt về dự án</div>
-                <p><b>- Vấn đề dự án đang muốn giải quyết và giải pháp nêu ra:</b></p>
-                <p style="text-indent: 0.5in;">${val('proj_problem_sol').replace(/\n/g, '<br>')}</p>
-                
-                <p><b>- Tính cấp thiết thực hiện dự án:</b></p>
-                <p style="text-indent: 0.5in;">${val('proj_urgency').replace(/\n/g, '<br>')}</p>
-                
-                <p><b>- Mục tiêu kinh tế - xã hội của dự án:</b></p>
-                <p style="text-indent: 0.5in;">${val('proj_goal_eco').replace(/\n/g, '<br>')}</p>
-                
-                <p><b>- Mục tiêu về khoa học công nghệ của dự án:</b></p>
-                <p style="text-indent: 0.5in;">${val('proj_goal_tech').replace(/\n/g, '<br>')}</p>
-
-                <div class="subsection-title">2. Công nghệ, sản phẩm đăng ký ươm tạo của dự án</div>
-                <p><b>2.1. Sản phẩm đăng ký ươm tạo của dự án:</b></p>
-                <table class="data-table" style="border: 1px solid #000000; border-collapse: collapse; width: 100%;">
-                    <thead>
-                        <tr>
-                            <th width="35%" style="border: 1px solid #000000; padding: 6px; background-color: #f2f2f2;">Tên sản phẩm ươm tạo của dự án</th>
-                            <th width="50%" style="border: 1px solid #000000; padding: 6px; background-color: #f2f2f2;">Tên sản phẩm theo Phụ lục II – Quyết định số 23/2026/QĐ-TTg</th>
-                            <th width="15%" style="border: 1px solid #000000; padding: 6px; background-color: #f2f2f2;">Số TT</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="border: 1px solid #000000; padding: 6px;">${val('prod_name')}</td>
-                            <td style="border: 1px solid #000000; padding: 6px;">${val('prod_pl2_name')}</td>
-                            <td align="center" style="border: 1px solid #000000; padding: 6px;">${val('prod_pl2_no')}</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <p><b>- Giải trình minh chứng sản phẩm đăng ký ươm tạo phù hợp với sản phẩm công nghệ cao:</b></p>
-                <p style="text-indent: 0.5in;">${val('prod_desc').replace(/\n/g, '<br>')}</p>
-
-                <p><b>- Quy trình hoạt động của sản phẩm, cấu phần hình thành, mối quan hệ và sơ đồ hoạt động:</b></p>
-                <p style="text-indent: 0.5in;">${val('prod_process').replace(/\n/g, '<br>')}</p>
-
-                <p><b>- Chất lượng, tính năng vượt trội, giá trị gia tăng và khả năng thay thế hàng nhập khẩu:</b></p>
-                <p style="text-indent: 0.5in;">${val('prod_superiority').replace(/\n/g, '<br>')}</p>
-
-                <p><b>- Các sản phẩm/dịch vụ khác có thể tạo ra từ dự án:</b></p>
-                <p style="text-indent: 0.5in;">${val('prod_other').replace(/\n/g, '<br>')}</p>
-
-                <p><b>2.2. Công nghệ đăng ký ươm tạo của dự án:</b></p>
-                <table class="data-table" style="border: 1px solid #000000; border-collapse: collapse; width: 100%;">
-                    <thead>
-                        <tr>
-                            <th width="35%" style="border: 1px solid #000000; padding: 6px; background-color: #f2f2f2;">Tên công nghệ của dự án</th>
-                            <th width="50%" style="border: 1px solid #000000; padding: 6px; background-color: #f2f2f2;">Tên công nghệ theo Phụ lục I – Quyết định số 23/2026/QĐ-TTg</th>
-                            <th width="15%" style="border: 1px solid #000000; padding: 6px; background-color: #f2f2f2;">Số TT</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="border: 1px solid #000000; padding: 6px;">${val('tech_name')}</td>
-                            <td style="border: 1px solid #000000; padding: 6px;">${val('tech_pl1_name')}</td>
-                            <td align="center" style="border: 1px solid #000000; padding: 6px;">${val('tech_pl1_no')}</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <p><b>- Giải trình minh chứng công nghệ đăng ký ươm tạo phù hợp với công nghệ cao:</b></p>
-                <p style="text-indent: 0.5in;">${val('tech_desc').replace(/\n/g, '<br>')}</p>
-
-                <p><b>- Mô tả chi tiết quy trình công nghệ và điểm nổi bật:</b></p>
-                <p style="text-indent: 0.5in;">${val('tech_process').replace(/\n/g, '<br>')}</p>
-
-                <p><b>- Tính khả thi về mặt kỹ thuật công nghệ triển khai thực hiện:</b></p>
-                <p style="text-indent: 0.5in;">${val('tech_feasibility').replace(/\n/g, '<br>')}</p>
-
-                <p><b>- Khả năng bảo mật, an toàn dữ liệu, tính mở rộng:</b></p>
-                <p style="text-indent: 0.5in;">${val('tech_security').replace(/\n/g, '<br>')}</p>
-
-                <p><b>- Tính hiệu quả của công nghệ ươm tạo nâng cao năng suất, hiện đại hóa sản xuất:</b></p>
-                <p style="text-indent: 0.5in;">${val('tech_efficiency').replace(/\n/g, '<br>')}</p>
-
-                <div class="subsection-title">3. Hoạt động Đổi mới sáng tạo của dự án</div>
-                <p><b>- Tính mới, tính sáng tạo trong công nghệ và sản phẩm ươm tạo:</b></p>
-                <p style="text-indent: 0.5in;">${val('innov_newness').replace(/\n/g, '<br>')}</p>
-                <p><b>- Khả năng đăng ký xác lập quyền sở hữu trí tuệ:</b> ${val('innov_ip')}</p>
-
-                <div class="subsection-title">4. Biện pháp bảo vệ môi trường, tiết kiệm năng lượng</div>
-                <p><b>- Hệ thống quản lý chất lượng, tiêu chuẩn đang áp dụng:</b> ${val('env_iso')}</p>
-                <p><b>- Biện pháp áp dụng thân thiện môi trường:</b></p>
-                <p style="text-indent: 0.5in;">${val('env_desc').replace(/\n/g, '<br>')}</p>
-
-                <div class="subsection-title">5. Tiềm năng thương mại và đối thủ cạnh tranh</div>
-                <p><b>- Đối thủ cạnh tranh 1:</b> ${val('competitor_1')}</p>
-                <p><b>- Đối thủ cạnh tranh 2:</b> ${val('competitor_2')}</p>
-
-                <div class="subsection-title">6. Nguồn lực thực hiện và lộ trình phát triển</div>
-                <p><b>- Tổng kinh phí đã đầu tư thực tế:</b> ${val('res_budget')}</p>
-                <p><b>- Tổng số lượng nhân sự hiện tại:</b> ${val('res_staff')}</p>
-
-                <div class="section-title">III. ĐỀ XUẤT CẦN HỖ TRỢ KHI THAM GIA ƯƠM TẠO (ĐÃ TÍCH CHỌN)</div>
-                <table class="data-table" style="border: 1px solid #000000; border-collapse: collapse; width: 100%;">
-                    <thead>
-                        <tr>
-                            <th width="5%" style="border: 1px solid #000000; padding: 6px; background-color: #f2f2f2;">STT</th>
-                            <th width="25%" style="border: 1px solid #000000; padding: 6px; background-color: #f2f2f2;">Nội dung đề xuất hỗ trợ</th>
-                            <th width="20%" style="border: 1px solid #000000; padding: 6px; background-color: #f2f2f2;">Thực trạng hiện tại</th>
-                            <th width="25%" style="border: 1px solid #000000; padding: 6px; background-color: #f2f2f2;">Nhu cầu cần hỗ trợ</th>
-                            <th width="25%" style="border: 1px solid #000000; padding: 6px; background-color: #f2f2f2;">Kết quả mong muốn đạt được</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${supportRows}
-                    </tbody>
-                </table>
-
-                <br><br>
-                <table class="header-table" style="margin-top: 30pt; width: 100%;">
-                    <tr>
-                        <td width="50%"></td>
-                        <td width="50%" align="center">
-                            <i>TP. Hồ Chí Minh, Ngày.....Tháng.....Năm 2026</i><br>
-                            <b>ĐẠI DIỆN DỰ ÁN</b><br>
-                            <i>(Ký, ghi rõ họ tên)</i>
-                            <br><br><br><br>
-                        </td>
-                    </tr>
-                </table>
+            <head><meta charset="utf-8"><title>Thuyết minh SHTP-IC</title></head>
+            <body style="font-family: 'Times New Roman', serif; font-size: 13pt; margin: 1in;">
+                <h2 style="text-align: center; text-transform: uppercase;">THUYẾT MINH DỰ ÁN SHTP-IC</h2>
+                <p><b>1. Tên dự án:</b> ${payload.ten_du_an}</p>
+                <p><b>2. Sản phẩm chính:</b> ${payload.san_pham_chinh}</p>
+                <p><b>3. Công nghệ chính:</b> ${payload.cong_nghe_chinh}</p>
+                <p><b>4. Lĩnh vực:</b> ${payload.linh_vuc}</p>
+                <h3>II. NỘI DUNG CHI TIẾT CỦA DỰ ÁN</h3>
+                <p><b>- Vấn đề & Giải pháp:</b><br>${payload.van_de_giai_phap.replace(/\n/g, '<br>')}</p>
+                <p><b>- Tính cấp thiết:</b><br>${payload.tinh_cap_thiet.replace(/\n/g, '<br>')}</p>
+                <p><b>- Minh chứng sản phẩm:</b><br>${payload.minh_chung_san_pham.replace(/\n/g, '<br>')}</p>
             </body>
             </html>
             `;
-            
-            const blob = new Blob(['\ufeff' + docHTML], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+            const blob = new Blob(['\ufeff' + docHTML], { type: 'application/msword' });
             const url = URL.createObjectURL(blob);
             
             const link = document.createElement('a');
             link.href = url;
-            link.download = `Thuyet_Minh_SHTP-IC_${val('proj_name').replace(/\s+/g, '_')}.docx`;
+            link.download = `Thuyet_Minh_SHTP-IC_${payload.ten_du_an.replace(/\s+/g, '_')}.docx`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
