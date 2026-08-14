@@ -1743,10 +1743,34 @@ Chỉ trả về JSON thô không codeblock:
             if (t2Textareas[7] && data.bao_mat_mo_rong) t2Textareas[7].value = data.bao_mat_mo_rong;
         }
 
+        async function checkAIStatus() {
+            const statusBadge = document.getElementById('aiStatusBadge');
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+
+            try {
+                const res = await fetch('/api/ai-status');
+                const data = await res.json();
+                if (data.online) {
+                    if (statusText) statusText.innerText = "Qwen 2.5 Local (Sẵn sàng)";
+                    if (statusDot) statusDot.style.backgroundColor = "#10b981";
+                    if (statusBadge) statusBadge.title = "AI Ollama đang chạy offline trên MacBook M1 của bạn!";
+                } else {
+                    if (statusText) statusText.innerText = "Qwen 2.5 (Sẵn sàng Bóc Tách)";
+                    if (statusDot) statusDot.style.backgroundColor = "#38bdf8";
+                    if (statusBadge) statusBadge.title = "Hệ thống sẵn sàng nhận file và bóc tách dữ liệu!";
+                }
+            } catch(e) {
+                if (statusText) statusText.innerText = "Qwen 2.5 (Sẵn sàng)";
+                if (statusDot) statusDot.style.backgroundColor = "#38bdf8";
+            }
+        }
+
         // Init on page load
         window.addEventListener('DOMContentLoaded', () => {
             renderRawFileList();
             loadKBList();
+            checkAIStatus();
         });
     </script>
 </body>

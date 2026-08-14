@@ -52,9 +52,28 @@ def read_index():
             return f.read()
     return "<h1>SHTP-IC Proposal AI Engine Server Running</h1>"
 
-# ----------------------------------------------------
-# 1. API QUẢN LÝ KHO DỰ ÁN MẪU (RAG KNOWLEDGE BASE)
-# ----------------------------------------------------
+@app.get("/api/ai-status")
+def check_ai_status():
+    """Kiểm tra xem Ollama AI Local đã bật hay chưa."""
+    try:
+        res = requests.get("http://localhost:11434/api/tags", timeout=3)
+        if res.status_code == 200:
+            models = res.json().get("models", [])
+            model_names = [m.get("name") for m in models]
+            return {
+                "online": True,
+                "model": MODEL_NAME,
+                "available_models": model_names,
+                "message": "AI Ollama Local đang sẵn sàng 100%"
+            }
+    except Exception as e:
+        pass
+    
+    return {
+        "online": False,
+        "model": MODEL_NAME,
+        "message": "Chưa bật Ollama AI Local. Hệ thống sẽ tự động dùng chế độ AI Bóc tách mặc định."
+    }
 
 @app.get("/api/kb/list")
 def list_kb():
