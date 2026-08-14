@@ -599,7 +599,7 @@ Bước 4: Xuất công thức phân bón/thuốc bảo vệ thực vật tươn
             endpoint: 'http://localhost:11434',
             model: 'qwen2.5:7b',
             apiKey: '',
-            systemPrompt: 'Bạn là một chuyên gia tư vấn viết dự án khởi nghiệp công nghệ cao của Vườn ươm Doanh nghiệp Công nghệ cao SHTP-IC. Hãy viết chi tiết, khoa học, đầy đủ thông số kỹ thuật và đúng biểu mẫu thuyết minh.'
+            systemPrompt: 'Chuyên gia viết dự án Vườn ươm SHTP-IC. Viết ngắn gọn, khoa học, đúng biểu mẫu.'
         };
 
         // Default demo data to restore if needed
@@ -863,15 +863,12 @@ Bước 4: Xuất công thức phân bón/thuốc bảo vệ thực vật tươn
             }
             element.classList.add('ai-loading-glow');
             
-            const prompt = `Bạn hãy tối ưu hóa, viết chi tiết hơn phần "${fieldName}" cho dự án sau:
-- Tên dự án: ${projName}
-- Sản phẩm chính: ${projProduct}
-- Công nghệ chính: ${projTech}
-
-Giá trị hiện tại đang viết nháp là:
-"${currentValue}"
-
-Yêu cầu: Hãy viết lại thật chỉn chu, khoa học, chuyên nghiệp, sử dụng ngôn từ học thuật chuẩn xác cho thuyết minh dự án của Vườn ươm SHTP-IC. Không đưa thêm lời giải thích nào khác ngoài văn bản tối ưu.`;
+            const prompt = `Viết lại/tối ưu trường "${fieldName}" (văn phong khoa học SHTP-IC, ngắn gọn, súc tích):
+Dự án: ${projName}
+Sản phẩm: ${projProduct}
+Công nghệ: ${projTech}
+Nháp: "${currentValue}"
+Yêu cầu: Không hội thoại, không giải thích thêm, chỉ trả về nội dung đã tối ưu.`;
 
             try {
                 const response = await fetchAIResponse(prompt);
@@ -940,12 +937,7 @@ Yêu cầu: Hãy viết lại thật chỉn chu, khoa học, chuyên nghiệp, s
             const projProduct = document.getElementById('proj_product').value;
             const projTech = document.getElementById('proj_tech').value;
             
-            const chatPrompt = `Ngữ cảnh dự án hiện tại của người dùng:
-- Tên dự án: ${projName}
-- Sản phẩm chính: ${projProduct}
-- Công nghệ chính: ${projTech}
-
-Câu hỏi/Yêu cầu của người dùng: ${text}`;
+            const chatPrompt = `Dự án: ${projName} | SP: ${projProduct} | CN: ${projTech}\nYêu cầu: ${text}`;
             
             try {
                 const response = await fetchAIResponse(chatPrompt);
@@ -1026,22 +1018,15 @@ Câu hỏi/Yêu cầu của người dùng: ${text}`;
             
             let prompt = "";
             if (type === 'draft_all') {
-                prompt = `Dựa trên thông tin dự án sau:
-- Tên dự án: ${projName}
-- Sản phẩm chính: ${projProduct}
-
-Hãy phác thảo nháp các phần sau (mỗi phần viết khoảng 2-3 câu ngắn gọn nhưng đầy đủ chuyên môn):
-1. Vấn đề và giải pháp (proj_problem_sol)
-2. Tính cấp thiết (proj_urgency)
-3. Mục tiêu kinh tế xã hội (proj_goal_eco)
-4. Mục tiêu KHCN (proj_goal_tech)
-
-Định dạng trả về dưới dạng JSON thô (không có thẻ code \`\`\`json):
+                prompt = `Phác thảo dự án SHTP-IC dạng JSON (mỗi mục 2-3 câu ngắn gọn, súc tích):
+Dự án: ${projName}
+Sản phẩm: ${projProduct}
+Chỉ trả về JSON thô không codeblock:
 {
-  "proj_problem_sol": "...",
-  "proj_urgency": "...",
-  "proj_goal_eco": "...",
-  "proj_goal_tech": "..."
+  "proj_problem_sol": "Vấn đề & giải pháp...",
+  "proj_urgency": "Tính cấp thiết...",
+  "proj_goal_eco": "Mục tiêu KT-XH...",
+  "proj_goal_tech": "Mục tiêu KHCN..."
 }`;
             } else if (type === 'academic') {
                 const activeTab = document.querySelector('.tab-content.active');
@@ -1050,7 +1035,7 @@ Hãy phác thảo nháp các phần sau (mỗi phần viết khoảng 2-3 câu n
                     aiMsg.innerHTML = `Không tìm thấy ô nhập liệu nào khả dụng ở tab hiện tại để nâng cấp văn phong.`;
                     return;
                 }
-                prompt = `Nâng cấp văn phong khoa học học thuật cho nội dung sau: "${field.value}"`;
+                prompt = `Nâng cấp văn phong khoa học học thuật, viết ngắn gọn cho: "${field.value}". Chỉ trả về nội dung kết quả.`;
             } else if (type === 'translate') {
                 const activeTab = document.querySelector('.tab-content.active');
                 const field = activeTab ? activeTab.querySelector('textarea, input[type="text"]') : null;
@@ -1058,7 +1043,7 @@ Hãy phác thảo nháp các phần sau (mỗi phần viết khoảng 2-3 câu n
                     aiMsg.innerHTML = `Không tìm thấy ô nhập liệu nào khả dụng ở tab hiện tại để dịch thuật.`;
                     return;
                 }
-                prompt = `Dịch toàn bộ văn bản sau sang tiếng Anh học thuật kỹ thuật: "${field.value}"`;
+                prompt = `Translate to technical English, keep it concise: "${field.value}". Output only the translation.`;
             }
             
             try {
@@ -1414,18 +1399,18 @@ Hãy phác thảo nháp các phần sau (mỗi phần viết khoảng 2-3 câu n
             </html>
             `;
             
-            const blob = new Blob(['\ufeff' + docHTML], { type: 'application/msword' });
+            const blob = new Blob(['\ufeff' + docHTML], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
             const url = URL.createObjectURL(blob);
             
             const link = document.createElement('a');
             link.href = url;
-            link.download = `Thuyet_Minh_SHTP-IC_${val('proj_name').replace(/\s+/g, '_')}.doc`;
+            link.download = `Thuyet_Minh_SHTP-IC_${val('proj_name').replace(/\s+/g, '_')}.docx`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(url);
             
-            showToast("Thuyết minh dự án đã được xuất ra file Word (.doc) thành công!", "success");
+            showToast("Thuyết minh dự án đã được xuất ra file Word (.docx) thành công!", "success");
         }
 
         // Global switches
