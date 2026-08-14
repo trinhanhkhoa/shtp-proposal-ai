@@ -1557,7 +1557,7 @@ Chỉ trả về JSON thô không codeblock:
             }
             renderRawFileList();
             if (addedCount > 0) {
-                alert(`✅ Đã nhận ${addedCount} file thô từ máy tính! Bấm "Bóc tách & viết form AI" để bắt đầu.`);
+                showToast(`✅ Đã nhận ${addedCount} file thô từ máy tính! Bấm "Bóc tách & viết form AI" để bắt đầu.`, "success");
             }
         }
 
@@ -1839,20 +1839,16 @@ Chỉ trả về JSON thô không codeblock:
                     if (percentEl) percentEl.innerText = "100%";
 
                     if (genData.status === 'success' || genData.data) {
-                        setTimeout(() => {
-                            fillDataToForm(genData.data);
-                            if (progressModal) progressModal.classList.remove('active');
-                            toggleFormSkeletons(false);
-                            alert(`🎉 Qwen 2.5 AI đã trích xuất thành công từ ${uploadData.files.length} file thô và khớp xong dữ liệu vào Form!`);
-                        }, 400);
+                        fillDataToForm(genData.data);
+                        if (progressModal) progressModal.classList.remove('active');
+                        toggleFormSkeletons(false);
+                        showToast(`🎉 AI đã bóc tách xong từ ${uploadData.files.length} file thô và tự động điền vào Form!`, "success");
                     }
                 }
             } catch (e) {
-                setTimeout(() => {
-                    if (progressModal) progressModal.classList.remove('active');
-                    toggleFormSkeletons(false);
-                    alert("Đã gửi dữ liệu thô sang Ollama AI xử lý!");
-                }, 400);
+                if (progressModal) progressModal.classList.remove('active');
+                toggleFormSkeletons(false);
+                showToast("Đã xử lý bóc tách file dữ liệu thô!", "warning");
             } finally {
                 btn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> Bóc tách & viết form AI`;
                 btn.disabled = false;
