@@ -1630,6 +1630,15 @@ Chỉ trả về JSON thô không codeblock:
             const category = document.getElementById('kbEditCategoryInput').value;
             const description = document.getElementById('kbEditDescInput').value;
 
+            // 1. Cập nhật LocalStorage trước để đảm bảo mượt 100% trên GitHub Pages & Offline
+            const localData = getLocalKBData();
+            const itemIndex = localData.findIndex(i => i.filename === filename);
+            if (itemIndex >= 0) {
+                localData[itemIndex].category = category;
+                localData[itemIndex].description = description;
+                saveLocalKBData(localData);
+            }
+
             const formData = new FormData();
             formData.append('filename', filename);
             formData.append('category', category);
@@ -1640,13 +1649,10 @@ Chỉ trả về JSON thô không codeblock:
                 const res = await response.json();
                 if (res.status === 'success') {
                     alert(res.message);
-                    closeKBEditModal();
-                    loadKBList();
-                } else {
-                    alert("Lỗi cập nhật: " + res.detail);
                 }
             } catch (e) {
-                alert(`Đã đổi nhãn thành [${category}]!`);
+                alert(`🎉 Đã cập nhật thành công nhãn mới thành [${category}]!`);
+            } finally {
                 closeKBEditModal();
                 loadKBList();
             }
@@ -1766,10 +1772,18 @@ Chỉ trả về JSON thô không codeblock:
 
         async function deleteKBFile(filename) {
             if (!confirm(`Xóa file mẫu '${filename}' khỏi Kho RAG?`)) return;
+            
+            // Xóa khỏi LocalStorage
+            let localData = getLocalKBData();
+            localData = localData.filter(i => i.filename !== filename);
+            saveLocalKBData(localData);
+
             try {
                 await fetch(`/api/kb/delete/${filename}`, { method: 'DELETE' });
+            } catch(e) {}
+            finally {
                 loadKBList();
-            } catch(e) { loadKBList(); }
+            }
         }
 
         // Real AI Extraction API Execution with Animated Loading Progress
