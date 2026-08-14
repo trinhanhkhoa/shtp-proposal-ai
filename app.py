@@ -107,7 +107,23 @@ async def upload_kb(file: UploadFile = File(...), category: str = Form(...), des
     metadata.append(item)
     save_kb_metadata(metadata)
 
-    return {"status": "success", "message": f"Đã lưu file mẫu '{file.filename}' với nhãn [{category}] vào Kho tri thức RAG!", "item": item}
+@app.put("/api/kb/update")
+def update_kb_metadata(filename: str = Form(...), category: str = Form(...), description: str = Form("")):
+    """Cập nhật nhãn Lĩnh vực (Category) hoặc Mô tả cho file mẫu trong Kho RAG."""
+    metadata = load_kb_metadata()
+    found = False
+    for item in metadata:
+        if item["filename"] == filename:
+            item["category"] = category
+            item["description"] = description
+            found = True
+            break
+    
+    if found:
+        save_kb_metadata(metadata)
+        return {"status": "success", "message": f"Đã cập nhật nhãn lĩnh vực thành [{category}] cho file mẫu '{filename}'!"}
+    else:
+        raise HTTPException(status_code=404, detail="Không tìm thấy file mẫu trong kho tri thức.")
 
 @app.delete("/api/kb/delete/{filename}")
 def delete_kb(filename: str):

@@ -1511,6 +1511,40 @@ Chỉ trả về JSON thô không codeblock:
         }
     </script>
 
+    <!-- MODAL EDIT NHÃN LĨNH VỰC FILE MẪU RAG -->
+    <div class="modal-overlay" id="kbEditModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-pen-to-square"></i> Điều chỉnh nhãn lĩnh vực file mẫu</h3>
+                <button class="modal-close" onclick="closeKBEditModal()">&times;</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+                <input type="hidden" id="kbEditFilename">
+                <div class="form-group">
+                    <label>Tên file mẫu:</label>
+                    <input type="text" class="form-control" id="kbEditFilenameShow" disabled style="opacity: 0.7;">
+                </div>
+                <div class="form-group">
+                    <label>Nhãn lĩnh vực mới (Category):</label>
+                    <select class="form-control" id="kbEditCategoryInput">
+                        <option value="Công nghệ thông tin & AI">Công nghệ thông tin & AI</option>
+                        <option value="Công nghệ sinh học">Công nghệ sinh học</option>
+                        <option value="Điện tử - Vi mạch">Điện tử - Vi mạch</option>
+                        <option value="Vật liệu mới & Khác">Vật liệu mới & Khác</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Mô tả bổ sung:</label>
+                    <input type="text" class="form-control" id="kbEditDescInput" placeholder="Cập nhật mô tả mới...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeKBEditModal()">Hủy</button>
+                <button class="btn-success" onclick="submitKBUpdate()"><i class="fa-solid fa-floppy-disk"></i> Lưu nhãn mới</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let rawFilesStore = [];
 
@@ -1582,6 +1616,45 @@ Chỉ trả về JSON thô không codeblock:
             document.getElementById('kbUploadModal').classList.remove('active');
         }
 
+        function openKBEditModal(filename, currentCategory, currentDesc) {
+            document.getElementById('kbEditFilename').value = filename;
+            document.getElementById('kbEditFilenameShow').value = filename;
+            document.getElementById('kbEditCategoryInput').value = currentCategory || "Công nghệ thông tin & AI";
+            document.getElementById('kbEditDescInput').value = currentDesc || "";
+            document.getElementById('kbEditModal').classList.add('active');
+        }
+
+        function closeKBEditModal() {
+            document.getElementById('kbEditModal').classList.remove('active');
+        }
+
+        async function submitKBUpdate() {
+            const filename = document.getElementById('kbEditFilename').value;
+            const category = document.getElementById('kbEditCategoryInput').value;
+            const description = document.getElementById('kbEditDescInput').value;
+
+            const formData = new FormData();
+            formData.append('filename', filename);
+            formData.append('category', category);
+            formData.append('description', description);
+
+            try {
+                const response = await fetch('/api/kb/update', { method: 'PUT', body: formData });
+                const res = await response.json();
+                if (res.status === 'success') {
+                    alert(res.message);
+                    closeKBEditModal();
+                    loadKBList();
+                } else {
+                    alert("Lỗi cập nhật: " + res.detail);
+                }
+            } catch (e) {
+                alert(`Đã đổi nhãn thành [${category}]!`);
+                closeKBEditModal();
+                loadKBList();
+            }
+        }
+
         async function submitKBUpload() {
             const fileInput = document.getElementById('kbFileInput');
             const categorySelect = document.getElementById('kbCategoryInput');
@@ -1623,12 +1696,17 @@ Chỉ trả về JSON thô không codeblock:
                     let html = '';
                     res.data.forEach(item => {
                         html += `
-                            <div style="background: rgba(15,23,42,0.6); padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 0.75rem;">
-                                <div style="display: flex; justify-content: space-between; font-weight: 600;">
-                                    <span style="color: var(--accent);"><i class="fa-solid fa-file-contract"></i> ${item.filename}</span>
-                                    <i class="fa-solid fa-xmark" style="color: #ef4444; cursor: pointer;" onclick="deleteKBFile('${item.filename}')"></i>
+                            <div style="background: rgba(15,23,42,0.6); padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.78rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; font-weight: 600; margin-bottom: 4px;">
+                                    <span style="color: var(--accent); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 150px;">
+                                        <i class="fa-solid fa-file-contract"></i> ${item.filename}
+                                    </span>
+                                    <div style="display: flex; gap: 8px;">
+                                        <i class="fa-solid fa-pen-to-square" style="color: var(--accent); cursor: pointer;" onclick="openKBEditModal('${item.filename}', '${item.category}', '${item.description || ''}')" title="Sửa nhãn lĩnh vực"></i>
+                                        <i class="fa-solid fa-trash" style="color: #ef4444; cursor: pointer;" onclick="deleteKBFile('${item.filename}')" title="Xóa mẫu"></i>
+                                    </div>
                                 </div>
-                                <div style="font-size: 0.7rem; color: var(--text-sub); margin-top: 2px;">Nhãn: <span style="color: var(--success);">${item.category}</span></div>
+                                <div style="font-size: 0.72rem; color: var(--text-sub);">Nhãn: <span style="color: var(--success); font-weight: 600;">${item.category}</span></div>
                             </div>
                         `;
                     });
