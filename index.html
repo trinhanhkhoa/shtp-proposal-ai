@@ -253,7 +253,7 @@
             <div style="display: flex; flex-direction: column; gap: 14px;">
                 <div class="form-group">
                     <label>Địa chỉ API Endpoint:</label>
-                    <input type="text" class="form-control" id="ai_endpoint" value="http://localhost:11434">
+                    <input type="text" class="form-control" id="ai_endpoint" value="">
                     <span style="font-size: 0.72rem; color: var(--text-sub); margin-top: 4px; display: block;">
                         * Dành cho Ollama local. Để tránh bị lỗi CORS, hãy khởi động Ollama bằng lệnh:<br>
                         <code>OLLAMA_ORIGINS="*" ollama serve</code>
@@ -261,7 +261,7 @@
                 </div>
                 <div class="form-group">
                     <label>Tên mô hình (Model Name):</label>
-                    <input type="text" class="form-control" id="ai_model" value="qwen2.5:7b">
+                    <input type="text" class="form-control" id="ai_model" value="">
                     <span style="font-size: 0.72rem; color: var(--text-sub); margin-top: 4px; display: block;">
                         Các mẫu thường dùng: <code>qwen2.5:7b</code>, <code>qwen2.5</code>, <code>qwen2.5:3b</code>
                     </span>
@@ -272,7 +272,7 @@
                 </div>
                 <div class="form-group">
                     <label>System Prompt (Vai trò của AI):</label>
-                    <textarea class="form-control" id="ai_system_prompt" style="min-height: 80px;">Bạn là một chuyên gia tư vấn viết dự án khởi nghiệp công nghệ cao của Vườn ươm Doanh nghiệp Công nghệ cao SHTP-IC. Hãy viết chi tiết, khoa học, đầy đủ thông số kỹ thuật và đúng biểu mẫu thuyết minh.</textarea>
+                    <textarea class="form-control" id="ai_system_prompt" style="min-height: 80px;"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -337,17 +337,17 @@
                     <div class="tab-content" id="tab1">
                         <div class="section-box">
                             <div class="section-title-tag">I. THÔNG TIN CHUNG VỀ DỰ ÁN</div>
-                            <div class="form-group"><label>1. Tên dự án:</label><input type="text" class="form-control" value="Hệ thống Tự động hóa Giám sát và Cảnh báo Sớm trong Nông nghiệp Công nghệ cao ứng dụng IoT và AI"></div>
-                            <div class="form-group"><label>2. Sản phẩm/dịch vụ chính:</label><input type="text" class="form-control" value="Thiết bị cảm biến SmartAgri Gateway & Nền tảng SaaS Quản trị Nông trại"></div>
-                            <div class="form-group"><label>3. Công nghệ chính của dự án:</label><input type="text" class="form-control" value="Công nghệ Mạng cảm biến không dây (WSN), Trí tuệ nhân tạo (AI/Computer Vision)"></div>
-                            <div class="form-group"><label>4. Lĩnh vực:</label><input type="text" class="form-control" value="☐ Công nghiệp điện tử, vi mạch bán dẫn   ☒ Công nghệ sinh học   ☐ Khác"></div>
+                            <div class="form-group"><label>1. Tên dự án:</label><input type="text" class="form-control" value=""></div>
+                            <div class="form-group"><label>2. Sản phẩm/dịch vụ chính:</label><input type="text" class="form-control" value=""></div>
+                            <div class="form-group"><label>3. Công nghệ chính của dự án:</label><input type="text" class="form-control" value=""></div>
+                            <div class="form-group"><label>4. Lĩnh vực:</label><input type="text" class="form-control" value=""></div>
                         </div>
                         <div class="section-box">
                             <div class="section-title-tag">II.1. GIỚI THIỆU TÓM TẮT VỀ DỰ ÁN</div>
-                            <div class="form-group"><label>- Vấn đề dự án đang muốn giải quyết và giải pháp dự án nêu ra:</label><textarea class="form-control">Hiện nay các trang trại nông nghiệp công nghệ cao gặp khó khăn trong việc phát hiện sớm sâu bệnh và tối ưu hóa lượng nước tưới/phân bón thủ công. Dự án cung cấp giải pháp tích hợp các đầu đo IoT thu thập dữ liệu thời gian thực (độ ẩm, pH, dinh dưỡng đất) kết hợp camera AI phân tích hình ảnh lá cây để đưa ra khuyến nghị chính xác, giảm 30% chi phí vận hành.</textarea></div>
-                            <div class="form-group"><label>- Tính cấp thiết thực hiện dự án (nếu có):</label><textarea class="form-control">Xu hướng chuyển đổi số nông nghiệp tại TP.HCM và cả nước đòi hỏi giải pháp Việt hóa với chi phí phù hợp. Các sản phẩm nhập khẩu hiện tại có giá thành cao và khó tùy biến theo điều kiện khí hậu địa phương.</textarea></div>
-                            <div class="form-group"><label>- Mục tiêu kinh tế - xã hội của dự án (nếu có):</label><textarea class="form-control">Tạo nguồn thu 5 tỷ/năm từ năm thứ 3, hỗ trợ 100+ hợp tác xã cắt giảm hóa chất BVTV, góp phần phát triển nông nghiệp xanh bền vững.</textarea></div>
-                            <div class="form-group"><label>- Mục tiêu về khoa học công nghệ của dự án (nếu có):</label><textarea class="form-control">Làm chủ công nghệ nhúng AI Edge trên thiết bị IoT, đăng ký 01 Sáng chế/GPHI và 01 Bản quyền phần mềm.</textarea></div>
+                            <div class="form-group"><label>- Vấn đề dự án đang muốn giải quyết và giải pháp dự án nêu ra:</label><textarea class="form-control"></textarea></div>
+                            <div class="form-group"><label>- Tính cấp thiết thực hiện dự án (nếu có):</label><textarea class="form-control"></textarea></div>
+                            <div class="form-group"><label>- Mục tiêu kinh tế - xã hội của dự án (nếu có):</label><textarea class="form-control"></textarea></div>
+                            <div class="form-group"><label>- Mục tiêu về khoa học công nghệ của dự án (nếu có):</label><textarea class="form-control"></textarea></div>
                         </div>
                     </div>
 
@@ -368,9 +368,9 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><input type="text" value="Nền tảng SmartAgri SaaS & Gateway IoT"></td>
-                                        <td><input type="text" value="Hệ thống, phần mềm quản lý và điều khiển tự động hóa nông nghiệp công nghệ cao"></td>
-                                        <td><input type="text" value="II.18"></td>
+                                        <td><input type="text" value=""></td>
+                                        <td><input type="text" value=""></td>
+                                        <td><input type="text" value=""></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -380,22 +380,19 @@
                             </div>
                             <div class="form-group">
                                 <label>- Giải trình minh chứng sản phẩm đăng ký ươm tạo phù hợp với sản phẩm công nghệ cao đã liệt kê ở bảng trên (dựa trên các đặc tính kỹ thuật, các thông số kỹ thuật đặc thù,…dự án đã đạt được hiện tại và dự kiến sẽ đạt được trong tương lai):</label>
-                                <textarea class="form-control" style="min-height: 110px;">+ Hiện tại: Gateway đạt chuẩn IP67, tích hợp 8 kênh cảm biến RS485 (pH, EC, NPK, độ ẩm). Tần số thu thập 5s/lần, độ chính xác 98.5%. Cloud SaaS chịu tải 10,000 thiết bị đồng thời.
-+ Tương lai (12 tháng ươm tạo): Nâng cấp chip xử lý AI Edge SoC, tích hợp chuẩn truyền tin vệ tinh băng hẹp (NB-IoT) và giảm tiêu thụ năng lượng 40% dùng pin năng lượng mặt trời.</textarea>
+                                <textarea class="form-control" style="min-height: 110px;"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>- Mô tả và cung cấp thông tin về quy trình hoạt động của sản phẩm đăng ký ươm tạo; Cấu phần hình thành sản phẩm; mối quan hệ giữa các thành phần; lưu đồ/sơ đồ hoạt động của hệ thống/giải pháp:</label>
-                                <textarea class="form-control" style="min-height: 120px;">+ Các cấu phần: 1. Sensor Node ➔ 2. Gateway IoT Edge ➔ 3. Gateway Cloud MQTT Broker ➔ 4. AI Engine ➔ 5. Controller Relay ➔ 6. Web/App Interface.
-+ Mối quan hệ: Sensor đo đạc dữ liệu ➔ Gateway lọc nhiễu & đóng gói dữ liệu ➔ Cloud AI chẩn đoán dịch bệnh & tính toán lượng nước ➔ Phát lệnh Relay mở van tự động ➔ Đẩy cảnh báo lên App cho người quản lý trang trại.</textarea>
+                                <textarea class="form-control" style="min-height: 120px;"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>- Chất lượng, tính năng vượt trội, giá trị gia tăng và khả năng thay thế sản phẩm nhập khẩu của sản phẩm ươm tạo:</label>
-                                <textarea class="form-control" style="min-height: 90px;">+ Tính năng vượt trội: Tích hợp AI chẩn đoán sâu bệnh Việt hóa trực tiếp tại vi mạch.
-+ Thay thế nhập khẩu: Giá thành thiết bị rẻ hơn 60% so với giải pháp nhập khẩu Israel/Hà Lan, miễn phí duy trì phần mềm năm đầu.</textarea>
+                                <textarea class="form-control" style="min-height: 90px;"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>- Các sản phẩm/dịch vụ khác có thể tạo ra từ dự án ươm tạo (nếu có):</label>
-                                <textarea class="form-control">Dịch vụ tư vấn dữ liệu nông nghiệp số; Thiết bị giám sát thời tiết chuyên dụng cho nhà kính.</textarea>
+                                <textarea class="form-control"></textarea>
                             </div>
                         </div>
 
@@ -414,9 +411,9 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><input type="text" value="Công nghệ Trí tuệ nhân tạo (AI/Computer Vision)"></td>
-                                        <td><input type="text" value="Công nghệ Trí tuệ nhân tạo (AI), Thị giác máy tính"></td>
-                                        <td><input type="text" value="I.01"></td>
+                                        <td><input type="text" value=""></td>
+                                        <td><input type="text" value=""></td>
+                                        <td><input type="text" value=""></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -426,27 +423,23 @@
                             </div>
                             <div class="form-group">
                                 <label>- Giải trình minh chứng công nghệ đăng ký ươm tạo phù hợp với công nghệ cao đã liệt kê ở bảng trên:</label>
-                                <textarea class="form-control">Công nghệ ứng dụng mạng cuộn CNN (YOLOv8 & MobileNetV3) xử lý hình ảnh thời gian thực, đã kiểm chứng trên 5,000 mẫu ảnh lá cây nông nghiệp tại Việt Nam.</textarea>
+                                <textarea class="form-control"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>- Mô tả chi tiết, cụ thể các bước của quy trình công nghệ và nêu điểm nổi bật của công nghệ (kèm theo sơ đồ mô hình minh hoạ):</label>
-                                <textarea class="form-control" style="min-height: 100px;">Quy trình 4 bước: 
-Bước 1: Thu thập ảnh từ camera HD góc rộng tại vườn.
-Bước 2: Chuẩn hóa & lọc nhiễu ánh sáng môi trường.
-Bước 3: Chạy mô hình suy luận AI Edge phát hiện vết bệnh (đạt độ chính xác 94%).
-Bước 4: Xuất công thức phân bón/thuốc bảo vệ thực vật tương ứng.</textarea>
+                                <textarea class="form-control" style="min-height: 100px;"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>- Tính khả thi về mặt kỹ thuật công nghệ để triển khai thực hiện dự án (Công nghệ ứng dụng có phù hợp để giải quyết các vấn đề khách hàng đang gặp phải):</label>
-                                <textarea class="form-control">Giải quyết triệt để nỗi đau phát hiện sâu bệnh muộn của nông dân, giảm thiểu rủi ro mất mùa và tiết kiệm 35% chi phí mua hóa chất.</textarea>
+                                <textarea class="form-control"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>- Làm rõ các nội dung về tính tương thích, khả năng bảo mật – an toàn dữ liệu, khả năng mở rộng, tính tương tác người dùng… (nếu có):</label>
-                                <textarea class="form-control">Bảo mật chuẩn mã hóa TLS 1.3/AES-256; Kiến trúc Docker Microservices hỗ trợ nâng cấp mở rộng lên 50,000 kết nối; Giao diện Web/App tối ưu đơn giản hóa cho nông dân.</textarea>
+                                <textarea class="form-control"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>- Tính hiệu quả của công nghệ ươm tạo trong việc góp phần trong việc hình thành ngành sản xuất, dịch vụ mới hoặc góp phần hiện đại hóa, nâng cao năng suất, hỗ trợ phát triển các ngành sản xuất, dịch vụ hiện có:</label>
-                                <textarea class="form-control">Thúc đẩy mô hình Nông nghiệp Số 4.0 tại TP.HCM, nâng cao năng suất trồng trọt 25% và hiện đại hóa chuỗi cung ứng nông sản sạch.</textarea>
+                                <textarea class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
@@ -455,13 +448,13 @@ Bước 4: Xuất công thức phân bón/thuốc bảo vệ thực vật tươn
                     <div class="tab-content" id="tab3">
                         <div class="section-box">
                             <div class="section-title-tag">3. HOẠT ĐỘNG ĐỔI MỚI SÁNG TẠO CỦA DỰ ÁN</div>
-                            <div class="form-group"><label>- Tính mới, tính sáng tạo trong công nghệ và sản phẩm ươm tạo:</label><textarea class="form-control">Sáng tạo trong việc tích hợp AI nhúng trực tiếp lên phần cứng Gateway giá rẻ.</textarea></div>
-                            <div class="form-group"><label>- Khả năng đăng ký xác lập quyền sở hữu trí tuệ (theo dự án tự đánh giá):</label><input type="text" class="form-control" value="☒ Quyền tác giả về chương trình máy tính   ☒ Sáng chế/GPHI   ☐ Nhãn hiệu"></div>
+                            <div class="form-group"><label>- Tính mới, tính sáng tạo trong công nghệ và sản phẩm ươm tạo:</label><textarea class="form-control"></textarea></div>
+                            <div class="form-group"><label>- Khả năng đăng ký xác lập quyền sở hữu trí tuệ (theo dự án tự đánh giá):</label><input type="text" class="form-control" value=""></div>
                         </div>
                         <div class="section-box">
                             <div class="section-title-tag">4. ÁP DỤNG BIỆN PHÁP THÂN THIỆN MÔI TRƯỜNG, TIẾT KIỆM NĂNG LƯỢNG</div>
-                            <div class="form-group"><label>- Hệ thống quản lý, tiêu chuẩn chất lượng đang áp dụng (nếu có):</label><input type="text" class="form-control" value="Áp dụng định hướng tiêu chuẩn ISO 9001:2015 và ISO 14001"></div>
-                            <div class="form-group"><label>- Mô tả nội dung áp dụng biện pháp thân thiện môi trường, tiết kiệm năng lượng:</label><textarea class="form-control">Thiết bị sử dụng năng lượng mặt trời dung lượng thấp, vật liệu vỏ bọc nhựa tái chế thân thiện môi trường.</textarea></div>
+                            <div class="form-group"><label>- Hệ thống quản lý, tiêu chuẩn chất lượng đang áp dụng (nếu có):</label><input type="text" class="form-control" value=""></div>
+                            <div class="form-group"><label>- Mô tả nội dung áp dụng biện pháp thân thiện môi trường, tiết kiệm năng lượng:</label><textarea class="form-control"></textarea></div>
                         </div>
                     </div>
 
@@ -469,8 +462,8 @@ Bước 4: Xuất công thức phân bón/thuốc bảo vệ thực vật tươn
                     <div class="tab-content" id="tab4">
                         <div class="section-box">
                             <div class="section-title-tag">5.3. PHÂN TÍCH ĐỐI THỦ CẠNH TRANH (ĐỦ 2 ĐỐI THỦ)</div>
-                            <div class="form-group"><label>Đối thủ 1 (Netafim Israel):</label><input type="text" class="form-control" value="Giá 20,000 USD | Mạnh: Thương hiệu lớn | Yếu: Giá đắt, không có AI nông nghiệp Việt"></div>
-                            <div class="form-group"><label>Đối thủ 2 (NextFarm VN):</label><input type="text" class="form-control" value="Giá 100 triệu VNĐ | Mạnh: Có kênh nội địa | Yếu: Chưa có AI chẩn đoán bệnh tại thiết bị"></div>
+                            <div class="form-group"><label>Đối thủ 1 (Netafim Israel):</label><input type="text" class="form-control" value=""></div>
+                            <div class="form-group"><label>Đối thủ 2 (NextFarm VN):</label><input type="text" class="form-control" value=""></div>
                         </div>
                     </div>
 
@@ -478,8 +471,8 @@ Bước 4: Xuất công thức phân bón/thuốc bảo vệ thực vật tươn
                     <div class="tab-content" id="tab5">
                         <div class="section-box">
                             <div class="section-title-tag">6. NGUỒN LỰC THỰC HIỆN & LỘ TRÌNH</div>
-                            <div class="form-group"><label>Tổng kinh phí đã đầu tư:</label><input type="text" class="form-control" value="1.200.000.000 VNĐ"></div>
-                            <div class="form-group"><label>Tổng số nhân sự hiện tại:</label><input type="text" class="form-control" value="08 người (Thành viên chính: 5, Cộng tác viên: 3)"></div>
+                            <div class="form-group"><label>Tổng kinh phí đã đầu tư:</label><input type="text" class="form-control" value=""></div>
+                            <div class="form-group"><label>Tổng số nhân sự hiện tại:</label><input type="text" class="form-control" value=""></div>
                         </div>
                     </div>
 
