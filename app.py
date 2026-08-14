@@ -13,9 +13,12 @@ app = FastAPI(title="SHTP-IC Proposal AI Engine Backend")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:8080", "http://localhost:8086", "http://localhost:8087", "http://localhost:8088", "http://localhost:8089", "http://localhost:8090", "http://localhost:8092", "http://localhost:8095", "http://localhost:8098", "http://localhost:8000",
+        "http://127.0.0.1:8080", "http://127.0.0.1:8086", "http://127.0.0.1:8087", "http://127.0.0.1:8088", "http://127.0.0.1:8089", "http://127.0.0.1:8090", "http://127.0.0.1:8092", "http://127.0.0.1:8095", "http://127.0.0.1:8098", "http://127.0.0.1:8000"
+    ],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
 )
 
