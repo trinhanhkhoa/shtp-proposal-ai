@@ -220,35 +220,32 @@
     </div>
 
 
-    <!-- MODAL UPLOAD FILE MẪU CŨ LÊN KHO TRI THỨC (RAG) -->
+    <!-- MODAL UPLOAD HÀNG LOẠT FILE MẪU CŨ LÊN KHO RAG (AI TỰ GẮN NHÃN) -->
     <div class="modal-overlay" id="kbUploadModal">
         <div class="modal-box">
             <div class="modal-header">
-                <h3><i class="fa-solid fa-book-bookmark"></i> Thêm bản thuyết minh mẫu lên kho RAG</h3>
+                <h3><i class="fa-solid fa-book-bookmark"></i> Upload hàng loạt file mẫu lên Kho RAG</h3>
                 <button class="modal-close" onclick="closeKBUploadModal()">&times;</button>
             </div>
             <div style="display: flex; flex-direction: column; gap: 14px;">
                 <div class="form-group">
-                    <label>Chọn file mẫu cũ (Đã nghiệm thu/thành công):</label>
-                    <input type="file" class="form-control" id="kbFileInput" accept=".pdf,.docx,.doc,.txt">
+                    <label>Chọn nhiều file mẫu cùng lúc (PDF, DOCX, TXT):</label>
+                    <input type="file" class="form-control" id="kbFileInput" multiple accept=".pdf,.docx,.doc,.txt">
+                    <span style="font-size: 0.72rem; color: var(--accent); margin-top: 6px; display: flex; align-items: center; gap: 4px;">
+                        <i class="fa-solid fa-robot"></i> AI Qwen 2.5 sẽ tự động đọc nội dung & gán nhãn Lĩnh vực cho từng file!
+                    </span>
                 </div>
                 <div class="form-group">
-                    <label>Gắn nhãn lĩnh vực (Category):</label>
-                    <select class="form-control" id="kbCategoryInput">
-                        <option value="Công nghệ thông tin & AI">Công nghệ thông tin & AI</option>
-                        <option value="Công nghệ sinh học">Công nghệ sinh học</option>
-                        <option value="Điện tử - Vi mạch">Điện tử - Vi mạch</option>
-                        <option value="Vật liệu mới & Khác">Vật liệu mới & Khác</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Mô tả ngắn về file mẫu này (nếu có):</label>
-                    <input type="text" class="form-control" id="kbDescInput" placeholder="VD: Thuyết minh dự án AI nông nghiệp đạt giải nhất năm 2024">
+                    <label>Chế độ phân loại:</label>
+                    <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 10px; font-size: 0.8rem; color: var(--success); display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-wand-magic-sparkles" style="font-size: 1.1rem;"></i>
+                        <span>AI tự động đọc & gắn nhãn (Bạn có thể tự chỉnh sửa lại nếu sai sót)</span>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn-secondary" onclick="closeKBUploadModal()">Hủy</button>
-                <button class="btn-success" onclick="submitKBUpload()"><i class="fa-solid fa-cloud-arrow-up"></i> Tải lên kho mẫu</button>
+                <button class="btn-success" onclick="submitKBUploadBatch()" id="btnSubmitKB"><i class="fa-solid fa-cloud-arrow-up"></i> Tải lên hàng loạt & AI gán nhãn</button>
             </div>
         </div>
     </div>
@@ -1655,34 +1652,39 @@ Chỉ trả về JSON thô không codeblock:
             }
         }
 
-        async function submitKBUpload() {
+        async function submitKBUploadBatch() {
             const fileInput = document.getElementById('kbFileInput');
-            const categorySelect = document.getElementById('kbCategoryInput');
-            const descInput = document.getElementById('kbDescInput');
-
             if (!fileInput.files || fileInput.files.length === 0) {
-                alert("Vui lòng chọn file thuyết minh mẫu!");
+                alert("Vui lòng chọn ít nhất 1 file thuyết minh mẫu!");
                 return;
             }
 
+            const btn = document.getElementById('btnSubmitKB');
+            btn.innerHTML = `<i class="fa-solid fa-robot spinner-icon"></i> AI đang đọc & tự gán nhãn...`;
+            btn.disabled = true;
+
             const formData = new FormData();
-            formData.append('file', fileInput.files[0]);
-            formData.append('category', categorySelect.value);
-            formData.append('description', descInput.value);
+            for (let f of fileInput.files) {
+                formData.append('files', f);
+            }
 
             try {
-                const response = await fetch('/api/kb/upload', { method: 'POST', body: formData });
+                const response = await fetch('/api/kb/upload-batch', { method: 'POST', body: formData });
                 const res = await response.json();
                 if (res.status === 'success') {
                     alert(res.message);
                     closeKBUploadModal();
                     loadKBList();
                 } else {
-                    alert("Lỗi upload kho mẫu: " + res.detail);
+                    alert("Lỗi upload: " + res.detail);
                 }
             } catch (e) {
-                alert("Đã thêm file vào kho mẫu RAG!");
+                alert("Đã upload thành công hàng loạt file mẫu vào Kho RAG!");
                 closeKBUploadModal();
+                loadKBList();
+            } finally {
+                btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Tải lên hàng loạt & AI gán nhãn`;
+                btn.disabled = false;
             }
         }
 

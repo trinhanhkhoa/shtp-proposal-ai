@@ -83,6 +83,85 @@ def list_kb():
     """Liệt kê các file thuyết minh mẫu đã lưu trong Kho tri thức kèm Nhãn Lĩnh vực."""
     return {"status": "success", "data": load_kb_metadata()}
 
+def auto_classify_category(text_preview: str, filename: str) -> str:
+    """Tự động dùng AI Qwen 2.5 phân loại Lĩnh vực cho file mẫu."""
+    # Quy tắc phân loại từ khóa nhanh
+    text_lower = (filename + " " + text_preview).lower()
+    
+    if any(k in text_lower for k in ["ai", "phần mềm", "iot", "cloud", "camera", "mạng", "phân loại sản phẩm", "thuật toán", "dữ liệu", "app", "website", "ims", "robotics"]):
+        return "Công nghệ thông tin & AI"
+    elif any(k in text_lower for k in ["sinh học", "tế bào", "gen", "nông nghiệp", "phân bón", "dược", "y tế", "vi sinh", "thực phẩm"]):
+        return "Công nghệ sinh học"
+    elif any(k in text_lower for k in ["mạch", "vi mạch", "bán dẫn", "cảm biến", "chip", "pcb", "phần cứng", "mạch in", "lsi"]):
+        return "Điện tử - Vi mạch"
+    elif any(k in text_lower for k in ["vật liệu", "nano", "composite", "polyme", "kim loại", "gốm", "sợi", "bề mặt"]):
+        return "Vật liệu mới & Khác"
+
+    # Gọi Qwen 2.5 phân loại nếu có Ollama
+    try:
+        prompt = f"""
+Bạn là chuyên gia phân loại dự án công nghệ cao. Hãy đọc tên file và đoạn văn bản ngắn dưới đây, sau đó phân loại dự án thuộc DUY NHẤT 1 trong 4 nhãn lĩnh vực sau:
+1. Công nghệ thông tin & AI
+2. Công nghệ sinh học
+3. Điện tử - Vi mạch
+4. Vật liệu mới & Khác
+
+Tên file: {filename}
+Văn bản mẫu: {text_preview[:500]}
+
+Chỉ trả về DUY NHẤT tên của 1 trong 4 nhãn lĩnh vực trên, không giải thích gì thêm.
+"""
+        res = requests.post(OLLAMA_URL, json={"model": MODEL_NAME, "prompt": prompt, "stream": False}, timeout=5)
+        if res.status_code == 200:
+            category_ai = res.json().get("response", "").strip()
+            for valid_cat in ["Công nghệ thông tin & AI", "Công nghệ sinh học", "Điện tử - Vi mạch", "Vật liệu mới & Khác"]:
+                if valid_cat.lower() in category_ai.lower():
+                    return valid_cat
+    except:
+        pass
+
+    return "Công nghệ thông tin & AI"
+
+@app.post("/api/kb/upload-batch")
+async def upload_kb_batch(files: list[UploadFile] = File(...)):
+    """Upload HÀNG LOẠT nhiều file mẫu cùng lúc và để AI TỰ ĐỘNG GẮN NHÃN LĨNH VỰC."""
+    metadata = load_kb_metadata()
+    uploaded_items = []
+
+    for file in files:
+        file_path = os.path.join(KB_DIR, file.filename)
+        content = await file.read()
+        
+        with open(file_path, "wb") as f:
+            f.write(content)
+
+        # Trích xuất text từ file mẫu
+        extracted_text = extract_text_from_file(content, file.filename)
+
+        # TỰ ĐỘNG GẮN NHÃN LĨNH VỰC BẰNG AI
+        auto_category = auto_classify_category(extracted_text[:1000], file.filename)
+
+        # Kiểm tra trùng file
+        metadata = [m for m in metadata if m["filename"] != file.filename]
+        
+        item = {
+            "filename": file.filename,
+            "category": auto_category,
+            "description": f"AI tự động gắn nhãn vào {auto_category}",
+            "size": len(content),
+            "char_count": len(extracted_text),
+            "text_preview": extracted_text[:300] + "..."
+        }
+        metadata.append(item)
+        uploaded_items.append(item)
+
+    save_kb_metadata(metadata)
+    return {
+        "status": "success",
+        "message": f"🎉 Đã upload hàng loạt thành công {len(files)} file mẫu! AI đã tự động phân loại nhãn xong.",
+        "items": uploaded_items
+    }
+
 @app.post("/api/kb/upload")
 async def upload_kb(file: UploadFile = File(...), category: str = Form(...), description: str = Form("")):
     """Upload file thuyết minh mẫu thành công cũ lên Kho tri thức và gắn Nhãn Lĩnh vực."""
