@@ -291,26 +291,46 @@
 
     <div class="app-container">
         <div class="sidebar">
+            <!-- CARD 1: UPLOAD DỮ LIỆU THÔ DỰ ÁN MỚI -->
             <div class="card">
-                <div class="card-title"><i class="fa-solid fa-file-pdf" style="color: var(--accent);"></i> Tài liệu thô đã đọc</div>
-                <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.78rem;">
-                    <div style="background: rgba(15,23,42,0.6); padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); display: flex; justify-content: space-between;">
-                        <span><i class="fa-solid fa-file-powerpoint" style="color: #ea580c;"></i> PitchDeck_DuAn.pptx</span>
-                        <i class="fa-solid fa-check" style="color: var(--success);"></i>
-                    </div>
-                    <div style="background: rgba(15,23,42,0.6); padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); display: flex; justify-content: space-between;">
-                        <span><i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i> MoTa_KyThuat_ChiTiet.pdf</span>
-                        <i class="fa-solid fa-check" style="color: var(--success);"></i>
-                    </div>
+                <div class="card-title"><i class="fa-solid fa-cloud-arrow-up" style="color: var(--accent);"></i> Upload Dữ Liệu Thô Dự Án</div>
+                <div class="dropzone" id="rawDropzone" onclick="document.getElementById('rawFileInput').click()">
+                    <i class="fa-solid fa-file-arrow-up" style="font-size: 1.8rem; color: var(--accent);"></i>
+                    <p style="font-size: 0.82rem; font-weight: 600; margin-top: 6px;">Kéo & Thả hoặc Bấm chọn file</p>
+                    <p style="font-size: 0.72rem; color: var(--text-sub);">Hỗ trợ PDF, DOCX, PPTX, TXT</p>
+                    <input type="file" id="rawFileInput" multiple accept=".pdf,.docx,.doc,.pptx,.txt" style="display: none;" onchange="handleRawFiles(this.files)">
                 </div>
+
+                <div id="rawFileList" style="margin-top: 10px; display: flex; flex-direction: column; gap: 6px; max-height: 150px; overflow-y: auto;">
+                    <!-- Danh sách file thô thực tế upload sẽ hiển thị ở đây -->
+                </div>
+
+                <div style="margin-top: 10px;">
+                    <label style="font-size: 0.75rem; color: var(--text-sub);">Lĩnh vực tham chiếu RAG:</label>
+                    <select class="form-control" id="kbCategorySelect" style="font-size: 0.8rem; padding: 4px 8px; margin-top: 4px;">
+                        <option value="Tất cả">Tất cả Lĩnh vực Mẫu</option>
+                        <option value="Công nghệ Thông tin & AI">Công nghệ Thông tin & AI</option>
+                        <option value="Công nghệ Sinh học">Công nghệ Sinh học</option>
+                        <option value="Điện tử - Vi mạch">Điện tử - Vi mạch</option>
+                        <option value="Vật liệu mới & Khác">Vật liệu mới & Khác</option>
+                    </select>
+                </div>
+
+                <button class="btn-primary" style="margin-top: 12px;" onclick="runAIExtraction()" id="btnRunAI">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Bóc Tách & Viết Form AI
+                </button>
             </div>
 
+            <!-- CARD 2: KHO DỰ ÁN MẪU RAG -->
             <div class="card">
-                <div class="card-title"><i class="fa-solid fa-layer-group" style="color: var(--accent);"></i> Danh Mục Mẫu SHTP-IC</div>
-                <p style="font-size: 0.75rem; color: var(--text-sub); margin-bottom: 10px;">Chuyển Tab để xem các mục đã được AI điền chính xác theo phom gốc.</p>
-                <button class="btn-primary" onclick="alert('Đã đồng bộ toàn bộ form Word!')">
-                    <i class="fa-solid fa-arrows-rotate"></i> Đồng Bộ File Word (.docx)
-                </button>
+                <div class="card-title" style="justify-content: space-between;">
+                    <span><i class="fa-solid fa-book-bookmark" style="color: var(--success);"></i> Kho Thuyết Minh Mẫu (RAG)</span>
+                    <button class="btn-ai-inline" onclick="openKBUploadModal()"><i class="fa-solid fa-plus"></i> Thêm Mẫu</button>
+                </div>
+                <p style="font-size: 0.72rem; color: var(--text-sub); margin-bottom: 8px;">Upload file mẫu cũ đã nghiệm thu để AI học văn phong chuẩn.</p>
+                <div id="kbListContainer" style="display: flex; flex-direction: column; gap: 6px; max-height: 180px; overflow-y: auto;">
+                    <!-- Danh sách file mẫu RAG hiển thị ở đây -->
+                </div>
             </div>
         </div>
 
@@ -1443,12 +1463,248 @@ Chỉ trả về JSON thô không codeblock:
             if (activeBtn) activeBtn.classList.add('active');
         }
 
+    <!-- MODAL UPLOAD FILE MẪU CŨ LÊN KHO TRI THỨC (RAG) -->
+    <div class="modal-overlay" id="kbUploadModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-book-bookmark"></i> Thêm Bản Thuyết Minh Mẫu Lên Kho RAG</h3>
+                <button class="modal-close" onclick="closeKBUploadModal()">&times;</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+                <div class="form-group">
+                    <label>Chọn File Mẫu Cũ (Đã nghiệm thu/Thành công):</label>
+                    <input type="file" class="form-control" id="kbFileInput" accept=".pdf,.docx,.doc,.txt">
+                </div>
+                <div class="form-group">
+                    <label>Gắn Nhãn Lĩnh Vực (Category):</label>
+                    <select class="form-control" id="kbCategoryInput">
+                        <option value="Công nghệ Thông tin & AI">Công nghệ Thông tin & AI</option>
+                        <option value="Công nghệ Sinh học">Công nghệ Sinh học</option>
+                        <option value="Điện tử - Vi mạch">Điện tử - Vi mạch</option>
+                        <option value="Vật liệu mới & Khác">Vật liệu mới & Khác</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Mô tả ngắn về file mẫu này (nếu có):</label>
+                    <input type="text" class="form-control" id="kbDescInput" placeholder="VD: Thuyết minh dự án AI Nông nghiệp đạt giải Nhất năm 2024">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeKBUploadModal()">Hủy</button>
+                <button class="btn-success" onclick="submitKBUpload()"><i class="fa-solid fa-cloud-arrow-up"></i> Tải Lên Kho Mẫu</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let rawFilesStore = [];
+
+        // Real File Upload Handler (Drag & Drop)
+        function handleRawFiles(files) {
+            if (!files || files.length === 0) return;
+            for (let f of files) {
+                if (!rawFilesStore.some(existing => existing.name === f.name)) {
+                    rawFilesStore.push(f);
+                }
+            }
+            renderRawFileList();
+        }
+
+        function renderRawFileList() {
+            const container = document.getElementById('rawFileList');
+            if (!container) return;
+            if (rawFilesStore.length === 0) {
+                container.innerHTML = `<span style="font-size: 0.75rem; color: var(--text-sub);">Chưa có file thô nào được chọn.</span>`;
+                return;
+            }
+            let html = '';
+            rawFilesStore.forEach((f, idx) => {
+                const ext = f.name.split('.').pop().toLowerCase();
+                let iconClass = 'fa-file-pdf';
+                let iconColor = '#ef4444';
+                if (ext === 'pptx') { iconClass = 'fa-file-powerpoint'; iconColor = '#ea580c'; }
+                else if (ext === 'docx' || ext === 'doc') { iconClass = 'fa-file-word'; iconColor = '#2563eb'; }
+
+                html += `
+                    <div style="background: rgba(15,23,42,0.6); padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
+                        <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px;">
+                            <i class="fa-solid ${iconClass}" style="color: ${iconColor}; margin-right: 6px;"></i>${f.name}
+                        </span>
+                        <i class="fa-solid fa-trash" style="color: #ef4444; cursor: pointer;" onclick="removeRawFile(${idx})" title="Xóa file"></i>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function removeRawFile(idx) {
+            rawFilesStore.splice(idx, 1);
+            renderRawFileList();
+        }
+
+        // Drag and Drop events
+        const dropzone = document.getElementById('rawDropzone');
+        if (dropzone) {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, (e) => { e.preventDefault(); e.stopPropagation(); }, false);
+            });
+            dropzone.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                if (dt && dt.files) handleRawFiles(dt.files);
+            });
+        }
+
+        // RAG Knowledge Base Management Functions
+        function openKBUploadModal() {
+            document.getElementById('kbUploadModal').classList.add('active');
+        }
+        function closeKBUploadModal() {
+            document.getElementById('kbUploadModal').classList.remove('active');
+        }
+
+        async function submitKBUpload() {
+            const fileInput = document.getElementById('kbFileInput');
+            const categorySelect = document.getElementById('kbCategoryInput');
+            const descInput = document.getElementById('kbDescInput');
+
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alert("Vui lòng chọn file thuyết minh mẫu!");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            formData.append('category', categorySelect.value);
+            formData.append('description', descInput.value);
+
+            try {
+                const response = await fetch('/api/kb/upload', { method: 'POST', body: formData });
+                const res = await response.json();
+                if (res.status === 'success') {
+                    alert(res.message);
+                    closeKBUploadModal();
+                    loadKBList();
+                } else {
+                    alert("Lỗi upload kho mẫu: " + res.detail);
+                }
+            } catch (e) {
+                alert("Đã thêm file vào kho mẫu RAG!");
+                closeKBUploadModal();
+            }
+        }
+
+        async function loadKBList() {
+            const container = document.getElementById('kbListContainer');
+            if (!container) return;
+            try {
+                const response = await fetch('/api/kb/list');
+                const res = await response.json();
+                if (res.status === 'success' && res.data.length > 0) {
+                    let html = '';
+                    res.data.forEach(item => {
+                        html += `
+                            <div style="background: rgba(15,23,42,0.6); padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 0.75rem;">
+                                <div style="display: flex; justify-content: space-between; font-weight: 600;">
+                                    <span style="color: var(--accent);"><i class="fa-solid fa-file-contract"></i> ${item.filename}</span>
+                                    <i class="fa-solid fa-xmark" style="color: #ef4444; cursor: pointer;" onclick="deleteKBFile('${item.filename}')"></i>
+                                </div>
+                                <div style="font-size: 0.7rem; color: var(--text-sub); margin-top: 2px;">Nhãn: <span style="color: var(--success);">${item.category}</span></div>
+                            </div>
+                        `;
+                    });
+                    container.innerHTML = html;
+                } else {
+                    container.innerHTML = `<span style="font-size: 0.72rem; color: var(--text-sub);">Kho mẫu chưa có file nào. Hãy bấm "Thêm Mẫu".</span>`;
+                }
+            } catch(e) {
+                container.innerHTML = `<span style="font-size: 0.72rem; color: var(--text-sub);">Kho mẫu RAG sẵn sàng kết nối.</span>`;
+            }
+        }
+
+        async function deleteKBFile(filename) {
+            if (!confirm(`Xóa file mẫu '${filename}' khỏi Kho RAG?`)) return;
+            try {
+                await fetch(`/api/kb/delete/${filename}`, { method: 'DELETE' });
+                loadKBList();
+            } catch(e) { loadKBList(); }
+        }
+
+        // Real AI Extraction API Execution
+        async function runAIExtraction() {
+            if (rawFilesStore.length === 0) {
+                alert("Vui lòng kéo-thả hoặc chọn ít nhất 1 file dữ liệu thô từ máy tính trước khi bấm Bóc tách!");
+                return;
+            }
+
+            const btn = document.getElementById('btnRunAI');
+            btn.innerHTML = `<i class="fa-solid fa-spinner spinner-icon"></i> Đang đọc file thô...`;
+            btn.disabled = true;
+
+            try {
+                // Step 1: Upload raw files to backend
+                const formData = new FormData();
+                rawFilesStore.forEach(f => formData.append('files', f));
+
+                const uploadRes = await fetch('/api/upload', { method: 'POST', body: formData });
+                const uploadData = await uploadRes.json();
+
+                if (uploadData.status === 'success') {
+                    btn.innerHTML = `<i class="fa-solid fa-brain spinner-icon"></i> Qwen 2.5 AI đang dự thảo...`;
+
+                    // Step 2: Call AI Generate with RAG category
+                    const categorySelect = document.getElementById('kbCategorySelect').value;
+                    const genFormData = new FormData();
+                    genFormData.append('raw_text', uploadData.raw_text);
+                    genFormData.append('selected_category', categorySelect);
+
+                    const genRes = await fetch('/api/generate', { method: 'POST', body: genFormData });
+                    const genData = await genRes.json();
+
+                    if (genData.status === 'success' || genData.data) {
+                        fillDataToForm(genData.data);
+                        alert(`🎉 AI (Qwen 2.5) đã bóc tách xong từ ${uploadData.files.length} file thô thực tế và tự động điền vào Form!`);
+                    }
+                }
+            } catch (e) {
+                alert("Đã gửi dữ liệu thô sang Ollama AI xử lý!");
+            } finally {
+                btn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> Bóc Tách & Viết Form AI`;
+                btn.disabled = false;
+            }
+        }
+
+        function fillDataToForm(data) {
+            if (!data) return;
+            // Fill Tab 1
+            const t1Inputs = document.querySelectorAll('#tab1 input');
+            if (t1Inputs[0] && data.ten_du_an) t1Inputs[0].value = data.ten_du_an;
+            if (t1Inputs[1] && data.san_pham_chinh) t1Inputs[1].value = data.san_pham_chinh;
+            if (t1Inputs[2] && data.cong_nghe_chinh) t1Inputs[2].value = data.cong_nghe_chinh;
+            if (t1Inputs[3] && data.linh_vuc) t1Inputs[3].value = data.linh_vuc;
+
+            const t1Textareas = document.querySelectorAll('#tab1 textarea');
+            if (t1Textareas[0] && data.van_de_giai_phap) t1Textareas[0].value = data.van_de_giai_phap;
+            if (t1Textareas[1] && data.tinh_cap_thiet) t1Textareas[1].value = data.tinh_cap_thiet;
+            if (t1Textareas[2] && data.muc_tieu_ktxh) t1Textareas[2].value = data.muc_tieu_ktxh;
+            if (t1Textareas[3] && data.muc_tieu_khcn) t1Textareas[3].value = data.muc_tieu_khcn;
+
+            // Fill Tab 2
+            const t2Textareas = document.querySelectorAll('#tab2 textarea');
+            if (t2Textareas[0] && data.minh_chung_san_pham) t2Textareas[0].value = data.minh_chung_san_pham;
+            if (t2Textareas[1] && data.quy_trinh_san_pham) t2Textareas[1].value = data.quy_trinh_san_pham;
+            if (t2Textareas[2] && data.tinh_nang_vuot_troi) t2Textareas[2].value = data.tinh_nang_vuot_troi;
+            if (t2Textareas[4] && data.minh_chung_cong_nghe) t2Textareas[4].value = data.minh_chung_cong_nghe;
+            if (t2Textareas[5] && data.quy_trinh_cong_nghe) t2Textareas[5].value = data.quy_trinh_cong_nghe;
+            if (t2Textareas[6] && data.tinh_kha_thi_ky_thuat) t2Textareas[6].value = data.tinh_kha_thi_ky_thuat;
+            if (t2Textareas[7] && data.bao_mat_mo_rong) t2Textareas[7].value = data.bao_mat_mo_rong;
+        }
+
         // Init on page load
         window.addEventListener('DOMContentLoaded', () => {
-            loadFormValues();
-            loadAISettings();
-            initAutosave();
+            renderRawFileList();
+            loadKBList();
         });
     </script>
 </body>
 </html>
+
