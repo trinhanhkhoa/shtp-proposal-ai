@@ -85,42 +85,52 @@ def list_kb():
 
 def auto_classify_category(text_preview: str, filename: str) -> str:
     """Tự động dùng AI Qwen 2.5 phân loại Lĩnh vực cho file mẫu."""
-    # Quy tắc phân loại từ khóa nhanh
     text_lower = (filename + " " + text_preview).lower()
     
-    if any(k in text_lower for k in ["ai", "phần mềm", "iot", "cloud", "camera", "mạng", "phân loại sản phẩm", "thuật toán", "dữ liệu", "app", "website", "ims", "robotics"]):
-        return "Công nghệ thông tin & AI"
-    elif any(k in text_lower for k in ["sinh học", "tế bào", "gen", "nông nghiệp", "phân bón", "dược", "y tế", "vi sinh", "thực phẩm"]):
+    # 1. Công nghệ sinh học & Y tế nông nghiệp (Ưu tiên kiểm tra trước)
+    bio_keywords = ["sinh học", "sinh hoc", "tế bào", "te bao", "gen", "nông nghiệp", "nong nghiep", "phân bón", "phan bon", "dược", "duoc", "y tế", "y te", "vi sinh", "thực phẩm", "thuc pham", "biotech", "bio", "phương pháp sinh", "giao cấy", "chiết xuất"]
+    if any(k in text_lower for k in bio_keywords):
         return "Công nghệ sinh học"
-    elif any(k in text_lower for k in ["mạch", "vi mạch", "bán dẫn", "cảm biến", "chip", "pcb", "phần cứng", "mạch in", "lsi"]):
+        
+    # 2. Điện tử - Vi mạch & Bán dẫn
+    chip_keywords = ["mạch", "mach", "vi mạch", "vi mach", "bán dẫn", "ban dan", "cảm biến", "cam bien", "chip", "pcb", "phần cứng", "mạch in", "lsi", "ic design", "microcontroller", "semiconductor"]
+    if any(k in text_lower for k in chip_keywords):
         return "Điện tử - Vi mạch"
-    elif any(k in text_lower for k in ["vật liệu", "nano", "composite", "polyme", "kim loại", "gốm", "sợi", "bề mặt"]):
+        
+    # 3. Vật liệu mới & Khác
+    material_keywords = ["vật liệu", "vat lieu", "nano", "composite", "polyme", "kim loại", "kim loai", "gốm", "sợi", "bề mặt", "hóa chất", "hoa chat", "vật lý", "vat ly"]
+    if any(k in text_lower for k in material_keywords):
         return "Vật liệu mới & Khác"
 
-    # Gọi Qwen 2.5 phân loại nếu có Ollama
+    # 4. Công nghệ thông tin & AI (Dành cho các từ khóa chuyên sâu CNTT)
+    it_keywords = ["ai", "trí tuệ nhân tạo", "tri tue nhan tao", "phần mềm", "phan mem", "iot", "cloud", "camera", "mạng", "thuật toán", "thuat toan", "app", "website", "ims", "robotics", "dữ liệu lớn", "big data", "blockchain"]
+    if any(k in text_lower for k in it_keywords):
+        return "Công nghệ thông tin & AI"
+
+    # 5. Gọi Qwen 2.5 phân loại linh hoạt nếu chưa khớp từ khóa chính xác
     try:
         prompt = f"""
-Bạn là chuyên gia phân loại dự án công nghệ cao. Hãy đọc tên file và đoạn văn bản ngắn dưới đây, sau đó phân loại dự án thuộc DUY NHẤT 1 trong 4 nhãn lĩnh vực sau:
-1. Công nghệ thông tin & AI
-2. Công nghệ sinh học
-3. Điện tử - Vi mạch
-4. Vật liệu mới & Khác
+Bạn là chuyên gia phân loại dự án công nghệ cao SHTP-IC. Hãy đọc tên file và đoạn văn bản dưới đây, phân loại vào 1 trong 4 nhóm:
+- Công nghệ thông tin & AI
+- Công nghệ sinh học
+- Điện tử - Vi mạch
+- Vật liệu mới & Khác
 
 Tên file: {filename}
-Văn bản mẫu: {text_preview[:500]}
+Văn bản: {text_preview[:600]}
 
-Chỉ trả về DUY NHẤT tên của 1 trong 4 nhãn lĩnh vực trên, không giải thích gì thêm.
+Chỉ trả về duy nhất tên nhãn lĩnh vực.
 """
         res = requests.post(OLLAMA_URL, json={"model": MODEL_NAME, "prompt": prompt, "stream": False}, timeout=5)
         if res.status_code == 200:
             category_ai = res.json().get("response", "").strip()
-            for valid_cat in ["Công nghệ thông tin & AI", "Công nghệ sinh học", "Điện tử - Vi mạch", "Vật liệu mới & Khác"]:
+            for valid_cat in ["Công nghệ sinh học", "Điện tử - Vi mạch", "Vật liệu mới & Khác", "Công nghệ thông tin & AI"]:
                 if valid_cat.lower() in category_ai.lower():
                     return valid_cat
     except:
         pass
 
-    return "Công nghệ thông tin & AI"
+    return "Công nghệ sinh học" if any(b in text_lower for b in ["bio", "sh", "nong", "y"]) else "Công nghệ thông tin & AI"
 
 @app.post("/api/kb/upload-batch")
 async def upload_kb_batch(files: list[UploadFile] = File(...)):

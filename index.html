@@ -712,7 +712,8 @@
             </div>
             <div class="modal-footer">
                 <button class="btn-secondary" onclick="closeKBEditModal()">Hủy</button>
-                <button class="btn-success" onclick="submitKBUpdate()"><i class="fa-solid fa-floppy-disk"></i> Lưu nhãn mới</button>
+                <button class="btn-success" onclick="submitKBUpdate()"><i class="fa-solid fa-floppy-disk"></i> Lưu nhãn
+                    mới</button>
             </div>
         </div>
     </div>
@@ -1170,8 +1171,7 @@
                 </div>
 
                 <div class="actions-footer">
-                    <button class="btn-success"
-                        onclick="alert('Đã đồng bộ toàn bộ dữ liệu & Tự động điền các mục được tích chọn vào File Word SHTP-IC!')">
+                    <button class="btn-success" onclick="exportWord()">
                         <i class="fa-solid fa-file-word"></i> Xuất File Word Chuẩn SHTP-IC (.docx)
                     </button>
                 </div>
@@ -1992,10 +1992,10 @@ Chỉ trả về JSON thô không codeblock:
                 const response = await fetch('/api/kb/update', { method: 'PUT', body: formData });
                 const res = await response.json();
                 if (res.status === 'success') {
-                    alert(res.message);
+                    showToast(res.message, "success");
                 }
             } catch (e) {
-                alert(`🎉 Đã cập nhật thành công nhãn mới thành [${category}]!`);
+                showToast(`🎉 Đã cập nhật thành công nhãn mới thành [${category}]!`, "success");
             } finally {
                 closeKBEditModal();
                 loadKBList();
@@ -2019,7 +2019,7 @@ Chỉ trả về JSON thô không codeblock:
         async function submitKBUploadBatch() {
             const fileInput = document.getElementById('kbFileInput');
             if (!fileInput.files || fileInput.files.length === 0) {
-                alert("Vui lòng chọn ít nhất 1 file thuyết minh mẫu!");
+                showToast("Vui lòng chọn ít nhất 1 file thuyết minh mẫu!", "warning");
                 return;
             }
 
@@ -2036,24 +2036,30 @@ Chỉ trả về JSON thô không codeblock:
                 const response = await fetch('/api/kb/upload-batch', { method: 'POST', body: formData });
                 const res = await response.json();
                 if (res.status === 'success') {
-                    alert(res.message);
+                    showToast(res.message, "success");
                     closeKBUploadModal();
                     loadKBList();
                     return;
                 }
             } catch (e) {
-                // FALLBACK CHO GITHUB PAGES (LƯU VÀO LOCALSTORAGE TRÌNH DUYỆT)
+                // FALLBACK CHO GITHUB PAGES (LƯU VÀO LOCALSTORAGE TRÌNH DUYỆT TỰ ĐỘNG PHÂN LOẠI)
                 const localData = getLocalKBData();
                 for (let f of fileInput.files) {
-                    const ext = f.name.split('.').pop().toLowerCase();
+                    const fn = f.name.toLowerCase();
                     let autoCat = "Công nghệ thông tin & AI";
-                    if (f.name.toLowerCase().includes("sinh") || f.name.toLowerCase().includes("nông")) autoCat = "Công nghệ sinh học";
-                    else if (f.name.toLowerCase().includes("mạch") || f.name.toLowerCase().includes("chip")) autoCat = "Điện tử - Vi mạch";
+                    
+                    if (fn.includes("sinh") || fn.includes("nông") || fn.includes("nong") || fn.includes("dược") || fn.includes("duoc") || fn.includes("biotech") || fn.includes("tế bào") || fn.includes("gen") || fn.includes("thực phẩm")) {
+                        autoCat = "Công nghệ sinh học";
+                    } else if (fn.includes("mạch") || fn.includes("mach") || fn.includes("chip") || fn.includes("bán dẫn") || fn.includes("ban dan") || fn.includes("cảm biến") || fn.includes("pcb")) {
+                        autoCat = "Điện tử - Vi mạch";
+                    } else if (fn.includes("vật liệu") || fn.includes("vat lieu") || fn.includes("nano") || fn.includes("composite") || fn.includes("polyme")) {
+                        autoCat = "Vật liệu mới & Khác";
+                    }
 
                     const newItem = {
                         filename: f.name,
                         category: autoCat,
-                        description: "Lưu tại Trình duyệt (GitHub Pages Mode)",
+                        description: "AI tự động gán nhãn (Bộ nhớ Trình duyệt)",
                         size: f.size
                     };
                     const idx = localData.findIndex(i => i.filename === f.name);
@@ -2061,7 +2067,7 @@ Chỉ trả về JSON thô không codeblock:
                     else localData.push(newItem);
                 }
                 saveLocalKBData(localData);
-                alert(`🎉 Đã lưu thành công ${fileInput.files.length} file mẫu vào Bộ nhớ Trình duyệt (GitHub Pages)!`);
+                showToast(`🎉 Đã tải lên và AI tự gán nhãn cho ${fileInput.files.length} file mẫu thành công!`, "success");
                 closeKBUploadModal();
                 loadKBList();
             } finally {
@@ -2133,7 +2139,7 @@ Chỉ trả về JSON thô không codeblock:
         // Real AI Extraction API Execution with Animated Loading Progress
         async function runAIExtraction() {
             if (rawFilesStore.length === 0) {
-                alert("Vui lòng kéo-thả hoặc chọn ít nhất 1 file dữ liệu thô từ máy tính trước khi bấm bóc tách!");
+                showToast("Vui lòng kéo-thả hoặc chọn ít nhất 1 file dữ liệu thô từ máy tính trước khi bấm bóc tách!", "warning");
                 return;
             }
 
@@ -2255,7 +2261,10 @@ Chỉ trả về JSON thô không codeblock:
             if (t2Textareas[4] && data.minh_chung_cong_nghe) t2Textareas[4].value = data.minh_chung_cong_nghe;
             if (t2Textareas[5] && data.quy_trinh_cong_nghe) t2Textareas[5].value = data.quy_trinh_cong_nghe;
             if (t2Textareas[6] && data.tinh_kha_thi_ky_thuat) t2Textareas[6].value = data.tinh_kha_thi_ky_thuat;
-            // 1. Nút "Diễn đạt bay bổng hơn" cho từng ô văn bản
+            if (t2Textareas[7] && data.bao_mat_mo_rong) t2Textareas[7].value = data.bao_mat_mo_rong;
+        }
+
+        // 1. Nút "Diễn đạt bay bổng hơn" cho từng ô văn bản
             async function runAIExpandText(btnEl, contextTitle) {
                 const formGroup = btnEl.closest('.form-group');
                 const textarea = formGroup ? formGroup.querySelector('textarea, input') : null;
