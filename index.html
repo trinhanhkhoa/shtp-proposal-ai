@@ -2079,19 +2079,42 @@ Chỉ trả về JSON thô không codeblock:
         async function loadKBList() {
             const container = document.getElementById('kbListContainer');
             if (!container) return;
+
+            // Kiểm tra xem đang chạy ở môi trường Backend Local hay Web Tĩnh GitHub Pages
+            const isLocalBackend = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+            if (isLocalBackend) {
+                try {
+                    const response = await fetch('/api/kb/list');
+                    if (response.ok) {
+                        const res = await response.json();
+                        if (res.status === 'success' && res.data.length > 0) {
+                            renderKBItems(res.data);
+                            return;
+                        }
+                    }
+                } catch (e) { }
+            }
+
+            // Chế độ GitHub Pages: Đọc file dữ liệu mẫu tĩnh knowledge_base/kb_metadata.json kết hợp với LocalStorage trình duyệt
+            let combinedKB = [];
             try {
-                const response = await fetch('/api/kb/list');
-                const res = await response.json();
-                if (res.status === 'success' && res.data.length > 0) {
-                    renderKBItems(res.data);
-                    return;
+                const staticRes = await fetch('knowledge_base/kb_metadata.json');
+                if (staticRes.ok) {
+                    const staticData = await staticRes.json();
+                    combinedKB = [...staticData];
                 }
             } catch (e) { }
 
-            // Fallback sang LocalStorage nếu chạy trên GitHub Pages
             const localData = getLocalKBData();
-            if (localData.length > 0) {
-                renderKBItems(localData);
+            localData.forEach(item => {
+                const idx = combinedKB.findIndex(i => i.filename === item.filename);
+                if (idx >= 0) combinedKB[idx] = item;
+                else combinedKB.push(item);
+            });
+
+            if (combinedKB.length > 0) {
+                renderKBItems(combinedKB);
             } else {
                 container.innerHTML = `<span style="font-size: 0.72rem; color: var(--text-sub);">Kho mẫu chưa có file nào. Hãy bấm "Thêm Mẫu".</span>`;
             }
