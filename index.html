@@ -1938,22 +1938,38 @@ Chỉ trả về JSON thô không codeblock:
 
         // RAG Knowledge Base Management Functions
         function openKBUploadModal() {
-            document.getElementById('kbUploadModal').classList.add('active');
+            const modal = document.getElementById('kbUploadModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                setTimeout(() => modal.classList.add('active'), 10);
+            }
         }
         function closeKBUploadModal() {
-            document.getElementById('kbUploadModal').classList.remove('active');
+            const modal = document.getElementById('kbUploadModal');
+            if (modal) {
+                modal.classList.remove('active');
+                setTimeout(() => modal.style.display = 'none', 300);
+            }
         }
 
         function openKBEditModal(filename, currentCategory, currentDesc) {
-            document.getElementById('kbEditFilename').value = filename;
-            document.getElementById('kbEditFilenameShow').value = filename;
-            document.getElementById('kbEditCategoryInput').value = currentCategory || "Công nghệ thông tin & AI";
-            document.getElementById('kbEditDescInput').value = currentDesc || "";
-            document.getElementById('kbEditModal').classList.add('active');
+            const modal = document.getElementById('kbEditModal');
+            if (modal) {
+                document.getElementById('kbEditFilename').value = filename;
+                document.getElementById('kbEditFilenameShow').value = filename;
+                document.getElementById('kbEditCategoryInput').value = currentCategory || "Công nghệ thông tin & AI";
+                document.getElementById('kbEditDescInput').value = currentDesc || "";
+                modal.style.display = 'flex';
+                setTimeout(() => modal.classList.add('active'), 10);
+            }
         }
 
         function closeKBEditModal() {
-            document.getElementById('kbEditModal').classList.remove('active');
+            const modal = document.getElementById('kbEditModal');
+            if (modal) {
+                modal.classList.remove('active');
+                setTimeout(() => modal.style.display = 'none', 300);
+            }
         }
 
         async function submitKBUpdate() {
