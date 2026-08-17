@@ -2042,24 +2042,42 @@ Chỉ trả về JSON thô không codeblock:
                     return;
                 }
             } catch (e) {
-                // FALLBACK CHO GITHUB PAGES (LƯU VÀO LOCALSTORAGE TRÌNH DUYỆT TỰ ĐỘNG PHÂN LOẠI)
+                // FALLBACK CHO GITHUB PAGES (ĐỌC NỘI DUNG BÊN TRONG FILE VÀ DÙNG AI HÀM PHÂN LOẠI)
                 const localData = getLocalKBData();
+                
                 for (let f of fileInput.files) {
-                    const fn = f.name.toLowerCase();
+                    let fileText = f.name;
+                    try {
+                        // Đọc nội dung file thô từ trình duyệt (dành cho TXT hoặc trích xuất chuỗi ký tự)
+                        const contentBuffer = await f.arrayBuffer();
+                        const decoder = new TextDecoder('utf-8');
+                        const rawStr = decoder.decode(contentBuffer.slice(0, 10000));
+                        fileText += " " + rawStr;
+                    } catch (err) {}
+
+                    const textLower = fileText.toLowerCase();
                     let autoCat = "Công nghệ thông tin & AI";
                     
-                    if (fn.includes("sinh") || fn.includes("nông") || fn.includes("nong") || fn.includes("dược") || fn.includes("duoc") || fn.includes("biotech") || fn.includes("tế bào") || fn.includes("gen") || fn.includes("thực phẩm")) {
+                    // Logic AI Phân Loại Dựa Trên Nội Dung Văn Bản Bên Trong File
+                    const bioTerms = ["sinh học", "sinh hoc", "tế bào", "te bao", "gen", "nông nghiệp", "nong nghiep", "phân bón", "phan bon", "dược", "duoc", "y tế", "y te", "vi sinh", "thực phẩm", "thuc pham", "biotech", "bio", "chiết xuất", "chiet xuat", "giao cấy", "cây trồng", "cay trong", "vắc xin", "vacxin", "dinh dưỡng"];
+                    const chipTerms = ["vi mạch", "vi mach", "bán dẫn", "ban dan", "cảm biến", "cam bien", "chip", "pcb", "phần cứng", "phan cung", "mạch in", "lsi", "ic design", "microcontroller", "semiconductor", "bán dẫn"];
+                    const materialTerms = ["vật liệu", "vat lieu", "nano", "composite", "polyme", "kim loại", "kim loai", "gốm", "sợi", "bề mặt", "hóa chất", "hoa chat", "chế tạo vật liệu"];
+                    const itTerms = ["trí tuệ nhân tạo", "tri tue nhan tao", "phần mềm", "phan mem", "iot", "cloud", "camera", "mạng", "thuật toán", "thuat toan", "app", "website", "ims", "robotics", "dữ liệu lớn", "big data", "blockchain", "xử lý ảnh"];
+
+                    if (bioTerms.some(term => textLower.includes(term))) {
                         autoCat = "Công nghệ sinh học";
-                    } else if (fn.includes("mạch") || fn.includes("mach") || fn.includes("chip") || fn.includes("bán dẫn") || fn.includes("ban dan") || fn.includes("cảm biến") || fn.includes("pcb")) {
+                    } else if (chipTerms.some(term => textLower.includes(term))) {
                         autoCat = "Điện tử - Vi mạch";
-                    } else if (fn.includes("vật liệu") || fn.includes("vat lieu") || fn.includes("nano") || fn.includes("composite") || fn.includes("polyme")) {
+                    } else if (materialTerms.some(term => textLower.includes(term))) {
                         autoCat = "Vật liệu mới & Khác";
+                    } else if (itTerms.some(term => textLower.includes(term))) {
+                        autoCat = "Công nghệ thông tin & AI";
                     }
 
                     const newItem = {
                         filename: f.name,
                         category: autoCat,
-                        description: "AI tự động gán nhãn (Bộ nhớ Trình duyệt)",
+                        description: `AI phân loại từ nội dung file ➔ [${autoCat}]`,
                         size: f.size
                     };
                     const idx = localData.findIndex(i => i.filename === f.name);
@@ -2067,7 +2085,7 @@ Chỉ trả về JSON thô không codeblock:
                     else localData.push(newItem);
                 }
                 saveLocalKBData(localData);
-                showToast(`🎉 Đã tải lên và AI tự gán nhãn cho ${fileInput.files.length} file mẫu thành công!`, "success");
+                showToast(`🎉 AI đã đọc nội dung & tự gán nhãn cho ${fileInput.files.length} file mẫu thành công!`, "success");
                 closeKBUploadModal();
                 loadKBList();
             } finally {
