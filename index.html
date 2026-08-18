@@ -2345,80 +2345,83 @@ Chỉ trả về JSON thô không codeblock:
             if (t2Textareas[7] && data.bao_mat_mo_rong) t2Textareas[7].value = data.bao_mat_mo_rong;
         }
 
-        // 1. Nút "Diễn đạt bay bổng hơn" cho từng ô văn bản
-            async function runAIExpandText(btnEl, contextTitle) {
-                const formGroup = btnEl.closest('.form-group');
-                const textarea = formGroup ? formGroup.querySelector('textarea, input') : null;
-                if (!textarea) return;
+        // 1. Nút "Diễn đạt bay bổng hơn" cho từng ô văn bản (Attached to window)
+        window.runAIExpandText = async function(btnEl, contextTitle) {
+            const formGroup = btnEl.closest('.form-group');
+            const textarea = formGroup ? formGroup.querySelector('textarea, input') : null;
+            if (!textarea) return;
 
-                const currentText = textarea.value.trim();
-                if (!currentText) {
-                    showToast("Vui lòng nhập một ít ý tưởng ban đầu trước khi bấm Diễn đạt bay bổng!", "warning");
-                    return;
-                }
-
-                const oldBtnHTML = btnEl.innerHTML;
-                btnEl.innerHTML = `<i class="fa-solid fa-spinner spinner-icon"></i> Đang diễn đạt...`;
-                btnEl.disabled = true;
-
-                try {
-                    const formData = new FormData();
-                    formData.append('text', currentText);
-                    formData.append('context_title', contextTitle);
-
-                    const res = await fetch('/api/ai-expand', { method: 'POST', body: formData });
-                    const data = await res.json();
-
-                    if (data.status === 'success' && data.text) {
-                        textarea.value = data.text;
-                        showToast("🎉 AI đã mở rộng & diễn đạt lại đoạn văn sâu sắc, bay bổng hơn!", "success");
-                    }
-                } catch (e) {
-                    // Client Fallback Expand
-                    textarea.value = currentText + "\n\n[Đã diễn đạt thêm bởi AI]: Giải pháp công nghệ cao của dự án không chỉ giải quyết triệt để bài toán kỹ thuật hiện tại mà còn mở ra định hướng phát triển bền vững. Với kiến trúc hạ tầng linh hoạt, tích hợp các thuật toán tối ưu tiên tiến và đáp ứng đầy đủ các tiêu chuẩn kiểm định khắt khe, sản phẩm cam kết mang lại giá trị gia tăng vượt trội, tối ưu hóa chi phí vận hành và nâng cao năng lực cạnh tranh trên thị trường.";
-                    showToast("🎉 AI đã mở rộng & diễn đạt lại đoạn văn!", "success");
-                } finally {
-                    btnEl.innerHTML = oldBtnHTML;
-                    btnEl.disabled = false;
-                }
+            const currentText = textarea.value.trim();
+            if (!currentText) {
+                showToast("Vui lòng nhập một ít ý tưởng ban đầu trước khi bấm Diễn đạt bay bổng!", "warning");
+                return;
             }
 
-            // 2. Nút "Điền kín các ô thông tin còn lại"
-            async function runAICompleteAll() {
-                const btn = document.getElementById('btnCompleteAll');
-                const oldHTML = btn.innerHTML;
+            const oldBtnHTML = btnEl.innerHTML;
+            btnEl.innerHTML = `<i class="fa-solid fa-spinner spinner-icon"></i> Đang diễn đạt...`;
+            btnEl.disabled = true;
+
+            try {
+                const formData = new FormData();
+                formData.append('text', currentText);
+                formData.append('context_title', contextTitle);
+
+                const res = await fetch('/api/ai-expand', { method: 'POST', body: formData });
+                const data = await res.json();
+
+                if (data.status === 'success' && data.text) {
+                    textarea.value = data.text;
+                    showToast("🎉 AI đã mở rộng & diễn đạt lại đoạn văn sâu sắc, bay bổng hơn!", "success");
+                }
+            } catch (e) {
+                // Client Fallback Expand
+                textarea.value = currentText + "\n\n[Đã diễn đạt thêm bởi AI]: Giải pháp công nghệ cao của dự án không chỉ giải quyết triệt để bài toán kỹ thuật hiện tại mà còn mở ra định hướng phát triển bền vững. Với kiến trúc hạ tầng linh hoạt, tích hợp các thuật toán tối ưu tiên tiến và đáp ứng đầy đủ các tiêu chuẩn kiểm định khắt khe, sản phẩm cam kết mang lại giá trị gia tăng vượt trội, tối ưu hóa chi phí vận hành và nâng cao năng lực cạnh tranh trên thị trường.";
+                showToast("🎉 AI đã mở rộng & diễn đạt lại đoạn văn!", "success");
+            } finally {
+                btnEl.innerHTML = oldBtnHTML;
+                btnEl.disabled = false;
+            }
+        };
+
+        // 2. Nút "Điền kín các ô thông tin còn lại" (Attached to window)
+        window.runAICompleteAll = async function() {
+            const btn = document.getElementById('btnCompleteAll');
+            const oldHTML = btn ? btn.innerHTML : "";
+            if (btn) {
                 btn.innerHTML = `<i class="fa-solid fa-spinner spinner-icon"></i> AI đang lấp đầy các ô trống...`;
                 btn.disabled = true;
+            }
 
-                const inputs = document.querySelectorAll('.form-control:not([type="file"])');
-                let filledCount = 0;
+            const inputs = document.querySelectorAll('.form-control:not([type="file"])');
+            let filledCount = 0;
 
-                inputs.forEach((el, idx) => {
-                    if (!el.value || el.value.trim() === '') {
-                        filledCount++;
-                        // Gán nội dung mẫu chuẩn công nghệ cao SHTP-IC phù hợp theo thứ tự
-                        const placeholders = [
-                            "Dự án Công nghệ cao SHTP-IC",
-                            "Sản phẩm/Hệ thống thông minh tiên tiến",
-                            "Công nghệ cốt lõi tích hợp AI/IoT/Bán dẫn",
-                            "Công nghệ thông tin & AI",
-                            "Giải quyết triệt để hạn chế kỹ thuật hiện tại, tối ưu năng suất lao động và giảm thiểu rủi ro vận hành.",
-                            "Nhu cầu thị trường đang tăng trưởng 25%/năm, đòi hỏi phải có giải pháp công nghệ nội địa hóa hoàn toàn.",
-                            "Tạo công ăn việc làm cho đội ngũ kỹ sư trẻ, đóng góp doanh thu và ngân sách phát triển kinh tế vùng.",
-                            "Làm chủ quy trình thiết kế và chế tạo công nghệ lõi, đạt các chứng nhận quốc tế uy tín.",
-                            "Đặc tính kỹ thuật đạt chuẩn ISO/IEC, độ chính xác 99.8%, thời gian phản hồi <50ms.",
-                            "Mô tả quy trình hoạt động khép kín bao gồm các khối: Cảm biến thu thập ➔ Xử lý trung tâm ➔ Truyền tải điện đám mây ➔ Giao diện người dùng."
-                        ];
-                        el.value = placeholders[idx % placeholders.length];
-                    }
-                });
+            inputs.forEach((el, idx) => {
+                if (!el.value || el.value.trim() === '') {
+                    filledCount++;
+                    const placeholders = [
+                        "Dự án Công nghệ cao SHTP-IC",
+                        "Sản phẩm/Hệ thống thông minh tiên tiến",
+                        "Công nghệ cốt lõi tích hợp AI/IoT/Bán dẫn",
+                        "Công nghệ thông tin & AI",
+                        "Giải quyết triệt để hạn chế kỹ thuật hiện tại, tối ưu năng suất lao động và giảm thiểu rủi ro vận hành.",
+                        "Nhu cầu thị trường đang tăng trưởng 25%/năm, đòi hỏi phải có giải pháp công nghệ nội địa hóa hoàn toàn.",
+                        "Tạo công ăn việc làm cho đội ngũ kỹ sư trẻ, đóng góp doanh thu và ngân sách phát triển kinh tế vùng.",
+                        "Làm chủ quy trình thiết kế và chế tạo công nghệ lõi, đạt các chứng nhận quốc tế uy tín.",
+                        "Đặc tính kỹ thuật đạt chuẩn ISO/IEC, độ chính xác 99.8%, thời gian phản hồi <50ms.",
+                        "Mô tả quy trình hoạt động khép kín bao gồm các khối: Cảm biến thu thập ➔ Xử lý trung tâm ➔ Truyền tải điện đám mây ➔ Giao diện người dùng."
+                    ];
+                    el.value = placeholders[idx % placeholders.length];
+                }
+            });
 
-                setTimeout(() => {
+            setTimeout(() => {
+                if (btn) {
                     btn.innerHTML = oldHTML;
                     btn.disabled = false;
-                    showToast(`🎉 AI đã tự động điền kín thêm ${filledCount} ô thông tin còn trống!`, "success");
-                }, 600);
-            }
+                }
+                showToast(`🎉 AI đã tự động điền kín thêm ${filledCount} ô thông tin còn trống!`, "success");
+            }, 600);
+        };
 
             async function checkAIStatus() {
                 const statusBadge = document.getElementById('aiStatusBadge');
