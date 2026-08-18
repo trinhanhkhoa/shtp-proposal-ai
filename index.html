@@ -1933,23 +1933,24 @@ Chỉ trả về JSON thô không codeblock:
             });
         }
 
-        // RAG Knowledge Base Management Functions
-        function openKBUploadModal() {
+        // RAG Knowledge Base Management Functions (Explicitly attached to window object)
+        window.openKBUploadModal = function() {
             const modal = document.getElementById('kbUploadModal');
             if (modal) {
                 modal.style.display = 'flex';
                 setTimeout(() => modal.classList.add('active'), 10);
             }
-        }
-        function closeKBUploadModal() {
+        };
+
+        window.closeKBUploadModal = function() {
             const modal = document.getElementById('kbUploadModal');
             if (modal) {
                 modal.classList.remove('active');
                 setTimeout(() => modal.style.display = 'none', 300);
             }
-        }
+        };
 
-        function openKBEditModal(filename, currentCategory, currentDesc) {
+        window.openKBEditModal = function(filename, currentCategory, currentDesc) {
             const modal = document.getElementById('kbEditModal');
             if (modal) {
                 document.getElementById('kbEditFilename').value = filename;
@@ -1959,15 +1960,15 @@ Chỉ trả về JSON thô không codeblock:
                 modal.style.display = 'flex';
                 setTimeout(() => modal.classList.add('active'), 10);
             }
-        }
+        };
 
-        function closeKBEditModal() {
+        window.closeKBEditModal = function() {
             const modal = document.getElementById('kbEditModal');
             if (modal) {
                 modal.classList.remove('active');
                 setTimeout(() => modal.style.display = 'none', 300);
             }
-        }
+        };
 
         async function submitKBUpdate() {
             const filename = document.getElementById('kbEditFilename').value;
